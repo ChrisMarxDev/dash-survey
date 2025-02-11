@@ -1,0 +1,8 @@
+name: _
+publish_to: none
+environment:
+  sdk: ^3.6.0
+workspace:
+  - dash_survey_core
+  - dash_survey
+  - dash_survey/example

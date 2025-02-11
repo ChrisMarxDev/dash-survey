@@ -1,0 +1,84 @@
+{
+    "questions": [
+        {
+            "id": "1",
+            "type": "text",
+            "text": "What is your name?",
+            "required": true
+        },
+        {
+            "id": "2",
+            "type": "multiple_choice",
+            "text": "What is your favorite food?",
+            "options": [
+                {
+                    "text": "pizza",
+                    "id": "pizza"
+                },
+                {
+                    "text": "burger",
+                    "id": "burger"
+                },
+                {
+                    "text": "salad",
+                    "id": "salad"
+                }
+            ]
+        },
+        {
+            "id": "3",
+            "type": "single_choice",
+            "text": "What is your favorite color?",
+            "options": [
+                {
+                    "text": "red",
+                    "id": "red"
+                },
+                {
+                    "text": "blue",
+                    "id": "blue"
+                },
+                {
+                    "text": "green",
+                    "id": "green"
+                }
+            ]
+        },
+        {
+            "id": "4",
+            "type": "scale",
+            "text": "How much do you like this app?",
+            "options": [
+                {
+                    "text": "not at all",
+                    "id": "not_at_all"
+                },
+                {
+                    "text": "a lot",
+                    "id": "a_lot"
+                }
+            ]
+        }
+    ],
+    "answers": [
+        {
+            "questionId": "1",
+            "answer": "John Doe"
+        },
+        {
+            "questionId": "2",
+            "answer": [
+                "pizza",
+                "salad"
+            ]
+        },
+        {
+            "questionId": "3",
+            "answer": "blue"
+        },
+        {
+            "questionId": "4",
+            "answer": "a lot"
+        }
+    ]
+}

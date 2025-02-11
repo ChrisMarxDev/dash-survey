@@ -1,0 +1,10 @@
+targets:
+  $default:
+    builders:
+      dart_mappable_builder:
+        options:
+          # Add any dart_mappable options here if needed
+        generate_for:
+          exclude:
+            - "**.symlinks/**"
+            - "example/**.symlinks/**" 
