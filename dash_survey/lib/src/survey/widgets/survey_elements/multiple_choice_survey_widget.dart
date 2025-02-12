@@ -35,7 +35,7 @@ class _MultipleChoiceSurveyWidgetState
     super.initState();
     options.addAll(widget.question.options.getMap(widget.locale));
     if (widget.answer != null) {
-      selectedOptions.addAll(widget.answer!.answers);
+      selectedOptions.addAll(widget.answer!.answersIds);
     }
   }
 
@@ -46,7 +46,7 @@ class _MultipleChoiceSurveyWidgetState
     logInfo('didUpdateWidget ${widget.answer}');
 
     if (widget.answer != null) {
-      final widgetAnswer = Set<String>.from(widget.answer!.answers);
+      final widgetAnswer = Set<String>.from(widget.answer!.answersIds);
       if (selectedOptions.difference(widgetAnswer).isNotEmpty) {
         logInfo('didUpdateWidget ${selectedOptions.difference(widgetAnswer)}');
         selectedOptions

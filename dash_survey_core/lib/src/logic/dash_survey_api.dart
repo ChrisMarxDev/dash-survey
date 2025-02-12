@@ -165,8 +165,8 @@ class DashSurveyApi {
       surveyId: surveyId,
       userId: userId,
     );
-    await _post(
-      '/v1/survey/$surveyId/answers',
+    await _post<SubmitSurveyAnswerModel, Map<String, dynamic>>(
+      '/v1/survey/answer/$surveyId',
       completeAnswers,
       SubmitSurveyAnswerModelMapper.ensureInitialized(),
       null,

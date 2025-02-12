@@ -9,14 +9,14 @@ class NullableNotifierBuilder<T extends ChangeNotifier>
   });
 
   final T? notifier;
-  final Widget Function(BuildContext context, T notifier) builder;
+  final Widget Function(BuildContext context, T? notifier) builder;
 
   @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
       animation: notifier ?? ValueNotifier(null),
       builder: (context, child) {
-        return builder(context, notifier!);
+        return builder(context, notifier);
       },
     );
   }

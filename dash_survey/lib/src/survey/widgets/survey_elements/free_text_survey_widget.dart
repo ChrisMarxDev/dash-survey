@@ -59,7 +59,9 @@ class _FreeTextSurveyWidgetState extends State<FreeTextSurveyWidget> {
             hintText: widget.placeholder,
             border: const OutlineInputBorder(),
           ),
-          onSubmitted: widget.onChangeAnswer,
+          onChanged: (value) {
+            widget.onChangeAnswer(value);
+          },
         ),
       ],
     );

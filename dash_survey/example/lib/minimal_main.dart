@@ -1,3 +1,7 @@
+// This is a minimal example of how to use the [DashSurvey] package.
+// It is a simple example that shows how to use the [DashSurvey] package
+// to fetch and display surveys.
+
 import 'package:dash_survey/dash_survey.dart';
 import 'package:flutter/material.dart';
 

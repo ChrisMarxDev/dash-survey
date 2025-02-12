@@ -69,6 +69,7 @@ class _DashSurveyStoreService {
     final sharedPreferences = await sharedPreferencesFuture;
     await sharedPreferences.remove(dashSurveyCurrentUserIdKey);
     await sharedPreferences.remove(dashSurveyCompletedSurveysKey);
+    await sharedPreferences.remove(userTargetDimensionsKey);
   }
 }
 

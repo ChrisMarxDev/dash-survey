@@ -24,8 +24,6 @@ enum TextType {
   email,
 }
 
-
-
 @MappableEnum()
 enum SurveyQuestionType {
   freeText,
@@ -109,7 +107,7 @@ class MultipleChoiceSurveyQuestion extends SurveyQuestionModel
   }) {
     return MultipleChoiceAnswerModel(
       questionId: id,
-      answers: answers,
+      answersIds: answers,
     );
   }
 }

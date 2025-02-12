@@ -189,41 +189,52 @@ class _ScaleSurveyWidgetBaseState extends State<_ScaleSurveyWidgetBase> {
   Widget build(BuildContext context) {
     final label1 = widget.question.options.get(widget.locale).firstOrNull ?? '';
     final label2 = widget.question.options.get(widget.locale).lastOrNull ?? '';
-    return Column(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(label1),
-            Text(label2),
-          ],
-        ),
-        const SizedBox(height: 16),
-        Row(
-          spacing: 4,
-          children: [
-            for (var i = 0; i < 5; i++)
-              Expanded(
-                child: Center(
-                  child: InkWell(
-                    onTap: () {
-                      setState(() {
-                        _selectedIndex = i;
-                      });
-                      widget.onChangeAnswer.call(i.toDouble());
-                    },
-                    child: widget.scaleWidgetBuilder
-                            ?.call(context, index: i, isSelected: false) ??
-                        ScaleButton(
-                          label: '${i + 1}',
-                          isSelected: _selectedIndex == i,
-                        ),
+    return ConstrainedBox(
+      constraints: const BoxConstraints(
+        maxWidth: 360,
+      ),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                label1,
+                style: Theme.of(context).textTheme.bodySmall,
+              ),
+              Text(
+                label2,
+                style: Theme.of(context).textTheme.bodySmall,
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          Row(
+            spacing: 8,
+            children: [
+              for (var i = 0; i < 5; i++)
+                Expanded(
+                  child: Center(
+                    child: InkWell(
+                      onTap: () {
+                        setState(() {
+                          _selectedIndex = i;
+                        });
+                        widget.onChangeAnswer.call(i.toDouble());
+                      },
+                      child: widget.scaleWidgetBuilder
+                              ?.call(context, index: i, isSelected: false) ??
+                          ScaleButton(
+                            label: '${i + 1}',
+                            isSelected: _selectedIndex == i,
+                          ),
+                    ),
                   ),
                 ),
-              ),
-          ],
-        ),
-      ],
+            ],
+          ),
+        ],
+      ),
     );
   }
 }

@@ -1,5 +1,4 @@
 import 'package:dash_survey/dash_survey.dart';
-import 'package:dash_survey/src/survey/logic/dash_survey_controller/dash_survey_controller.dart';
 import 'package:flutter/material.dart';
 
 /// Builder widget that automatically show the next survey, if it is available.
@@ -46,7 +45,7 @@ class DashSurveyBuilder extends StatelessWidget {
     super.key,
     this.onSubmit,
     this.onCancel,
-    this.demoMode = false,
+    // this.viewId,
   });
 
   /// A builder that can be used to style the survey widget. Check the
@@ -65,10 +64,13 @@ class DashSurveyBuilder extends StatelessWidget {
   /// cancelled.
   final void Function(SurveyModel survey)? onCancel;
 
-  /// If true, a demo survey will be shown.
-  /// Use this to style and test the survey builder without having to create a
-  /// survey.
-  final bool demoMode;
+  /// Optional ID of the current view.
+  /// This is used to display surveys in specific parts of your app.
+  /// E.g. if you have a survey in a specific feature and only want to show it
+  /// to users who are in that feature.
+  ///
+  /// If left empty, all surveys without a specified view id can be shown here.
+  // final String? viewId;
 
   @override
   Widget build(BuildContext context) {

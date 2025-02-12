@@ -1,7 +1,7 @@
 import 'package:dash_survey/src/survey/logic/dash_survey_controller/dash_survey_controller.dart';
-import 'package:dash_survey/src/survey/logic/single_survey_state.dart';
 import 'package:dash_survey/src/util/dash_survey_logger.dart';
 import 'package:dash_survey/src/util/inherited_widget_provider.dart';
+import 'package:dash_survey/src/util/notifier_builder.dart';
 import 'package:dash_survey/src/util/object_extension.dart';
 import 'package:dash_survey_core/dash_survey_core.dart';
 import 'package:flutter/material.dart';
@@ -137,7 +137,7 @@ class SurveyIntroView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const SizedBox(height: 16),
+        const SizedBox(height: 32),
         Text(
           title,
           style: Theme.of(context).textTheme.titleMedium,
@@ -185,12 +185,12 @@ class _SurveyQuestionViewState extends State<SurveyQuestionView> {
           question.questionText.get(widget.locale),
           style: Theme.of(context).textTheme.titleMedium,
         ),
-        const SizedBox(height: 16),
-        AnimatedBuilder(
-          animation: answer ?? ValueNotifier(Never),
+        const SizedBox(height: 24),
+        NullableNotifierBuilder(
+          notifier: answer,
           builder: (context, child) {
             return _QuestionTypeWidget(
-              question: question,
+              initQuestion: question,
               locale: widget.locale,
               answer: answer?.answers[question.id],
               onChangeAnswer: (value) {
@@ -207,13 +207,13 @@ class _SurveyQuestionViewState extends State<SurveyQuestionView> {
 
 class _QuestionTypeWidget extends StatelessWidget {
   const _QuestionTypeWidget({
-    required this.question,
+    required this.initQuestion,
     required this.locale,
     required this.onChangeAnswer,
     this.answer,
   });
 
-  final SurveyQuestionModel question;
+  final SurveyQuestionModel initQuestion;
   final LocaleCode locale;
   final SurveyAnswerModel? answer;
   final void Function(SurveyAnswerModel) onChangeAnswer;
@@ -222,43 +222,44 @@ class _QuestionTypeWidget extends StatelessWidget {
     final surveyState = StateProvider.maybeOf<SingleSurveyState>(context);
     logInfo('surveyState: $surveyState');
 
-    final fQuestion = question;
-    return switch (fQuestion) {
+    final question = initQuestion;
+    return switch (question) {
       FreeTextSurveyQuestion() => FreeTextSurveyWidget(
           locale: locale,
           onChangeAnswer: (value) {
             onChangeAnswer.call(
-              fQuestion.answer(
+              question.answer(
                 answer: value,
               ),
             );
           },
           answer: answer?.asTypeOrNull<FreetextAnswerModel>(),
-          question: fQuestion,
+          question: question,
         ),
       MultipleChoiceSurveyQuestion() => MultipleChoiceSurveyWidget(
           locale: locale,
+          isMultiSelect: question.canSelectMultiple,
           answer: answer?.asTypeOrNull<MultipleChoiceAnswerModel>(),
           onChangeAnswer: (List<String> value) {
             onChangeAnswer.call(
-              fQuestion.answer(
+              question.answer(
                 answers: value,
               ),
             );
           },
-          question: fQuestion,
+          question: question,
         ),
       ScaleSurveyQuestion() => ScaleSurveyWidget(
           locale: locale,
           onChangeAnswer: (double value) {
             onChangeAnswer.call(
-              fQuestion.answer(
+              question.answer(
                 answer: value,
               ),
             );
           },
           answer: answer?.asTypeOrNull<ScaleAnswerModel>(),
-          question: fQuestion,
+          question: question,
         ),
     };
   }

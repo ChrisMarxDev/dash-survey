@@ -75,6 +75,7 @@ extension LocalizationMapStringListFunction on Map<LocaleCode, List<String>> {
 }
 
 @MappableClass()
+
 /// general string localization
 class LocalizedText with LocalizedTextMappable {
   /// Creates a LocalizedText from a LocalizationHolder<String>
@@ -156,6 +157,10 @@ class LocalizedTextMap with LocalizedTextMapMappable {
       data!.entries
           .map((entry) => MapEntry(entry.key, entry.value.get(locale))),
     );
+  }
+
+  List<String> getKeys() {
+    return data!.keys.toList();
   }
 
   String getByKey(String key, LocaleCode locale) {

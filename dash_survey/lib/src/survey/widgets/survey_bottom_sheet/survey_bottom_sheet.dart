@@ -1,6 +1,6 @@
 import 'package:dash_survey/dash_survey.dart';
 import 'package:dash_survey/src/survey/logic/dash_survey_controller/dash_survey_controller.dart';
-import 'package:dash_survey/src/survey/logic/single_survey_state.dart';
+import 'package:dash_survey/src/util/dash_survey_logger.dart';
 import 'package:dash_survey/src/util/inherited_widget_provider.dart';
 import 'package:dash_survey/src/util/notifier_builder.dart';
 import 'package:flutter/material.dart';
@@ -18,21 +18,24 @@ Future<void> showSurveyBottomSheet(
   void Function(SurveyModel)? onSubmit,
   void Function()? onCancel,
 }) async {
+  final state = SingleSurveyState(
+    survey: survey,
+    locale: locale,
+  );
   final result = await WoltModalSheet.show<SurveyBottomSheetResult>(
     context: context,
     pageContentDecorator: (child) {
       return StateProvider<SingleSurveyState>(
-        state: SingleSurveyState(
-          survey: survey,
-          locale: locale,
-        ),
+        state: state,
         child: child,
       );
     },
     pageListBuilder: (context) {
       return [
         WoltModalSheetPage(
+          hasTopBarLayer: false,
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+          surfaceTintColor: Theme.of(context).colorScheme.surfaceTint,
           hasSabGradient: false,
           isTopBarLayerAlwaysVisible: false,
           child: SurveyViewBottomSheet(
@@ -66,14 +69,10 @@ Future<void> showSurveyBottomSheet(
 class SurveyViewBottomSheet extends StatelessWidget {
   const SurveyViewBottomSheet({
     required this.survey,
-    // required this.onSubmit,
-    // required this.onCancel,
     super.key,
   });
 
   final SurveyModel survey;
-  // final void Function(SurveyModel) onSubmit;
-  // final void Function() onCancel;
 
   @override
   Widget build(BuildContext context) {
@@ -82,24 +81,27 @@ class SurveyViewBottomSheet extends StatelessWidget {
       builder: (context) {
         return Column(
           children: [
-            SurveyIntroView(
-              title: survey.name.get(locale),
-              onCancel: () {
-                Navigator.of(context).pop(SurveyBottomSheetResult.cancel);
-              },
-              description: survey.description?.get(locale),
-              onStart: () {
-                WoltModalSheet.of(context).pushPage(
-                  SurveySheetPage.buildModalPage(
-                    context,
-                    survey,
-                    0,
-                    locale,
-                    // onSubmit,
-                    // onCancel,
-                  ),
-                );
-              },
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+              child: SurveyIntroView(
+                title: survey.name.get(locale),
+                onCancel: () {
+                  Navigator.of(context).pop(SurveyBottomSheetResult.cancel);
+                },
+                description: survey.description?.get(locale),
+                onStart: () {
+                  WoltModalSheet.of(context).pushPage(
+                    SurveySheetPage.buildModalPage(
+                      context,
+                      survey,
+                      0,
+                      locale,
+                      // onSubmit,
+                      // onCancel,
+                    ),
+                  );
+                },
+              ),
             ),
           ],
         );
@@ -129,13 +131,18 @@ class SurveySheetPage extends StatelessWidget {
     // void Function() onCancel,
   ) {
     return SliverWoltModalSheetPage(
+      hasTopBarLayer: false,
+      isTopBarLayerAlwaysVisible: false,
       mainContentSliversBuilder: (context) {
         return [
           SliverToBoxAdapter(
-            child: SurveySheetPage(
-              survey: survey,
-              index: index,
-              locale: locale,
+            child: Padding(
+              padding: const EdgeInsets.only(top: 32),
+              child: SurveySheetPage(
+                survey: survey,
+                index: index,
+                locale: locale,
+              ),
             ),
           ),
         ];
@@ -157,9 +164,12 @@ class SurveySheetPage extends StatelessWidget {
               ),
             );
           }
-        : () {
+        : () async {
             // onSubmit(question);
-            SingleSurveyState.submitSurvey(context);
+            await SingleSurveyState.submitSurvey(context)
+                .onError((error, stackTrace) {
+              logError('Error submitting survey: $error');
+            });
             Navigator.of(context).pop(SurveyBottomSheetResult.submit);
           };
     void onPrevious() {
@@ -170,13 +180,13 @@ class SurveySheetPage extends StatelessWidget {
     return NullableNotifierBuilder(
       notifier: answer,
       builder: (context, answer) {
-        final hasAnswer = answer.answers.containsKey(question.id);
+        final hasAnswer = answer?.answers.containsKey(question.id) ?? false;
         return Column(
           children: [
             Padding(
               padding: const EdgeInsets.only(
-                left: 16,
-                right: 16,
+                left: 24,
+                right: 24,
                 bottom: 16,
                 top: 8,
               ),

@@ -44,10 +44,14 @@ class MultipleChoiceAnswerModel extends SurveyAnswerModel
     with MultipleChoiceAnswerModelMappable {
   const MultipleChoiceAnswerModel({
     required super.questionId,
-    required this.answers,
+    required this.answersIds,
+    this.customAnswer,
+    this.locale,
   });
 
-  final List<String> answers;
+  final List<String> answersIds;
+  final String? customAnswer;
+  final LocaleCode? locale;
 }
 
 @MappableClass()

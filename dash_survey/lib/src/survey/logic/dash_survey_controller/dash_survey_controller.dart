@@ -11,30 +11,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
+import 'package:dash_survey/src/survey/logic/dash_survey_controller/survey_state_enum.dart';
 
 part 'single_survey_state.dart';
 part 'store_service.dart';
 
-/// State of the survey builder, used to determine the next widget to show.
-enum SurveyState {
-  /// DashSurvey is still determining if there is a survey
-  loading,
-
-  /// No survey is currently available for the user
-  noSurveyAvailable,
-
-  /// Currently showing an active survey to the user
-  showingSurvey,
-
-  /// The user has submitted their survey answers
-  surveySubmitted,
-
-  /// The survey has been closed submission
-  surveyClosed,
-}
-
 abstract interface class DashSurveyControllerContract {
   Future<SurveyModel?> fetchNextSurveyObject();
+
+  Future<void> showNextSurvey({
+    void Function(SurveyModel survey)? onComplete,
+    void Function()? onCancel,
+  });
+
+  Future<void> setUserDimensions(Map<String, String> params);
+
+  Future<void> clearUserConfiguration();
 }
 
 class DashSurveyController implements DashSurveyControllerContract {
@@ -74,7 +66,8 @@ class DashSurveyController implements DashSurveyControllerContract {
 
   final _DashSurveyStoreService _store;
 
-  // final UserIdLogic userLogic;
+  final SurveyHolderState _surveyHolderState = SurveyHolderState();
+
   // TODOFIX
   final SurveyState surveyState = SurveyState.loading;
 
@@ -104,24 +97,43 @@ class DashSurveyController implements DashSurveyControllerContract {
   }
 
   /// Set parameters for this user to target them in surveys
-  Future<void> setUserParams(Map<String, String> params) async {
+  /// E.g. when you want to target users by country or by user segments
+  /// params is a map of key-value pairs
+  /// e.g. {'country': 'US', 'age': '20'}
+  ///
+  /// UserParams will be merged with existing UserParams
+  /// e.g. if you set {'country': 'US'} and then {'age': '20'}
+  /// the final UserParams will be {'country': 'US', 'age': '20'}
+  ///
+  /// To delete a single dimension, set it to null
+  /// e.g. {'country': null} will delete the country dimension
+  ///
+  /// To clear all dimensions, set an empty map or call [clearUserConfiguration]
+  @override
+  Future<void> setUserDimensions(Map<String, String?> params) async {
     final currentTargetDimensions = await _store.getUserTargetDimensions();
     final newTargetDimensions = {
       ...currentTargetDimensions,
-      ...params,
-    };
+    }
+      ..addAll(params)
+      ..removeWhere((key, value) => value == null);
     await _store.setUserTargetDimensions(newTargetDimensions);
   }
 
-  /// Clear parameters for this users. E.g. when logging out
-  Future<void> clearUserParams() async {
-    final currentTargetDimensions = await _store.getUserTargetDimensions();
-    await _store.setUserTargetDimensions({});
+  /// Clear all persisted data for this app installation.
+  /// This will delete all user data and reset the survey state to the initial
+  /// state.
+  /// This is useful when you want to start fresh or when you want to logout the
+  /// user.
+  @override
+  Future<void> clearUserConfiguration() async {
+    await _store.clear();
   }
 
   /// Your bread and butter function. Calling this will automatically fetch the
   /// next survey object for this user and display it.
   /// This functions will automatically handle targeting options and limits.
+  @override
   Future<void> showNextSurvey({
     void Function(SurveyModel survey)? onComplete,
     void Function()? onCancel,
@@ -218,4 +230,27 @@ Future<void> showDemoSurvey({
       locale: localeCode,
     );
   }
+}
+
+class SurveyHolderState extends ChangeNotifier {
+  SurveyHolderState();
+
+  SurveyModel? _survey;
+
+  SurveyModel? get survey => _survey;
+
+  SurveyState _surveyState = SurveyState.loading;
+
+  SurveyState get surveyState => _surveyState;
+
+  void setSurvey(SurveyModel survey) {
+    _survey = survey;
+    notifyListeners();
+  }
+
+  Future<void> init() async {
+    notifyListeners();
+  }
+
+  
 }

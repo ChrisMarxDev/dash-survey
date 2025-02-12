@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:dash_survey/dash_survey.dart';
 import 'package:flutter/material.dart';
+import 'theme_provider.dart';
 
 void main() {
   runApp(const MyApp());
@@ -12,14 +13,49 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DashSurvey(
-      apiKey: 'demo',
-      theme: ThemeData(
-        primaryColor: Colors.blue,
+    return ThemeRoot(
+      child: ThemeConsumer(
+        builder: (context, theme) {
+          return MaterialApp(
+            title: 'Survey Dash Demo',
+            theme: theme,
+            home: const MyHomePage(),
+          );
+        },
       ),
-      child: MaterialApp(
-        title: 'SurveyDash Demo',
-        home: const HomeScreen(),
+    );
+  }
+}
+
+class MyHomePage extends StatelessWidget {
+  const MyHomePage({super.key});
+
+  void _toggleTheme(BuildContext context) {
+    final provider = ThemeProvider.of(context);
+    final isDark = provider.themeData.brightness == Brightness.dark;
+    provider.updateTheme(
+      isDark ? ThemeData.light() : ThemeData.dark(),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Survey Dash Demo'),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Text('Welcome to Survey Dash!'),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () => _toggleTheme(context),
+              child: const Text('Toggle Theme'),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -42,7 +78,7 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             ElevatedButton(
               onPressed: () {
-                DashSurvey.of(context).setUserParams({
+                DashSurvey.of(context).setUserDimensions({
                   'name': 'John Doe',
                   'postal_code': '12345',
                   'email': 'john.doe@example.com',

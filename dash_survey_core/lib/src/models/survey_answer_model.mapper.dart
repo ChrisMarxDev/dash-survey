@@ -352,19 +352,30 @@ class MultipleChoiceAnswerModelMapper
   static String _$questionId(MultipleChoiceAnswerModel v) => v.questionId;
   static const Field<MultipleChoiceAnswerModel, String> _f$questionId =
       Field('questionId', _$questionId);
-  static List<String> _$answers(MultipleChoiceAnswerModel v) => v.answers;
-  static const Field<MultipleChoiceAnswerModel, List<String>> _f$answers =
-      Field('answers', _$answers);
+  static List<String> _$answersIds(MultipleChoiceAnswerModel v) => v.answersIds;
+  static const Field<MultipleChoiceAnswerModel, List<String>> _f$answersIds =
+      Field('answersIds', _$answersIds);
+  static String? _$customAnswer(MultipleChoiceAnswerModel v) => v.customAnswer;
+  static const Field<MultipleChoiceAnswerModel, String> _f$customAnswer =
+      Field('customAnswer', _$customAnswer, opt: true);
+  static LocaleCode? _$locale(MultipleChoiceAnswerModel v) => v.locale;
+  static const Field<MultipleChoiceAnswerModel, LocaleCode> _f$locale =
+      Field('locale', _$locale, opt: true);
 
   @override
   final MappableFields<MultipleChoiceAnswerModel> fields = const {
     #questionId: _f$questionId,
-    #answers: _f$answers,
+    #answersIds: _f$answersIds,
+    #customAnswer: _f$customAnswer,
+    #locale: _f$locale,
   };
 
   static MultipleChoiceAnswerModel _instantiate(DecodingData data) {
     return MultipleChoiceAnswerModel(
-        questionId: data.dec(_f$questionId), answers: data.dec(_f$answers));
+        questionId: data.dec(_f$questionId),
+        answersIds: data.dec(_f$answersIds),
+        customAnswer: data.dec(_f$customAnswer),
+        locale: data.dec(_f$locale));
   }
 
   @override
@@ -426,9 +437,13 @@ abstract class MultipleChoiceAnswerModelCopyWith<
     $R,
     $In extends MultipleChoiceAnswerModel,
     $Out> implements SurveyAnswerModelCopyWith<$R, $In, $Out> {
-  ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>> get answers;
+  ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>> get answersIds;
   @override
-  $R call({String? questionId, List<String>? answers});
+  $R call(
+      {String? questionId,
+      List<String>? answersIds,
+      String? customAnswer,
+      LocaleCode? locale});
   MultipleChoiceAnswerModelCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
       Then<$Out2, $R2> t);
 }
@@ -443,20 +458,28 @@ class _MultipleChoiceAnswerModelCopyWithImpl<$R, $Out>
   late final ClassMapperBase<MultipleChoiceAnswerModel> $mapper =
       MultipleChoiceAnswerModelMapper.ensureInitialized();
   @override
-  ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>> get answers =>
-      ListCopyWith($value.answers, (v, t) => ObjectCopyWith(v, $identity, t),
-          (v) => call(answers: v));
+  ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>> get answersIds =>
+      ListCopyWith($value.answersIds, (v, t) => ObjectCopyWith(v, $identity, t),
+          (v) => call(answersIds: v));
   @override
-  $R call({String? questionId, List<String>? answers}) =>
+  $R call(
+          {String? questionId,
+          List<String>? answersIds,
+          Object? customAnswer = $none,
+          Object? locale = $none}) =>
       $apply(FieldCopyWithData({
         if (questionId != null) #questionId: questionId,
-        if (answers != null) #answers: answers
+        if (answersIds != null) #answersIds: answersIds,
+        if (customAnswer != $none) #customAnswer: customAnswer,
+        if (locale != $none) #locale: locale
       }));
   @override
   MultipleChoiceAnswerModel $make(CopyWithData data) =>
       MultipleChoiceAnswerModel(
           questionId: data.get(#questionId, or: $value.questionId),
-          answers: data.get(#answers, or: $value.answers));
+          answersIds: data.get(#answersIds, or: $value.answersIds),
+          customAnswer: data.get(#customAnswer, or: $value.customAnswer),
+          locale: data.get(#locale, or: $value.locale));
 
   @override
   MultipleChoiceAnswerModelCopyWith<$R2, MultipleChoiceAnswerModel, $Out2>
