@@ -5,3 +5,9 @@ tasks:
     cmds:
       - cd dash_survey_core && flutter clean && dart run build_runner build --delete-conflicting-outputs
       - cd dash_survey && flutter clean && dart run build_runner build --delete-conflicting-outputs
+
+#  
+  api_gen:
+    cmds:
+      - cd dash_survey_core && dart-apitool extract --input . --output generated_api
+      - cd dash_survey && dart-apitool extract --input . --output generated_api

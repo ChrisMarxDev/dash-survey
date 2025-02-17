@@ -54,7 +54,6 @@ class _SliderSurveyWidget extends StatefulWidget {
     required this.onChangeAnswer,
     required this.question,
     required this.locale,
-    super.key,
     this.answer,
   });
 
@@ -148,7 +147,7 @@ class _ScaleSurveyWidgetBase extends StatefulWidget {
     required this.onChangeAnswer,
     required this.question,
     required this.locale,
-    this.scaleWidgetBuilder,
+    // this.scaleWidgetBuilder,
     this.answer,
   });
 
@@ -156,11 +155,12 @@ class _ScaleSurveyWidgetBase extends StatefulWidget {
   final ScaleAnswerModel? answer;
   final ScaleSurveyQuestion question;
   final LocaleCode locale;
-  final Widget Function(
-    BuildContext context, {
-    required int index,
-    required bool isSelected,
-  })? scaleWidgetBuilder;
+  // TODO(chris): add custom scale widget builder
+  // final Widget Function(
+  // BuildContext context, {
+  // required int index,
+  // required bool isSelected,
+  // })? scaleWidgetBuilder;
 
   @override
   State<_ScaleSurveyWidgetBase> createState() => _ScaleSurveyWidgetBaseState();
@@ -222,12 +222,10 @@ class _ScaleSurveyWidgetBaseState extends State<_ScaleSurveyWidgetBase> {
                         });
                         widget.onChangeAnswer.call(i.toDouble());
                       },
-                      child: widget.scaleWidgetBuilder
-                              ?.call(context, index: i, isSelected: false) ??
-                          ScaleButton(
-                            label: '${i + 1}',
-                            isSelected: _selectedIndex == i,
-                          ),
+                      child: ScaleButton(
+                        label: '${i + 1}',
+                        isSelected: _selectedIndex == i,
+                      ),
                     ),
                   ),
                 ),

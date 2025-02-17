@@ -88,7 +88,6 @@ class DashSurveyBuilder extends StatelessWidget {
 class _SurveyBuilder extends StatefulWidget {
   const _SurveyBuilder({
     required this.surveyState,
-    super.key,
   });
 
   final SurveyState surveyState;

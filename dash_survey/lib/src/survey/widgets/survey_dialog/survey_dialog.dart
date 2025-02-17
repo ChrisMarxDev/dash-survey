@@ -2,7 +2,6 @@
 
 import 'package:dash_survey/dash_survey.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 Future<void> showSurveyDialog(
   BuildContext context, {

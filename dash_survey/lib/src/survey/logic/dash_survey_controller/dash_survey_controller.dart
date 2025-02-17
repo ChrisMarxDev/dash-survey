@@ -11,7 +11,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
-import 'package:dash_survey/src/survey/logic/dash_survey_controller/survey_state_enum.dart';
 
 part 'single_survey_state.dart';
 part 'store_service.dart';
@@ -243,14 +242,19 @@ class SurveyHolderState extends ChangeNotifier {
 
   SurveyState get surveyState => _surveyState;
 
+  Future<void> fetch() async {
+    _surveyState = SurveyState.loading;
+
+    notifyListeners();
+  }
+
   void setSurvey(SurveyModel survey) {
     _survey = survey;
     notifyListeners();
   }
 
   Future<void> init() async {
+    await fetch();
     notifyListeners();
   }
-
-  
 }

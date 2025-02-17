@@ -1,6 +1,7 @@
 import 'dart:collection';
-import 'package:test/test.dart';
+
 import 'package:dash_survey_core/src/models/localized_string.dart';
+import 'package:test/test.dart';
 
 void main() {
   group('LocaleCode', () {

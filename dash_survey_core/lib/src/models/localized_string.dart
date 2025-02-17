@@ -266,6 +266,7 @@ class LinkedHashMapHook extends MappingHook {
   }
 
   LinkedHashMap<String, LocalizedText> decodeMap(Map<String, dynamic> value) {
+    // ignore: prefer_collection_literals
     final data = LinkedHashMap<String, LocalizedText>();
     for (final entry in value.entries) {
       final localeMap = (entry.value as Map<String, dynamic>).map(

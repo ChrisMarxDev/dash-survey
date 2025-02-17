@@ -1,7 +1,6 @@
 // ignore_for_file: public_member_api_docs
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 /// general theming for dash survey widgets
 class DashSurveyTheme {
@@ -84,9 +83,9 @@ class DashSurveyTheme {
   }) {
     return DashSurveyTheme(
       primaryColor: primaryColor ?? this.primaryColor,
-      onPrimaryColor: onPrimaryColor ?? this.onPrimaryColor,
-      disabledColor: disabledColor ?? this.disabledColor,
-      onDisabledColor: onDisabledColor ?? this.onDisabledColor,
+      onPrimaryColor: onPrimaryColor ?? onPrimaryColor,
+      disabledColor: disabledColor ?? disabledColor,
+      onDisabledColor: onDisabledColor ?? onDisabledColor,
       containerShape: containerShape ?? containerShape,
       titleStyle: titleStyle ?? this.titleStyle,
       bodyStyle: bodyStyle ?? this.bodyStyle,

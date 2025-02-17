@@ -1,4 +1,3 @@
-import 'dart:collection';
 
 import 'package:dash_survey_core/dash_survey_core.dart';
 import 'package:dash_survey_core/src/util/map_util.dart';

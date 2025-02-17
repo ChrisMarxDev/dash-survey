@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:dash_survey_core/dash_survey_core.dart';
@@ -74,23 +73,23 @@ class DashSurveyApi {
     return result;
   }
 
-  Future<Res> _get<Res extends Object>(
-    String path,
-    ClassMapperBase<Res> responseMapper, {
-    Map<String, String>? headers,
-    Map<String, String>? queryParameters,
-  }) async {
-    final url = _url(path, queryParameters);
-    final requestHeaders = {
-      ..._authHeader,
-      ...?headers,
-    };
-    final response = await _client.get(url, headers: requestHeaders);
-    _checkResponseForError(response);
-    final json = jsonDecode(response.body) as Map<String, dynamic>;
-    final result = responseMapper.decodeMap<Res>(json);
-    return result;
-  }
+  // Future<Res> _get<Res extends Object>(
+  //   String path,
+  //   ClassMapperBase<Res> responseMapper, {
+  //   Map<String, String>? headers,
+  //   Map<String, String>? queryParameters,
+  // }) async {
+  //   final url = _url(path, queryParameters);
+  //   final requestHeaders = {
+  //     ..._authHeader,
+  //     ...?headers,
+  //   };
+  //   final response = await _client.get(url, headers: requestHeaders);
+  //   _checkResponseForError(response);
+  //   final json = jsonDecode(response.body) as Map<String, dynamic>;
+  //   final result = responseMapper.decodeMap<Res>(json);
+  //   return result;
+  // }
 
   void _checkResponseForError(http.Response response) {
     if (response.statusCode >= 400 && response.statusCode < 600) {

@@ -1,14 +1,14 @@
 name: dash_survey
-description: A Very Good Project created by Very Good CLI.
+description: Extensive remote controlled survey package
 version: 0.1.0+1
-publish_to: none
+repository: https://github.com/ChrisMarxDev/dash-survey
+homepage: https://dash-survey.com
 
 environment:
   sdk: ^3.6.0
   flutter: ^3.24.0
 
 resolution: workspace
-
 
 dependencies:
   dart_mappable: ^4.3.0
@@ -28,4 +28,3 @@ dev_dependencies:
     sdk: flutter
   mocktail: ^1.0.4
   very_good_analysis: ^6.0.0
-  

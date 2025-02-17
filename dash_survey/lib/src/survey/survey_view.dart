@@ -1,11 +1,11 @@
 import 'package:dash_survey/src/survey/logic/dash_survey_controller/dash_survey_controller.dart';
+import 'package:dash_survey/src/survey/widgets/widgets.dart';
 import 'package:dash_survey/src/util/dash_survey_logger.dart';
 import 'package:dash_survey/src/util/inherited_widget_provider.dart';
 import 'package:dash_survey/src/util/notifier_builder.dart';
 import 'package:dash_survey/src/util/object_extension.dart';
 import 'package:dash_survey_core/dash_survey_core.dart';
 import 'package:flutter/material.dart';
-import 'package:dash_survey/src/survey/widgets/widgets.dart';
 
 class SurveyView extends StatelessWidget {
   const SurveyView({

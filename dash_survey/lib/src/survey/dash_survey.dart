@@ -1,6 +1,6 @@
 import 'package:dash_survey/src/survey/logic/dash_survey_controller/dash_survey_controller.dart';
-import 'package:flutter/material.dart';
 import 'package:dash_survey/src/util/dash_survey_extension.dart';
+import 'package:flutter/material.dart';
 
 /// Wrap your app in this widget to enable SurveyDash
 class DashSurvey extends StatefulWidget {
