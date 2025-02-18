@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:dash_survey/dash_survey.dart';
 import 'package:flutter/material.dart';
+import 'sample_content.dart';
 import 'theme_provider.dart';
 
 void main() {
@@ -13,48 +14,24 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ThemeRoot(
-      child: ThemeConsumer(
-        builder: (context, theme) {
-          return MaterialApp(
-            title: 'Survey Dash Demo',
-            theme: theme,
-            home: const MyHomePage(),
-          );
-        },
+    return DashSurvey(
+      apiKey: '1efed36e-d900-63f0-a509-6f87ccc16c72',
+      config: const DashSurveyConfig(
+        baseUrl: String.fromEnvironment(
+          'SURVEY_DASH_API_URL',
+          defaultValue: 'http://localhost:8080',
+        ),
       ),
-    );
-  }
-}
-
-class MyHomePage extends StatelessWidget {
-  const MyHomePage({super.key});
-
-  void _toggleTheme(BuildContext context) {
-    final provider = ThemeProvider.of(context);
-    final isDark = provider.themeData.brightness == Brightness.dark;
-    provider.updateTheme(
-      isDark ? ThemeData.light() : ThemeData.dark(),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Survey Dash Demo'),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text('Welcome to Survey Dash!'),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () => _toggleTheme(context),
-              child: const Text('Toggle Theme'),
-            ),
-          ],
+      child: ThemeRoot(
+        child: ThemeConsumer(
+          builder: (context, theme) {
+            return MaterialApp(
+              debugShowCheckedModeBanner: false,
+              title: 'Survey Dash Demo',
+              theme: theme,
+              home: const HomeScreen(),
+            );
+          },
         ),
       ),
     );
@@ -72,21 +49,40 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(),
+        appBar: AppBar(
+          centerTitle: true,
+          title: const Text('Dashing Furniture'),
+          actions: [
+            const Icon(Icons.settings),
+            const SizedBox(width: 8),
+          ],
+        ),
         body: Column(
-          spacing: 16,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            ElevatedButton(
+            const Text('Welcome to Survey Dash!'),
+            const SizedBox(height: 20),
+            const ToggleThemeButton(),
+            FilledButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => FurnitureStoreHome()),
+                );
+              },
+              child: Text('Furniture Store'),
+            ),
+            FilledButton(
               onPressed: () {
                 DashSurvey.of(context).setUserDimensions({
-                  'name': 'John Doe',
+                  'age': '30',
+                  'gender': 'male',
                   'postal_code': '12345',
-                  'email': 'john.doe@example.com',
                 });
               },
               child: Text('Set User Params'),
             ),
-            ElevatedButton(
+            FilledButton(
               onPressed: () {
                 DashSurvey.of(context).showNextSurvey(
                   onComplete: (survey) {
@@ -99,7 +95,7 @@ class _HomeScreenState extends State<HomeScreen> {
               },
               child: Text('Show next survey'),
             ),
-            ElevatedButton(
+            FilledButton(
               onPressed: () {
                 DashSurvey.showDemo(
                   context: context,
@@ -114,15 +110,14 @@ class _HomeScreenState extends State<HomeScreen> {
               },
               child: Text('Show demo survey'),
             ),
-            ElevatedButton(
+            FilledButton(
               onPressed: () async {
-                final survey =
-                    await DashSurvey.of(context).fetchNextSurveyObject();
+                final survey = await DashSurvey.of(context).getNextSurvey();
                 log(survey?.toJson() ?? 'No survey');
               },
               child: Text('Fetch next survey'),
             ),
-            ElevatedButton(
+            FilledButton(
               onPressed: () {
                 Navigator.push(
                   context,

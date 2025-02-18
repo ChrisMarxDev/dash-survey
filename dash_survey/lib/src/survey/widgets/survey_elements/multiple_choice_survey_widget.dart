@@ -84,6 +84,7 @@ class _MultipleChoiceSurveyWidgetState
   Widget build(BuildContext context) {
     logInfo('Rebuild _MultipleChoiceSurveyWidgetState');
 
+    final cardShapeBorder = Theme.of(context).cardTheme.shape;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -91,28 +92,32 @@ class _MultipleChoiceSurveyWidgetState
           final optionKey = entry.key;
           final text = entry.value;
           final isSelected = selectedOptions.contains(optionKey);
-          return Card(
-            margin: const EdgeInsets.only(bottom: 8),
-            child: InkWell(
-              onTap: () => _handleOptionTap(optionKey),
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Row(
-                  children: [
-                    if (widget.isMultiSelect)
-                      Checkbox(
-                        value: isSelected,
-                        onChanged: (_) => _handleOptionTap(optionKey),
-                      )
-                    else
-                      Radio<bool>(
-                        value: true,
-                        groupValue: isSelected,
-                        onChanged: (_) => _handleOptionTap(optionKey),
-                      ),
-                    const SizedBox(width: 8),
-                    Expanded(child: Text(text)),
-                  ],
+          return Padding(
+            padding: const EdgeInsets.only(bottom: 8),
+            child: Card(
+              margin: EdgeInsets.zero,
+              child: InkWell(
+                customBorder: cardShapeBorder,
+                onTap: () => _handleOptionTap(optionKey),
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Row(
+                    children: [
+                      if (widget.isMultiSelect)
+                        Checkbox(
+                          value: isSelected,
+                          onChanged: (_) => _handleOptionTap(optionKey),
+                        )
+                      else
+                        Radio<bool>(
+                          value: true,
+                          groupValue: isSelected,
+                          onChanged: (_) => _handleOptionTap(optionKey),
+                        ),
+                      const SizedBox(width: 8),
+                      Expanded(child: Text(text)),
+                    ],
+                  ),
                 ),
               ),
             ),

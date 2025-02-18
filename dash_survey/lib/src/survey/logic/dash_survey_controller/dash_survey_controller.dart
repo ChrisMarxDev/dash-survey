@@ -8,7 +8,6 @@ import 'package:dash_survey/src/util/dash_survey_logger.dart';
 import 'package:dash_survey/src/util/inherited_widget_provider.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 
@@ -16,11 +15,12 @@ part 'single_survey_state.dart';
 part 'store_service.dart';
 
 abstract interface class DashSurveyControllerContract {
-  Future<SurveyModel?> fetchNextSurveyObject();
+  Future<SurveyModel?> getNextSurvey({String? viewId});
 
   Future<void> showNextSurvey({
     void Function(SurveyModel survey)? onComplete,
     void Function()? onCancel,
+    String? viewId,
   });
 
   Future<void> setUserDimensions(Map<String, String> params);
@@ -36,36 +36,45 @@ class DashSurveyController implements DashSurveyControllerContract {
     required String apiKey,
     required BuildContext Function() currentContextGetter,
     this.overrideLocale,
+    this.config = const DashSurveyConfig(),
   })  : _currentContextGetter = currentContextGetter,
-        api = DashSurveyApi(
-          const String.fromEnvironment(
-            'SURVEY_DASH_API_URL',
-            defaultValue: 'https://api.dashsurvey.com',
-          ),
+        api = DashSurveyApiService(
+          config.baseUrl ?? 'https://api.dash-survey.com',
           apiKey,
         ),
         _store = _DashSurveyStoreService(
           sharedPreferencesFuture: SharedPreferences.getInstance(),
-        );
+        ) {
+    _surveyHolderState = SurveyHolderState(
+      controller: this,
+    );
+  }
   @visibleForTesting
   // ignore: public_member_api_docs
   DashSurveyController.fromRequiredServices({
     required this.api,
-    required _DashSurveyStoreService userLogic,
+    required _DashSurveyStoreService storeService,
     required BuildContext Function() currentContextGetter,
     this.overrideLocale,
+    this.config = const DashSurveyConfig(),
   })  : _currentContextGetter = currentContextGetter,
-        _store = userLogic;
+        _store = storeService {
+    _surveyHolderState = SurveyHolderState(
+      controller: this,
+    );
+  }
 
   final Locale? overrideLocale;
 
-  final DashSurveyApi api;
+  final DashSurveyConfig config;
+
+  final DashSurveyApiService api;
 
   final BuildContext Function() _currentContextGetter;
 
   final _DashSurveyStoreService _store;
 
-  final SurveyHolderState _surveyHolderState = SurveyHolderState();
+  late final SurveyHolderState _surveyHolderState;
 
   // TODOFIX
   final SurveyState surveyState = SurveyState.loading;
@@ -136,8 +145,9 @@ class DashSurveyController implements DashSurveyControllerContract {
   Future<void> showNextSurvey({
     void Function(SurveyModel survey)? onComplete,
     void Function()? onCancel,
+    String? viewId,
   }) async {
-    final nextSurvey = await fetchNextSurveyObject();
+    final nextSurvey = await getNextSurvey(viewId: viewId);
     if (nextSurvey == null) {
       return;
     }
@@ -155,9 +165,26 @@ class DashSurveyController implements DashSurveyControllerContract {
   /// the default or if you want to display the survey in a different context.
   /// The logic for this function is shared with the [showNextSurvey] function.
   @override
-  Future<SurveyModel?> fetchNextSurveyObject() async {
+  Future<SurveyModel?> getNextSurvey({
+    String? viewId,
+  }) async {
+    final lastSurveyDate = await _lastSurveyDate();
+    print('Last survey date: $lastSurveyDate');
+
+    final isElligleAgain = lastSurveyDate == null ||
+        config.surveyCoolDownInDays == 0 ||
+        lastSurveyDate.isBefore(
+          DateTime.now().subtract(
+            Duration(days: config.surveyCoolDownInDays),
+          ),
+        );
+
+    if (!isElligleAgain) {
+      return null;
+    }
     final surveys = await _fetchNextSurveyObjects();
     print('Surveys: ${surveys.first.toJson()}');
+
     return surveys.lastOrNull;
   }
 
@@ -232,7 +259,8 @@ Future<void> showDemoSurvey({
 }
 
 class SurveyHolderState extends ChangeNotifier {
-  SurveyHolderState();
+  SurveyHolderState({required this.controller});
+  final DashSurveyController controller;
 
   SurveyModel? _survey;
 
@@ -244,6 +272,8 @@ class SurveyHolderState extends ChangeNotifier {
 
   Future<void> fetch() async {
     _surveyState = SurveyState.loading;
+
+    _survey = await controller.getNextSurvey();
 
     notifyListeners();
   }

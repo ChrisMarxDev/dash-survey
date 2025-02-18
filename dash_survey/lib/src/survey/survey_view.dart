@@ -1,4 +1,5 @@
 import 'package:dash_survey/src/survey/logic/dash_survey_controller/dash_survey_controller.dart';
+import 'package:dash_survey/src/survey/widgets/buttons.dart';
 import 'package:dash_survey/src/survey/widgets/widgets.dart';
 import 'package:dash_survey/src/util/dash_survey_logger.dart';
 import 'package:dash_survey/src/util/inherited_widget_provider.dart';
@@ -84,7 +85,7 @@ class _QuestionPagerState extends State<QuestionPager> {
           ),
           Row(
             children: [
-              ElevatedButton(
+              MainButton(
                 onPressed: () {
                   setState(() {
                     if (_currentQuestionIndex <
@@ -97,7 +98,7 @@ class _QuestionPagerState extends State<QuestionPager> {
                 },
                 child: const Text('Next'),
               ),
-              ElevatedButton(
+              MainButton(
                 onPressed: () {
                   setState(() {
                     if (_currentQuestionIndex > 0) {
@@ -152,7 +153,7 @@ class SurveyIntroView extends StatelessWidget {
           children: [
             TextButton(onPressed: onCancel, child: Text(skipButtonText)),
             const SizedBox(width: 16),
-            ElevatedButton(onPressed: onStart, child: Text(startButtonText)),
+            MainButton(onPressed: onStart, child: Text(startButtonText)),
           ],
         ),
         const SizedBox(height: 16),

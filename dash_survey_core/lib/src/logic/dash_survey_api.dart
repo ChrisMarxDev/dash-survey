@@ -6,14 +6,14 @@ import 'package:dash_survey_core/src/util/internal_logger.dart';
 import 'package:http/http.dart' as http;
 
 /// This is the API client for the DashSurveyCloud server.
-class DashSurveyApi {
+class DashSurveyApiService {
   /// Create a new DashSurveyApi instance.
   /// The [baseUrl] is the base URL of the survey dash API. Normally this is
   /// the URL of the DashSurveyCloud server.
   /// However, we are leaving this open for proxying or future self hosting.
   /// The [apiKey] is the API key of the organization.
   /// This can be found in the DashSurveyCloud dashboard.
-  DashSurveyApi(String baseUrl, String apiKey)
+  DashSurveyApiService(String baseUrl, String apiKey)
       : assert(baseUrl.isNotEmpty, 'baseUrl must not be empty'),
         assert(apiKey.isNotEmpty, 'apiKey must not be empty'),
         _baseUrl = baseUrl,

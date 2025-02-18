@@ -1,4 +1,3 @@
-
 import 'package:dash_survey_core/dash_survey_core.dart';
 import 'package:dash_survey_core/src/util/map_util.dart';
 import 'package:uuid/uuid.dart';
@@ -24,7 +23,7 @@ final exampleQuestions = [
     surveyId: 'demo',
     questionText: const LocalizedText(
       {
-        LocaleCode.en: 'What is your age?',
+        LocaleCode.en: 'How old are you?',
       },
     ),
     id: 'example_question_1',

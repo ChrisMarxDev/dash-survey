@@ -1,3 +1,4 @@
+import 'package:dash_survey/src/survey/logic/dash_survey_controller/dash_survey_config.dart';
 import 'package:dash_survey/src/survey/logic/dash_survey_controller/dash_survey_controller.dart';
 import 'package:dash_survey/src/util/dash_survey_extension.dart';
 import 'package:flutter/material.dart';
@@ -8,13 +9,16 @@ class DashSurvey extends StatefulWidget {
   const DashSurvey({
     required this.child,
     required this.apiKey,
-    this.baseUrl,
     this.enabled = true,
     this.theme,
     this.overrideLocale,
     this.demoMode = false,
+    this.config,
     super.key,
   });
+
+  /// The config for the survey dash
+  final DashSurveyConfig? config;
 
   /// The api key for the survey dash api
   /// You can use the api key 'demo' to get a running local demo
@@ -33,9 +37,7 @@ class DashSurvey extends StatefulWidget {
   /// This is useful if you want to customize the look and feel of DashSurvey
   final ThemeData? theme;
 
-  /// Base url or the survey dash api, if not provided the default will be used
-  /// Should only be used for self hosted or enterprise customers
-  final String? baseUrl;
+
 
   /// Override the locale for the survey dash
   /// Normally, SurveyDash will use the locale of the app taken from the context

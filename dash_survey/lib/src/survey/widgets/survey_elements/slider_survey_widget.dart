@@ -189,6 +189,9 @@ class _ScaleSurveyWidgetBaseState extends State<_ScaleSurveyWidgetBase> {
   Widget build(BuildContext context) {
     final label1 = widget.question.options.get(widget.locale).firstOrNull ?? '';
     final label2 = widget.question.options.get(widget.locale).lastOrNull ?? '';
+
+    final outlineButtonShape =
+        Theme.of(context).outlinedButtonTheme.style?.shape?.resolve({});
     return ConstrainedBox(
       constraints: const BoxConstraints(
         maxWidth: 360,
@@ -216,6 +219,7 @@ class _ScaleSurveyWidgetBaseState extends State<_ScaleSurveyWidgetBase> {
                 Expanded(
                   child: Center(
                     child: InkWell(
+                      customBorder: outlineButtonShape,
                       onTap: () {
                         setState(() {
                           _selectedIndex = i;
@@ -246,38 +250,44 @@ class ScaleButton extends StatelessWidget {
 
   final String label;
   final bool isSelected;
+
   @override
   Widget build(BuildContext context) {
-    final borderRadius = BorderRadius.circular(8);
-    final color =
-        isSelected ? Theme.of(context).colorScheme.primary : Colors.transparent;
+    final outlinedButtonStyle = Theme.of(context).outlinedButtonTheme.style;
+    final shape = outlinedButtonStyle?.shape?.resolve({});
+    final borderSide = outlinedButtonStyle?.side?.resolve({});
+    final primaryColor =
+        borderSide?.color ?? Theme.of(context).colorScheme.primary;
 
-    final unselectedBorderColor =
-        Theme.of(context).outlinedButtonTheme.style?.side?.resolve({})?.color ??
-            Theme.of(context).colorScheme.outline;
+    final backgroundColor =
+        isSelected ? primaryColor : primaryColor.withValues(alpha: 0);
+    final borderColor = primaryColor;
+
+    final foregroundColor =
+        isSelected ? Theme.of(context).colorScheme.onPrimary : primaryColor;
+
+    final mergedShape = shape?.copyWith(side: borderSide);
     return AnimatedContainer(
       constraints: const BoxConstraints(
-        minHeight: 40,
+        minHeight: 44,
         maxWidth: 86,
       ),
       duration: const Duration(milliseconds: 300),
-      decoration: BoxDecoration(
-        color: color,
-        borderRadius: borderRadius,
-        border: Border.all(
-          width: 2,
-          color: isSelected
-              ? Theme.of(context).colorScheme.primary
-              : unselectedBorderColor,
-        ),
+      decoration: ShapeDecoration(
+        shape: mergedShape ??
+            RoundedRectangleBorder(
+              side: borderSide ??
+                  BorderSide(
+                    color: borderColor,
+                  ),
+            ),
+        color: backgroundColor,
       ),
       child: Center(
         child: Text(
           label,
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                color: isSelected
-                    ? Theme.of(context).colorScheme.onPrimary
-                    : Theme.of(context).colorScheme.onSurface,
+                color: foregroundColor,
               ),
         ),
       ),
