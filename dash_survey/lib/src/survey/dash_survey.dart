@@ -37,8 +37,6 @@ class DashSurvey extends StatefulWidget {
   /// This is useful if you want to customize the look and feel of DashSurvey
   final ThemeData? theme;
 
-
-
   /// Override the locale for the survey dash
   /// Normally, SurveyDash will use the locale of the app taken from the context
   /// If you have a special setup or want to override the locale for
@@ -89,6 +87,7 @@ class DashSurveyState extends State<DashSurvey> {
     super.initState();
     _controller = DashSurveyController(
       apiKey: widget.apiKey,
+      config: widget.config ?? const DashSurveyConfig(),
       currentContextGetter: () => widget.showBuildContext!,
     )..init();
     _notifier = ChangeNotifier();

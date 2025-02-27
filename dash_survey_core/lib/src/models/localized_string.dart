@@ -24,6 +24,14 @@ extension type const LocaleCode._(String locale) implements String {
   static const LocaleCode it = LocaleCode._('it');
 }
 
+const supportedLocales = [
+  LocaleCode.en,
+  LocaleCode.de,
+  LocaleCode.es,
+  LocaleCode.fr,
+  LocaleCode.it,
+];
+
 extension LocalizationMapFunction<T> on Map<LocaleCode, T> {
   void removeLocale(LocaleCode locale) {
     remove(locale);
@@ -85,6 +93,10 @@ class LocalizedText with LocalizedTextMappable {
 
   final Map<LocaleCode, String> data;
 
+  List<LocaleCode> get missingLocales {
+    return data.keys.where((locale) => data[locale] == '').toList();
+  }
+
   String get(LocaleCode locale) {
     return data[locale] ?? '';
   }
@@ -99,10 +111,20 @@ class LocalizedText with LocalizedTextMappable {
     return LocalizedText(data.copyWithSetLocale(locale, value));
   }
 
-  bool isCompleteForLocales(List<LocaleCode> locales) {
-    return locales.every((locale) => data[locale]?.isNotEmpty ?? false);
+  /// Compares a list of locales with the locales in the LocalizedText
+  /// Returns the locales that are not present in the LocalizedText
+  List<LocaleCode> missingLocalesForLocaleList(List<LocaleCode> locales) {
+    return locales.where((locale) => data[locale]?.isEmpty ?? true).toList();
   }
 
+  /// Checks if the LocalizedText is complete for a list of locales
+  /// Returns true if the LocalizedText is complete for all the locales in the list
+  bool isCompleteForLocales(List<LocaleCode> locales) {
+    return missingLocalesForLocaleList(locales).isEmpty;
+  }
+
+  /// Checks if the LocalizedText is complete
+  /// Returns true if the LocalizedText is complete
   bool isComplete() {
     return data.isComplete();
   }
@@ -213,6 +235,12 @@ class LocalizedTextMap with LocalizedTextMapMappable {
   @override
   String toString() {
     return jsonEncode(data);
+  }
+
+  /// Compares a list of locales with the locales in the LocalizedTextMap
+  /// Returns the locales that are not present in the LocalizedTextMap
+  Iterable<LocaleCode> missingLocalesForLocaleList(List<LocaleCode> locales) {
+    return locales.where((locale) => !data!.containsKey(locale));
   }
 }
 
