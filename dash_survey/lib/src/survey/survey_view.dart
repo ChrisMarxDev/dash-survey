@@ -176,9 +176,11 @@ class SurveyThankYouView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text(
-          survey.finishedMessage?.get(locale) ??
-              context.getTranslatedString('survey_finished'),
+        Center(
+          child: Text(
+            survey.finishedMessage?.get(locale) ??
+                context.getTranslatedString('survey_finished'),
+          ),
         ),
       ],
     );

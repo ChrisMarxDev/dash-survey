@@ -132,7 +132,7 @@ class DashSurveyApiService {
   /// completed and wont return surveys that the user has already completed.
   Future<List<SurveyModel>> getElliglbeOpenSurveys({
     required String userId,
-    // required LocaleCode localeCode,
+    required LocaleCode localeCode,
     required Map<String, dynamic> targetDimensions,
   }) async {
     try {
@@ -141,8 +141,8 @@ class DashSurveyApiService {
         SurveyModelMapper.ensureInitialized(),
         queryParameters: {
           'userId': userId,
-          // 'localeCode':
-              // localeCode.toString(), // Ensure localeCode is converted to string
+          'localeCode':
+              localeCode.toString(), // Ensure localeCode is converted to string
         },
       );
       return surveys;

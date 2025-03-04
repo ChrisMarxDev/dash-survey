@@ -21,6 +21,12 @@ abstract interface class DashSurveyController {
   /// This is useful if you want to display the survey in a different way than
   /// the default or if you want to display the survey in a different context.
   /// The logic for this function is shared with the [showNextSurvey] function.
+  ///
+  /// This function can also be used in combination with [DashSurveyBuilder] to
+  /// fetch the survey before displaying the builder element.
+  /// E.g. call getNextSurvey and if it has a value [DashSurveyBuilder] will
+  /// immediately build with [SurveyState.activeSurvey] and will skip the
+  /// [SurveyState.loading] state.
   Future<SurveyModel?> getNextSurvey({String? viewId});
 
   /// Show the next survey object for this user.
@@ -202,7 +208,7 @@ class DashSurveyControllerImplementation implements DashSurveyController {
       return null;
     }
     final surveys = await _fetchNextSurveyObjects();
-    print('Surveys: ${surveys.first.toJson()}');
+    print('Surveys: ${surveys.firstOrNull?.toJson()}');
 
     return surveys.lastOrNull;
   }
@@ -211,7 +217,7 @@ class DashSurveyControllerImplementation implements DashSurveyController {
     final targetDimensions = await _store.getUserTargetDimensions();
     final surveys = await api.getElliglbeOpenSurveys(
       userId: userId!,
-      // localeCode: getLocaleCode(),
+      localeCode: getLocaleCode(),
       targetDimensions: targetDimensions,
     );
     return surveys;

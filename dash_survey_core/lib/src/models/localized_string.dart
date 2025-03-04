@@ -206,6 +206,9 @@ class LocalizedTextMap with LocalizedTextMapMappable {
     required String value,
   }) {
     final newData = {...data!};
+    if (newData[key] == null) {
+      newData[key] = const LocalizedText({});
+    }
     newData[key] = newData[key]!.copyWithSetLocale(locale, value);
     return LocalizedTextMap(LinkedHashMap<String, LocalizedText>.from(newData));
   }
@@ -240,7 +243,19 @@ class LocalizedTextMap with LocalizedTextMapMappable {
   /// Compares a list of locales with the locales in the LocalizedTextMap
   /// Returns the locales that are not present in the LocalizedTextMap
   Iterable<LocaleCode> missingLocalesForLocaleList(List<LocaleCode> locales) {
-    return locales.where((locale) => !data!.containsKey(locale));
+    if (data == null) {
+      return locales;
+    }
+
+    final missing = data!.values.fold(
+      <LocaleCode>[],
+      (acc, value) => [
+        ...acc,
+        ...value.missingLocalesForLocaleList(locales),
+      ],
+    );
+
+    return missing;
   }
 }
 
