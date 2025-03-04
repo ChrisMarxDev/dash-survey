@@ -40,7 +40,7 @@ class SingleSurveyState extends ChangeNotifier {
     newAnswers[questionId] = answer;
 
     _answers = newAnswers;
-    logInfo('updateAnswer: $questionId $answer');
+    dashLogInfo('updateAnswer: $questionId $answer');
     notifyListeners();
   }
 

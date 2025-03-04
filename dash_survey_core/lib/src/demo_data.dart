@@ -115,7 +115,7 @@ final exampleQuestions = [
     surveyId: 'demo',
     questionText: const LocalizedText(
       {
-        LocaleCode.en: 'How satisfied are you with the product?',
+        LocaleCode.en: 'How satisfied are you with our app?',
       },
     ),
     id: 'example_question_3',

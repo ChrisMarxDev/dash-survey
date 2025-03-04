@@ -81,6 +81,7 @@ class SurveyViewBottomSheet extends StatelessWidget {
       builder: (context) {
         return Column(
           children: [
+            const SizedBox(height: 16),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
               child: SurveyIntroView(
@@ -168,7 +169,7 @@ class SurveySheetPage extends StatelessWidget {
             // onSubmit(question);
             await SingleSurveyState.submitSurvey(context)
                 .onError((error, stackTrace) {
-              logError('Error submitting survey: $error');
+              dashLogError('Error submitting survey: $error');
             });
             Navigator.of(context).pop(SurveyBottomSheetResult.submit);
           };
@@ -195,6 +196,7 @@ class SurveySheetPage extends StatelessWidget {
                 locale: locale,
               ),
             ),
+            const SizedBox(height: 16),
             SurveyActionButtons(
               onPrevious: onPrevious,
               onNext: hasAnswer ? onNext : null,

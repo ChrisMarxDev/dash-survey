@@ -138,6 +138,9 @@ class SurveyModelMapper extends ClassMapperBase<SurveyModel> {
       v.displayOptions;
   static const Field<SurveyModel, SurveyDisplayOptionsModel> _f$displayOptions =
       Field('displayOptions', _$displayOptions, opt: true);
+  static LocalizedText? _$finishedMessage(SurveyModel v) => v.finishedMessage;
+  static const Field<SurveyModel, LocalizedText> _f$finishedMessage =
+      Field('finishedMessage', _$finishedMessage, opt: true);
 
   @override
   final MappableFields<SurveyModel> fields = const {
@@ -147,6 +150,7 @@ class SurveyModelMapper extends ClassMapperBase<SurveyModel> {
     #createdAt: _f$createdAt,
     #description: _f$description,
     #displayOptions: _f$displayOptions,
+    #finishedMessage: _f$finishedMessage,
   };
 
   static SurveyModel _instantiate(DecodingData data) {
@@ -156,7 +160,8 @@ class SurveyModelMapper extends ClassMapperBase<SurveyModel> {
         name: data.dec(_f$name),
         createdAt: data.dec(_f$createdAt),
         description: data.dec(_f$description),
-        displayOptions: data.dec(_f$displayOptions));
+        displayOptions: data.dec(_f$displayOptions),
+        finishedMessage: data.dec(_f$finishedMessage));
   }
 
   @override
@@ -217,13 +222,15 @@ abstract class SurveyModelCopyWith<$R, $In extends SurveyModel, $Out>
   LocalizedTextCopyWith<$R, LocalizedText, LocalizedText>? get description;
   SurveyDisplayOptionsModelCopyWith<$R, SurveyDisplayOptionsModel,
       SurveyDisplayOptionsModel>? get displayOptions;
+  LocalizedTextCopyWith<$R, LocalizedText, LocalizedText>? get finishedMessage;
   $R call(
       {String? id,
       List<SurveyQuestionModel>? questions,
       LocalizedText? name,
       DateTime? createdAt,
       LocalizedText? description,
-      SurveyDisplayOptionsModel? displayOptions});
+      SurveyDisplayOptionsModel? displayOptions,
+      LocalizedText? finishedMessage});
   SurveyModelCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -252,20 +259,26 @@ class _SurveyModelCopyWithImpl<$R, $Out>
       get displayOptions => $value.displayOptions?.copyWith
           .$chain((v) => call(displayOptions: v));
   @override
+  LocalizedTextCopyWith<$R, LocalizedText, LocalizedText>?
+      get finishedMessage => $value.finishedMessage?.copyWith
+          .$chain((v) => call(finishedMessage: v));
+  @override
   $R call(
           {String? id,
           List<SurveyQuestionModel>? questions,
           LocalizedText? name,
           DateTime? createdAt,
           Object? description = $none,
-          Object? displayOptions = $none}) =>
+          Object? displayOptions = $none,
+          Object? finishedMessage = $none}) =>
       $apply(FieldCopyWithData({
         if (id != null) #id: id,
         if (questions != null) #questions: questions,
         if (name != null) #name: name,
         if (createdAt != null) #createdAt: createdAt,
         if (description != $none) #description: description,
-        if (displayOptions != $none) #displayOptions: displayOptions
+        if (displayOptions != $none) #displayOptions: displayOptions,
+        if (finishedMessage != $none) #finishedMessage: finishedMessage
       }));
   @override
   SurveyModel $make(CopyWithData data) => SurveyModel(
@@ -274,7 +287,8 @@ class _SurveyModelCopyWithImpl<$R, $Out>
       name: data.get(#name, or: $value.name),
       createdAt: data.get(#createdAt, or: $value.createdAt),
       description: data.get(#description, or: $value.description),
-      displayOptions: data.get(#displayOptions, or: $value.displayOptions));
+      displayOptions: data.get(#displayOptions, or: $value.displayOptions),
+      finishedMessage: data.get(#finishedMessage, or: $value.finishedMessage));
 
   @override
   SurveyModelCopyWith<$R2, SurveyModel, $Out2> $chain<$R2, $Out2>(

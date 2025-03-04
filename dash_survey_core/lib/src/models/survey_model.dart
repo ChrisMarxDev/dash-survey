@@ -14,6 +14,7 @@ class SurveyModel with SurveyModelMappable {
     required this.createdAt,
     this.description,
     this.displayOptions,
+    this.finishedMessage,
   });
 
   /// The id of the survey
@@ -33,6 +34,9 @@ class SurveyModel with SurveyModelMappable {
 
   /// The date the survey was created
   final DateTime createdAt;
+
+  /// The message to display when the survey is finished
+  final LocalizedText? finishedMessage;
 }
 
 @MappableClass()

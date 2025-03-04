@@ -33,19 +33,29 @@ class SubmitSurveyAnswerModelMapper
   static String _$userId(SubmitSurveyAnswerModel v) => v.userId;
   static const Field<SubmitSurveyAnswerModel, String> _f$userId =
       Field('userId', _$userId);
+  static bool _$completed(SubmitSurveyAnswerModel v) => v.completed;
+  static const Field<SubmitSurveyAnswerModel, bool> _f$completed =
+      Field('completed', _$completed, opt: true, def: true);
+  static bool _$demoMode(SubmitSurveyAnswerModel v) => v.demoMode;
+  static const Field<SubmitSurveyAnswerModel, bool> _f$demoMode =
+      Field('demoMode', _$demoMode, opt: true, def: false);
 
   @override
   final MappableFields<SubmitSurveyAnswerModel> fields = const {
     #answers: _f$answers,
     #surveyId: _f$surveyId,
     #userId: _f$userId,
+    #completed: _f$completed,
+    #demoMode: _f$demoMode,
   };
 
   static SubmitSurveyAnswerModel _instantiate(DecodingData data) {
     return SubmitSurveyAnswerModel(
         answers: data.dec(_f$answers),
         surveyId: data.dec(_f$surveyId),
-        userId: data.dec(_f$userId));
+        userId: data.dec(_f$userId),
+        completed: data.dec(_f$completed),
+        demoMode: data.dec(_f$demoMode));
   }
 
   @override
@@ -108,7 +118,12 @@ abstract class SubmitSurveyAnswerModelCopyWith<
   ListCopyWith<$R, SurveyAnswerModel,
           SurveyAnswerModelCopyWith<$R, SurveyAnswerModel, SurveyAnswerModel>>
       get answers;
-  $R call({List<SurveyAnswerModel>? answers, String? surveyId, String? userId});
+  $R call(
+      {List<SurveyAnswerModel>? answers,
+      String? surveyId,
+      String? userId,
+      bool? completed,
+      bool? demoMode});
   SubmitSurveyAnswerModelCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
       Then<$Out2, $R2> t);
 }
@@ -131,17 +146,23 @@ class _SubmitSurveyAnswerModelCopyWithImpl<$R, $Out>
   $R call(
           {List<SurveyAnswerModel>? answers,
           String? surveyId,
-          String? userId}) =>
+          String? userId,
+          bool? completed,
+          bool? demoMode}) =>
       $apply(FieldCopyWithData({
         if (answers != null) #answers: answers,
         if (surveyId != null) #surveyId: surveyId,
-        if (userId != null) #userId: userId
+        if (userId != null) #userId: userId,
+        if (completed != null) #completed: completed,
+        if (demoMode != null) #demoMode: demoMode
       }));
   @override
   SubmitSurveyAnswerModel $make(CopyWithData data) => SubmitSurveyAnswerModel(
       answers: data.get(#answers, or: $value.answers),
       surveyId: data.get(#surveyId, or: $value.surveyId),
-      userId: data.get(#userId, or: $value.userId));
+      userId: data.get(#userId, or: $value.userId),
+      completed: data.get(#completed, or: $value.completed),
+      demoMode: data.get(#demoMode, or: $value.demoMode));
 
   @override
   SubmitSurveyAnswerModelCopyWith<$R2, SubmitSurveyAnswerModel, $Out2>

@@ -1,9 +1,16 @@
-import 'dart:developer';
-
-void logInfo(String object) {
-  print(object);
+const bool _isDebug = true;
+void dashLogInfo(String object) {
+  if (_isDebug) {
+    print('>>>>>>>Dash Survey>>>>>>>');
+    print(object);
+    print('<<<<<<<Dash Survey<<<<<<<');
+  }
 }
 
-void logError(Object object) {
-  log(object.toString(), error: object, stackTrace: StackTrace.current);
+void dashLogError(Object object) {
+  if (_isDebug) {
+    print('>>>>>>>Dash Survey>>>>>>>');
+    print(object);
+    print('<<<<<<<Dash Survey<<<<<<<');
+  }
 }

@@ -11,3 +11,8 @@ tasks:
     cmds:
       - cd dash_survey_core && dart-apitool extract --input . --output generated_api
       - cd dash_survey && dart-apitool extract --input . --output generated_api
+  
+  publish:
+    cmds:
+      - cd dash_survey_core && dart pub publish --dry-run
+      - cd dash_survey && dart pub publish --dry-run

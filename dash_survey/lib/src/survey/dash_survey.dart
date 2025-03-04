@@ -51,8 +51,8 @@ class DashSurvey extends StatefulWidget {
   /// This is useful for testing dash survey. And setting up the UI.
   final bool demoMode;
 
-  /// Get the controller [DashSurveyController] from context
-  static DashSurveyController of(BuildContext context) {
+  /// Get the controller [DashSurveyControllerImplementation] from context
+  static DashSurveyControllerImplementation of(BuildContext context) {
     final model =
         context.dependOnInheritedWidgetOfExactType<_DashSurveyInherited>();
     assert(
@@ -79,13 +79,14 @@ class DashSurvey extends StatefulWidget {
 }
 
 class DashSurveyState extends State<DashSurvey> {
-  late final DashSurveyController _controller;
+  late final DashSurveyControllerImplementation _controller;
   late final ChangeNotifier _notifier;
 
   @override
   void initState() {
     super.initState();
-    _controller = DashSurveyController(
+    widget.showBuildContext = context;
+    _controller = DashSurveyControllerImplementation(
       apiKey: widget.apiKey,
       config: widget.config ?? const DashSurveyConfig(),
       currentContextGetter: () => widget.showBuildContext!,
@@ -116,7 +117,7 @@ class _DashSurveyInherited extends InheritedNotifier<ChangeNotifier> {
     required super.child,
   });
 
-  final DashSurveyController controller;
+  final DashSurveyControllerImplementation controller;
 }
 
 /// Target view for SurveyDash

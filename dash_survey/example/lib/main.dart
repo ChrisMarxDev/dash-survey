@@ -99,13 +99,6 @@ class _HomeScreenState extends State<HomeScreen> {
               onPressed: () {
                 DashSurvey.showDemo(
                   context: context,
-                  // displayType: SurveyDisplayType.bottomSheet,
-                  // onComplete: (survey) {
-                  //   print('Survey complete: ${survey.id}');
-                  // },
-                  // onCancel: () {
-                  //   print('Survey cancelled');
-                  // },
                 );
               },
               child: Text('Show demo survey'),

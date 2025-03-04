@@ -43,12 +43,13 @@ class _MultipleChoiceSurveyWidgetState
   void didUpdateWidget(covariant MultipleChoiceSurveyWidget oldWidget) {
     super.didUpdateWidget(oldWidget);
 
-    logInfo('didUpdateWidget ${widget.answer}');
+    dashLogInfo('didUpdateWidget ${widget.answer}');
 
     if (widget.answer != null) {
       final widgetAnswer = Set<String>.from(widget.answer!.answersIds);
       if (selectedOptions.difference(widgetAnswer).isNotEmpty) {
-        logInfo('didUpdateWidget ${selectedOptions.difference(widgetAnswer)}');
+        dashLogInfo(
+            'didUpdateWidget ${selectedOptions.difference(widgetAnswer)}');
         selectedOptions
           ..clear()
           ..addAll(widgetAnswer);
@@ -76,13 +77,13 @@ class _MultipleChoiceSurveyWidgetState
           ..add(optionKey);
       }
     });
-    logInfo('Selected $optionKey');
+    dashLogInfo('Selected $optionKey');
     widget.onChangeAnswer(selectedOptions.toList());
   }
 
   @override
   Widget build(BuildContext context) {
-    logInfo('Rebuild _MultipleChoiceSurveyWidgetState');
+    dashLogInfo('Rebuild _MultipleChoiceSurveyWidgetState');
 
     final cardShapeBorder = Theme.of(context).cardTheme.shape;
     return Column(

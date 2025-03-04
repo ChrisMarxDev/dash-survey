@@ -1,3 +1,4 @@
+import 'package:dash_survey/dash_survey.dart';
 import 'package:flutter/material.dart';
 
 class FurnitureItem {
@@ -74,6 +75,14 @@ class FurnitureStoreHome extends StatelessWidget {
         title: const Text('Luxury Furniture'),
         elevation: 0,
         automaticallyImplyLeading: false,
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          DashSurvey.showDemo(
+            context: context,
+          );
+        },
+        child: const Icon(Icons.add),
       ),
       body: Column(
         children: [

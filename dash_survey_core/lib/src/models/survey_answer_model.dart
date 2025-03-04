@@ -9,12 +9,16 @@ class SubmitSurveyAnswerModel with SubmitSurveyAnswerModelMappable {
     required this.answers,
     required this.surveyId,
     required this.userId,
+    this.completed = true,
+    this.demoMode = false,
   });
 
   final List<SurveyAnswerModel> answers;
 
   final String surveyId;
   final String userId;
+  final bool completed;
+  final bool demoMode;
 }
 
 @MappableClass()

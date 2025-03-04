@@ -7,7 +7,7 @@ enum SurveyState {
   noSurveyAvailable,
 
   /// Currently showing an active survey to the user
-  showingSurvey,
+  activeSurvey,
 
   /// The user has submitted their survey answers
   surveySubmitted,

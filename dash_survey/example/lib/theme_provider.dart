@@ -86,6 +86,7 @@ enum AppTheme {
   modernMinimal,
   luxuryClassic,
   playfulBold,
+  playfulAlternative,
 }
 
 class ThemeHolder {
@@ -97,6 +98,8 @@ class ThemeHolder {
         return _luxuryClassicTheme;
       case AppTheme.playfulBold:
         return _playfulBoldTheme;
+      case AppTheme.playfulAlternative:
+        return _playfulAlternativeTheme;
     }
   }
 
@@ -226,6 +229,7 @@ class ThemeHolder {
       primary: Color(0xFFFF6B6B),
       secondary: Color(0xFF4ECDC4),
       surface: Colors.white,
+      surfaceTint: Colors.transparent,
     ),
     textTheme: GoogleFonts.poppinsTextTheme(),
     cardTheme: CardTheme(
@@ -273,6 +277,65 @@ class ThemeHolder {
       titleTextStyle: GoogleFonts.poppins(
         color: Colors.white,
         fontSize: 22,
+        fontWeight: FontWeight.w600,
+      ),
+    ),
+  );
+
+  static final _playfulAlternativeTheme = ThemeData(
+    useMaterial3: true,
+    colorScheme: ColorScheme.light(
+      primary: Color(0xff1c63f2),
+      secondary: Color(0xff8BB4FF),
+      surface: Colors.white,
+      tertiary: Color(0xffE2ECFF),
+      surfaceTint: Colors.transparent,
+    ),
+    textTheme: GoogleFonts.interTextTheme(),
+    cardTheme: CardTheme(
+      elevation: 5,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+      ),
+      margin: EdgeInsets.all(12),
+      shadowColor: Color(0xff1c63f2).withOpacity(0.2),
+    ),
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(
+        elevation: 2,
+        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 32),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+        ),
+      ),
+    ),
+    filledButtonTheme: FilledButtonThemeData(
+      style: FilledButton.styleFrom(
+        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 32),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+        ),
+        backgroundColor: Color(0xff1c63f2),
+        foregroundColor: Colors.white,
+        elevation: 2,
+      ),
+    ),
+    outlinedButtonTheme: OutlinedButtonThemeData(
+      style: OutlinedButton.styleFrom(
+        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 32),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+        ),
+        side: BorderSide(color: Color(0xff8BB4FF), width: 2),
+      ),
+    ),
+    appBarTheme: AppBarTheme(
+      backgroundColor: Color(0xff1c63f2),
+      foregroundColor: Colors.white,
+      elevation: 0,
+      titleTextStyle: GoogleFonts.inter(
+        color: Colors.white,
+        fontSize: 20,
         fontWeight: FontWeight.w600,
       ),
     ),
