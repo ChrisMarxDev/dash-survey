@@ -5,8 +5,8 @@ repository: https://github.com/ChrisMarxDev/dash-survey
 homepage: https://dash-survey.com
 
 environment:
-  sdk: ^3.6.0
-  flutter: ^3.24.0
+  sdk: ">=3.6.0"
+  flutter: ">=3.24.0"
 
 resolution: workspace
 
