@@ -11,15 +11,12 @@ environment:
 resolution: workspace
 
 dependencies:
-  dart_mappable: ^4.3.0
   dash_survey_core:
     path: ../dash_survey_core
   flutter:
     sdk: flutter
-  http: ^1.2.2
-  shared_preferences: ^2.3.5
-  uuid: ^4.5.1
-  wolt_modal_sheet: ^0.10.0
+  shared_preferences: ">=2.3.5"
+  wolt_modal_sheet: ">=0.9.4"
 
 dev_dependencies:
   build_runner: ^2.4.14
