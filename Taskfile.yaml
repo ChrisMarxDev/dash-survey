@@ -6,13 +6,26 @@ tasks:
       - cd dash_survey_core && flutter clean && dart run build_runner build --delete-conflicting-outputs
       - cd dash_survey && flutter clean && dart run build_runner build --delete-conflicting-outputs
 
-#  
+  #
   api_gen:
     cmds:
       - cd dash_survey_core && dart-apitool extract --input . --output generated_api
       - cd dash_survey && dart-apitool extract --input . --output generated_api
-  
+
   publish:
     cmds:
+      - task publish_core
+      - task publish_survey
+
+  publish_core:
+    cmds:
       - cd dash_survey_core && dart pub publish --dry-run
+
+  publish_core_live:
+    prompt: "Are you sure you want to publish the core package?"
+    cmds:
+      - cd dash_survey_core && dart pub publish
+
+  publish_survey:
+    cmds:
       - cd dash_survey && dart pub publish --dry-run
