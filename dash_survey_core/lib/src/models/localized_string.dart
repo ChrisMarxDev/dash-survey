@@ -10,7 +10,8 @@ part 'localized_string.mapper.dart';
 /// It is a wrapper around a string that ensures the string is a 2-letter string
 extension type const LocaleCode._(String locale) implements String {
   /// Creates a LocaleCode from a string
-  /// Throws an assertion error in debug mode if the string is not a 2-letter string
+  /// Throws an assertion error in debug mode if the string is not a 2-letter
+  /// string
   const LocaleCode(this.locale)
       : assert(
           locale.length == 2,
@@ -75,7 +76,8 @@ class LocalizedText with LocalizedTextMappable {
     return data[locale] ?? '';
   }
 
-  /// Creates a copy of this LocalizedText with the specified locale set to the given value
+  /// Creates a copy of this LocalizedText with the specified locale set to the
+  /// given value
   /// @param locale The locale to set
   /// @param value The value to set for the locale
   /// @return A new LocalizedText with the updated locale value
@@ -90,7 +92,8 @@ class LocalizedText with LocalizedTextMappable {
   }
 
   /// Checks if the LocalizedText is complete for a list of locales
-  /// Returns true if the LocalizedText is complete for all the locales in the list
+  /// Returns true if the LocalizedText is complete for all the locales in the
+  /// list
   bool isCompleteForLocales(List<LocaleCode> locales) {
     return missingLocalesForLocaleList(locales).isEmpty;
   }
@@ -113,10 +116,8 @@ class LocalizedTextMap with LocalizedTextMapMappable {
 
   /// create an empty map with an option
   factory LocalizedTextMap.emptyWithOption() {
-    final empty = LocalizedTextMap(LinkedHashMap<String, LocalizedText>());
-    empty.addOption();
-    print(empty);
-    return empty;
+    return LocalizedTextMap(LinkedHashMap<String, LocalizedText>())
+      ..addOption();
   }
 
   /// create an empty map
@@ -191,7 +192,8 @@ class LocalizedTextMap with LocalizedTextMapMappable {
   }
 
   /// Checks if the LocalizedTextMap is complete
-  /// Returns true if the map is not null, not empty, and all values are complete
+  /// Returns true if the map is not null, not empty, and all values are
+  /// complete
   bool isComplete() {
     return data != null &&
         data!.isNotEmpty &&
