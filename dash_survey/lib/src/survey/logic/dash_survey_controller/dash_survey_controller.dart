@@ -186,6 +186,11 @@ class DashSurveyControllerImplementation implements DashSurveyController {
     if (_surveyHolderState.surveyState == SurveyState.activeSurvey) {
       return _surveyHolderState.survey;
     }
+    // else if (_surveyHolderState._surveyState == SurveyState.surveyClosed ||
+    //     _surveyHolderState._surveyState == SurveyState.surveyClosed) {
+    //           await _surveyHolderState.fetch();
+
+    //     }
     await _surveyHolderState.fetch();
     return _surveyHolderState.survey;
   }
@@ -310,11 +315,15 @@ class SurveyHolderState extends ChangeNotifier {
   // }
 
   Future<void> fetch() async {
+    if (_surveyState == SurveyState.activeSurvey && _survey != null) {
+      return;
+    }
     _surveyState = SurveyState.loading;
 
     final fetchedSurvey = await controller._internalGetNextSurvey();
 
     if (fetchedSurvey == null) {
+      _survey = null;
       _surveyState = SurveyState.noSurveyAvailable;
       notifyListeners();
     } else {

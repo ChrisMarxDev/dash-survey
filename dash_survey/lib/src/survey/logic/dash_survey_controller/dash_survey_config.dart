@@ -3,6 +3,7 @@ class DashSurveyConfig {
     this.baseUrl,
     this.surveyCoolDownInDays = 7,
     this.skipCoolDownForTargetedViews = true,
+    this.translationOverrides = const {},
   });
 
   /// Base url or the survey dash api, if not provided the default will be used
@@ -25,4 +26,20 @@ class DashSurveyConfig {
   /// This is often used for beta testing purposes, so that beta users can
   /// provide feedback directly.
   final bool skipCoolDownForTargetedViews;
+
+  /// A map of translation overrides for the survey
+  /// The format is localeCode -> translationKey -> translationValue
+  /// Checkout [this file](https://github.com/ChrisMarxDev/dash-survey/blob/main/dash_survey/lib/src/util/translations/translation_provider.dart)
+  /// For all used translation keys.
+  ///
+  /// Example value:
+  /// {
+  ///   'en': {
+  ///     'cancel': 'Cancel',
+  ///   },
+  ///   'de': {
+  ///     'cancel': 'Abbrechen',
+  ///   },
+  /// }
+  final Map<String, Map<String, String>> translationOverrides;
 }
