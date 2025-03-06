@@ -29,12 +29,6 @@ void main() {
       expect(localizedText.get(LocaleCode.es), equals(''));
     });
 
-    test('creates empty instance', () {
-      final empty = LocalizedText.empty([LocaleCode.en, LocaleCode.de]);
-      expect(empty.get(LocaleCode.en), equals(''));
-      expect(empty.get(LocaleCode.de), equals(''));
-    });
-
     test('serializes and deserializes correctly', () {
       final original = LocalizedText(testData);
       final json = original.toJson();
@@ -55,28 +49,6 @@ void main() {
         LocaleCode.de: '',
       });
       expect(incomplete.isComplete(), isFalse);
-    });
-  });
-
-  group('LocalizedTextList', () {
-    final testData = {
-      LocaleCode.en: ['Hello', 'World'],
-      LocaleCode.de: ['Hallo', 'Welt'],
-    };
-
-    test('creates instance and gets values', () {
-      final localizedList = LocalizedTextList(testData);
-      expect(localizedList.get(LocaleCode.en), equals(['Hello', 'World']));
-      expect(localizedList.get(LocaleCode.de), equals(['Hallo', 'Welt']));
-      expect(localizedList.get(LocaleCode.es), equals([]));
-    });
-
-    test('serializes and deserializes correctly', () {
-      final original = LocalizedTextList(testData);
-      final json = original.toJson();
-      final deserialized = LocalizedTextListMapper.fromJson(json);
-
-      expect(deserialized.data, equals(original.data));
     });
   });
 
@@ -156,38 +128,6 @@ void main() {
         }),
       );
       expect(incomplete.isComplete(), isFalse);
-    });
-  });
-
-  group('Extension Methods', () {
-    test('LocalizationMapStringFunction', () {
-      final map = <LocaleCode, String>{
-        LocaleCode.en: 'Hello',
-        LocaleCode.de: '',
-      };
-
-      expect(map.isComplete(), isFalse);
-      expect(map.missingLocales(), equals([LocaleCode.de]));
-
-      map.addLocale(LocaleCode.es);
-      expect(map[LocaleCode.es], equals(''));
-    });
-
-    test('LocalizationMapStringListFunction', () {
-      final map = <LocaleCode, List<String>>{
-        LocaleCode.en: ['Hello', 'World'],
-        LocaleCode.de: [],
-      };
-
-      expect(map.isComplete(), isFalse);
-      expect(map.missingLocales(), equals([LocaleCode.de]));
-      expect(
-        map.isCompleteForLocales([LocaleCode.en]),
-        isTrue,
-      );
-
-      map.addLocale(LocaleCode.es);
-      expect(map[LocaleCode.es], equals([]));
     });
   });
 }

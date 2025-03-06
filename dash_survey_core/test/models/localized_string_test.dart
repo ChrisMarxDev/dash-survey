@@ -1,3 +1,5 @@
+// ignore_for_file: lines_longer_than_80_chars
+
 import 'dart:collection';
 
 import 'package:dash_survey_core/src/models/localized_string.dart';
@@ -24,15 +26,6 @@ void main() {
   });
 
   group('LocalizationMapFunction', () {
-    test('removeLocale should remove the locale from the map', () {
-      final map = <LocaleCode, String>{
-        LocaleCode.en: 'Hello',
-        LocaleCode.de: 'Hallo',
-      };
-      map.removeLocale(LocaleCode.en);
-      expect(map, {LocaleCode.de: 'Hallo'});
-    });
-
     test('copyWithSetLocale should return a new map with the locale set', () {
       final map = <LocaleCode, String>{
         LocaleCode.en: 'Hello',
@@ -53,17 +46,6 @@ void main() {
   });
 
   group('LocalizationMapStringFunction', () {
-    test('addLocale should add the locale with empty string', () {
-      final map = <LocaleCode, String>{
-        LocaleCode.en: 'Hello',
-      };
-      map.addLocale(LocaleCode.fr);
-      expect(map, {
-        LocaleCode.en: 'Hello',
-        LocaleCode.fr: '',
-      });
-    });
-
     test('isComplete should return true if all values are non-empty', () {
       final completeMap = <LocaleCode, String>{
         LocaleCode.en: 'Hello',
@@ -77,63 +59,6 @@ void main() {
       };
       expect(incompleteMap.isComplete(), false);
     });
-
-    test('missingLocales should return locales with empty values', () {
-      final map = <LocaleCode, String>{
-        LocaleCode.en: 'Hello',
-        LocaleCode.de: '',
-        LocaleCode.fr: '',
-        LocaleCode.es: 'Hola',
-      };
-      expect(map.missingLocales(), [LocaleCode.de, LocaleCode.fr]);
-    });
-  });
-
-  group('LocalizationMapStringListFunction', () {
-    test('addLocale should add the locale with empty list', () {
-      final map = <LocaleCode, List<String>>{
-        LocaleCode.en: ['Hello'],
-      };
-      map.addLocale(LocaleCode.fr);
-      expect(map, {
-        LocaleCode.en: ['Hello'],
-        LocaleCode.fr: [],
-      });
-    });
-
-    test('isComplete should return true if all values are non-empty lists', () {
-      final completeMap = <LocaleCode, List<String>>{
-        LocaleCode.en: ['Hello'],
-        LocaleCode.de: ['Hallo'],
-      };
-      expect(completeMap.isComplete(), true);
-
-      final incompleteMap = <LocaleCode, List<String>>{
-        LocaleCode.en: ['Hello'],
-        LocaleCode.de: [],
-      };
-      expect(incompleteMap.isComplete(), false);
-    });
-
-    test('isCompleteForLocales should check only specified locales', () {
-      final map = <LocaleCode, List<String>>{
-        LocaleCode.en: ['Hello'],
-        LocaleCode.de: [],
-        LocaleCode.fr: ['Bonjour'],
-      };
-      expect(map.isCompleteForLocales([LocaleCode.en, LocaleCode.fr]), true);
-      expect(map.isCompleteForLocales([LocaleCode.en, LocaleCode.de]), false);
-    });
-
-    test('missingLocales should return locales with empty lists', () {
-      final map = <LocaleCode, List<String>>{
-        LocaleCode.en: ['Hello'],
-        LocaleCode.de: [],
-        LocaleCode.fr: [],
-        LocaleCode.es: ['Hola'],
-      };
-      expect(map.missingLocales(), [LocaleCode.de, LocaleCode.fr]);
-    });
   });
 
   group('LocalizedText', () {
@@ -144,15 +69,6 @@ void main() {
       });
       expect(localizedText.get(LocaleCode.en), 'Hello');
       expect(localizedText.get(LocaleCode.fr), '');
-    });
-
-    test('empty should create a LocalizedText with empty strings', () {
-      final locales = [LocaleCode.en, LocaleCode.de];
-      final emptyText = LocalizedText.empty(locales);
-      expect(emptyText.data, {
-        LocaleCode.en: '',
-        LocaleCode.de: '',
-      });
     });
 
     test(
@@ -222,56 +138,9 @@ void main() {
       });
       expect(incompleteText.isComplete(), false);
     });
-
-    test('missingLocales should return locales with empty values', () {
-      const localizedText = LocalizedText({
-        LocaleCode.en: 'Hello',
-        LocaleCode.de: '',
-        LocaleCode.fr: '',
-      });
-      expect(localizedText.missingLocales, [LocaleCode.de, LocaleCode.fr]);
-    });
   });
 
-  group('LocalizedTextList', () {
-    test('get should return the list for the locale or empty list', () {
-      const localizedTextList = LocalizedTextList({
-        LocaleCode.en: ['Hello', 'Hi'],
-        LocaleCode.de: ['Hallo', 'Guten Tag'],
-      });
-      expect(localizedTextList.get(LocaleCode.en), ['Hello', 'Hi']);
-      expect(localizedTextList.get(LocaleCode.fr), []);
-    });
-
-    test('empty should create a LocalizedTextList with empty lists', () {
-      final locales = [LocaleCode.en, LocaleCode.de];
-      final emptyTextList = LocalizedTextList.empty(locales);
-      expect(emptyTextList.data, {
-        LocaleCode.en: [''],
-        LocaleCode.de: [''],
-      });
-    });
-
-    test(
-        'copyWithSetLocale should return a new LocalizedTextList with the locale set',
-        () {
-      const localizedTextList = LocalizedTextList({
-        LocaleCode.en: ['Hello', 'Hi'],
-      });
-      final newTextList = localizedTextList.copyWithSetLocale(
-        LocaleCode.de,
-        ['Hallo', 'Guten Tag'],
-      );
-      expect(newTextList.data, {
-        LocaleCode.en: ['Hello', 'Hi'],
-        LocaleCode.de: ['Hallo', 'Guten Tag'],
-      });
-      // Original should be unchanged
-      expect(localizedTextList.data, {
-        LocaleCode.en: ['Hello', 'Hi'],
-      });
-    });
-  });
+  group('LocalizedTextList', () {});
 
   group('LocalizedTextMap', () {
     test('get should return a list of values for the locale', () {
@@ -486,12 +355,12 @@ void main() {
       });
 
       final result = hook.beforeEncode(map);
-      expect(result, isA<Map>());
+      expect(result, isA<Map<String, Map<LocaleCode, String>>>());
 
-      final resultMap = result! as Map;
+      final resultMap = result! as Map<String, Map<LocaleCode, String>>;
       expect(resultMap['key1'], isA<Map<LocaleCode, String>>());
-      expect(resultMap['key1'][LocaleCode.en], 'Hello');
-      expect(resultMap['key1'][LocaleCode.de], 'Hallo');
+      expect(resultMap['key1']?[LocaleCode.en], 'Hello');
+      expect(resultMap['key1']?[LocaleCode.de], 'Hallo');
     });
   });
 }

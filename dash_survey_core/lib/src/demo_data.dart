@@ -2,6 +2,7 @@ import 'package:dash_survey_core/dash_survey_core.dart';
 import 'package:dash_survey_core/src/util/map_util.dart';
 import 'package:uuid/uuid.dart';
 
+/// example survey data for demo purposes
 final exampleSurvey = SurveyModel(
   createdAt: DateTime.now(),
   id: 'example_survey',
@@ -18,6 +19,7 @@ final exampleSurvey = SurveyModel(
   questions: exampleQuestions,
 );
 
+/// example questions for demo purposes
 final exampleQuestions = [
   MultipleChoiceSurveyQuestion(
     surveyId: 'demo',

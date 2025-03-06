@@ -7,6 +7,7 @@ part 'survey_model.mapper.dart';
 
 /// General survey model, contains all the questions and metadata
 class SurveyModel with SurveyModelMappable {
+  /// Creates a new SurveyModel
   const SurveyModel({
     required this.id,
     required this.questions,
@@ -43,6 +44,7 @@ class SurveyModel with SurveyModelMappable {
 
 /// Model for the display configuration of the survey
 class SurveyDisplayOptionsModel with SurveyDisplayOptionsModelMappable {
+  /// Creates a new SurveyDisplayOptionsModel with default values
   const SurveyDisplayOptionsModel({
     this.showProgressBar = true,
     this.showQuestionNumber = true,
@@ -64,14 +66,26 @@ class SurveyDisplayOptionsModel with SurveyDisplayOptionsModelMappable {
 }
 
 @MappableEnum()
+
+/// Defines how the survey UI should be displayed to the user
 enum SurveyDisplayType {
+  /// Display as a dialog in the center of the screen
   dialog,
+
+  /// Display as a bottom sheet sliding up from the bottom
   bottomSheet,
+
+  /// Display as a full screen overlay
   fullScreen,
 }
 
 @MappableEnum()
+
+/// Defines how the survey should be indicated/presented to the user
 enum SurveyIndicationType {
+  /// Indicate survey availability with a floating action button
   floatingButton,
+
+  /// Indicate survey availability with a popup dialog
   popupDialog,
 }

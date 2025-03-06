@@ -94,7 +94,7 @@ class DashSurveyApiService {
   void _checkResponseForError(http.Response response) {
     if (response.statusCode >= 400 && response.statusCode < 600) {
       if (_logRequests) {
-        print(
+        logInfo(
           'Error: status ${response.statusCode} Response: ${response.body}',
         );
       }
