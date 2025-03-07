@@ -29,3 +29,8 @@ tasks:
   publish_survey:
     cmds:
       - cd dash_survey && dart pub publish --dry-run
+
+  publish_survey_live:
+    prompt: "Are you sure you want to publish the survey package?"
+    cmds:
+      - cd dash_survey && dart pub publish

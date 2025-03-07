@@ -8,6 +8,7 @@ import 'package:dash_survey/src/util/inherited_widget_provider.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+// ignore: depend_on_referenced_packages
 import 'package:uuid/uuid.dart';
 
 part 'single_survey_state.dart';
@@ -108,7 +109,7 @@ class DashSurveyControllerImplementation implements DashSurveyController {
   String? userId;
 
   final Completer<void> _initCompleter = Completer<void>();
-  final Completer<void> _fetchCompleter = Completer<void>();
+  // final Completer<void> _fetchCompleter = Completer<void>();
 
   /// initialize the controller
   /// This will setup the user id and initialize the survey holder state
@@ -195,9 +196,9 @@ class DashSurveyControllerImplementation implements DashSurveyController {
     return _surveyHolderState.survey;
   }
 
-  Future<SurveyModel?> _internalGetNextSurvey({
-    String? viewId,
-  }) async {
+  Future<SurveyModel?> _internalGetNextSurvey(
+      // String? viewId,
+      ) async {
     final lastSurveyDate = await _lastSurveyDate();
     print('Last survey date: $lastSurveyDate');
 
