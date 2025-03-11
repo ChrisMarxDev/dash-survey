@@ -109,6 +109,12 @@ DashSurveyBuilder(
     return Card(
       color: Colors.red,
       child: child,
+      onSubmit: (survey) {
+      // Callback to handle any other side effect after successfully submitting a survey
+      },
+      onCancel: (survey) {
+      // Callback to handle any other side effect after the survey was cancelled prematurely
+      },
     );
   },
 );
@@ -154,10 +160,10 @@ void main() {
   DashSurvey.of(context).showNextSurvey();
     context,
     onSubmit: (survey) {
-      // Handle survey results
+      // Callback to handle any other side effect after successfully submitting a survey
     },
     onCancel: (survey) {
-      // Handle survey cancellation
+      // Callback to handle any other side effect after the survey was cancelled prematurely
     },
   );
 }
