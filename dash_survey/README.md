@@ -1,11 +1,14 @@
 # Dash Survey
 
-A flexible Flutter package for creating and managing in-app surveys with a clean, material design-inspired interface.
+> ⚠️ **Warning**: This package is under heavy development and the API is subject to breaking changes. 🚧 Use with caution in production environments.
+
+A flexible Flutter package for creating and managing in-app surveys from a remote backend.
+Checkout [Dash Survey](dash-survey.com) for more info.
 
 ## Features
 
-- 🎯 Easy-to-use survey creation API
-- 📱 Material Design UI components
+- 🎯 Easy-to-use surveys
+- ☁️ Remote controlled
 - 💾 Built-in persistence support
 - 🔄 Customizable survey flow
 - 📊 Multiple question types support
