@@ -15,9 +15,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final apiKey = Platform.environment['SURVEY_DASH_API_KEY'] ??
-        '1efed36e-d900-63f0-a509-6f87ccc16c72';
-    print('API Key: $apiKey');
+    final apiKey = Platform.environment['SURVEY_DASH_API_KEY'] ?? '';
     return DashSurvey(
       apiKey: apiKey,
       // manually set the locale to en, instead of the device locale
@@ -25,7 +23,7 @@ class MyApp extends StatelessWidget {
       config: DashSurveyConfig(
         surveyCoolDownInDays: 7,
         skipCoolDownForTargetedViews: true,
-        baseUrl: 'https://api.survey-dash.com',
+        baseUrl: 'http://localhost:8080',
         translationOverrides: const {
           'en': {
             'cancel': 'Cancel',
@@ -70,7 +68,6 @@ class _HomeScreenState extends State<HomeScreen> {
           spacing: 10,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            
             Text(
                 'Welcome to Survey Dash! API Key: ${String.fromEnvironment('SURVEY_DASH_API_KEY')}'),
             const SizedBox(height: 20),
@@ -98,10 +95,10 @@ class _HomeScreenState extends State<HomeScreen> {
               onPressed: () {
                 DashSurvey.of(context).showNextSurvey(
                   onComplete: (survey) {
-                    print('Survey complete: ${survey.id}');
+                    log('Survey complete: ${survey.id}');
                   },
                   onCancel: () {
-                    print('Survey cancelled');
+                    log('Survey cancelled');
                   },
                 );
               },

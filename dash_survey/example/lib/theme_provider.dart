@@ -119,7 +119,7 @@ class ThemeHolder {
         borderRadius: BorderRadius.circular(8),
       ),
       margin: EdgeInsets.all(8),
-      shadowColor: Colors.black.withOpacity(0.1),
+      shadowColor: Colors.black.withValues(alpha: .1),
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
@@ -178,7 +178,7 @@ class ThemeHolder {
         side: BorderSide(color: Color(0xFFAF8C60), width: 0.5),
       ),
       margin: EdgeInsets.all(12),
-      shadowColor: Colors.black.withOpacity(0.2),
+      shadowColor: Colors.black.withValues(alpha: .2),
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
@@ -239,7 +239,7 @@ class ThemeHolder {
       ),
       margin: EdgeInsets.all(16),
       color: Colors.white,
-      shadowColor: Color(0xFF4ECDC4).withOpacity(0.3),
+      shadowColor: Color(0xFF4ECDC4).withValues(alpha: .3),
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
@@ -298,7 +298,7 @@ class ThemeHolder {
         borderRadius: BorderRadius.circular(20),
       ),
       margin: EdgeInsets.all(12),
-      shadowColor: Color(0xff1c63f2).withOpacity(0.2),
+      shadowColor: Color(0xff1c63f2).withValues(alpha: .2),
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(

@@ -48,7 +48,8 @@ class DashSurvey extends StatefulWidget {
   /// If true, DashSurvey will always show a survey when called.
   /// This will either be a demo survey or if available, a survey from
   /// the server.
-  /// If this is enabled the survey will never be set to 'answered', so it will pop up repeatedly.
+  /// If this is enabled the survey will never be set to 'answered', so it will
+  /// pop up repeatedly.
   /// This is useful for testing dash survey. And setting up the UI.
   final bool demoMode;
 
@@ -58,10 +59,12 @@ class DashSurvey extends StatefulWidget {
         context.dependOnInheritedWidgetOfExactType<_DashSurveyInherited>();
     // assert(
     // model != null,
-    // 'No DashSurvey found in context, wrap your app in DashSurvey() check our docs $documentationUrl for more info!',
+    // 'No DashSurvey found in context, wrap your app in DashSurvey() check our
+    //docs $documentationUrl for more info!',
     // );
     if (model == null) {
       throw Exception(
+        // ignore: lines_longer_than_80_chars
         'Could not find Dash Survey dependencies in ancestors, wrap your whole app in DashSurvey() or check our docs $documentationUrl for more info!',
       );
     }

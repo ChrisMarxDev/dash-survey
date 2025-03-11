@@ -11,11 +11,13 @@ environment:
 resolution: workspace
 
 dependencies:
-  dash_survey_core:
-    path: ../dash_survey_core
+  # dash_survey_core:
+  # path: ../dash_survey_core
+  dash_survey_core: ^0.0.1
   flutter:
     sdk: flutter
   shared_preferences: ">=2.3.5  <3.0.0"
+  uuid: ">=4.3.0 <5.0.0"
   wolt_modal_sheet: ">=0.9.4  <1.0.0"
 
 dev_dependencies:

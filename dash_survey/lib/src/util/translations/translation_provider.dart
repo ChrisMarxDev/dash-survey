@@ -1,6 +1,10 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'package:dash_survey_core/dash_survey_core.dart';
 
+/// A provider for translations for the dash survey.
 class DashSurveyTranslationProvider {
+  /// Creates a new [DashSurveyTranslationProvider].
   DashSurveyTranslationProvider({Map<String, Map<String, String>>? overrides})
       : _overrides = overrides ?? {};
 
@@ -13,6 +17,7 @@ class DashSurveyTranslationProvider {
   final Map<String, String> _translations_es = {};
   final Map<String, String> _translations_it = {};
 
+  /// Get a translated string for the given locale and key.
   String getTranslatedString(
     LocaleCode locale,
     String key,
