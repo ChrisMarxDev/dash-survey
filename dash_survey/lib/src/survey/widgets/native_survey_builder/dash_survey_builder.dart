@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:dash_survey/dash_survey.dart';
 import 'package:dash_survey/src/util/dash_survey_logger.dart';
@@ -61,7 +62,7 @@ typedef AnimatedPageSwitcherTransitionBuilder = Widget Function({
 class DashSurveyBuilder extends StatefulWidget {
   /// Constructor
   const DashSurveyBuilder({
-    this.surveyFrameBuilder,
+    this.builder,
     super.key,
     this.onSubmit,
     this.onCancel,
@@ -74,9 +75,9 @@ class DashSurveyBuilder extends StatefulWidget {
   /// constructor docs for more information.
   final Widget Function(
     BuildContext context,
-    Widget surveyWidget,
+    Widget child,
     SurveyState surveyState,
-  )? surveyFrameBuilder;
+  )? builder;
 
   /// A callback that is called when the survey is submitted.
   final void Function(SurveyModel survey)? onSubmit;
@@ -115,12 +116,14 @@ class _DashSurveyBuilderState extends State<DashSurveyBuilder> {
 
   @override
   Widget build(BuildContext context) {
+    
+    try {
     final surveyState = SurveyHolderState.of(context);
 
     return NotifierBuilder(
       notifier: surveyState,
       builder: (BuildContext context, SurveyHolderState notifier) {
-        return widget.surveyFrameBuilder?.call(
+        return widget.builder?.call(
               context,
               _SurveyBuilder(
                 surveyState: notifier,
@@ -135,6 +138,10 @@ class _DashSurveyBuilderState extends State<DashSurveyBuilder> {
             );
       },
     );
+    } catch (e) {
+      log('Error in DashSurveyBuilder: $e');
+      return const SizedBox.shrink();
+    }
   }
 }
 

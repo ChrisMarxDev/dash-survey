@@ -1,3 +1,4 @@
+import 'package:dash_survey/src/config.dart';
 import 'package:dash_survey/src/survey/logic/dash_survey_controller/dash_survey_config.dart';
 import 'package:dash_survey/src/survey/logic/dash_survey_controller/dash_survey_controller.dart';
 import 'package:dash_survey/src/util/dash_survey_extension.dart';
@@ -55,11 +56,15 @@ class DashSurvey extends StatefulWidget {
   static DashSurveyControllerImplementation of(BuildContext context) {
     final model =
         context.dependOnInheritedWidgetOfExactType<_DashSurveyInherited>();
-    assert(
-      model != null,
-      'No DashSurvey found in context, wrap your app in DashSurvey() check our docs for more info!',
-    );
-    // model!.controller.showBuildContext = context;
+    // assert(
+    // model != null,
+    // 'No DashSurvey found in context, wrap your app in DashSurvey() check our docs $documentationUrl for more info!',
+    // );
+    if (model == null) {
+      throw Exception(
+        'Could not find Dash Survey dependencies in ancestors, wrap your whole app in DashSurvey() or check our docs $documentationUrl for more info!',
+      );
+    }
     final state = context.findAncestorStateOfType<DashSurveyState>();
     if (state == null) {
       throw StateError('Could not find _DashSurveyState in ancestors');
@@ -67,7 +72,7 @@ class DashSurvey extends StatefulWidget {
     // cache context in a short lived object like the widget
     // it gets later retrieved by the `show()` method to read the theme
     state.widget.showBuildContext = context;
-    return model!.controller;
+    return model.controller;
   }
 
   static void showDemo({required BuildContext context}) {

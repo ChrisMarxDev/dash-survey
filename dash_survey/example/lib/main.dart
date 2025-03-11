@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:dash_survey/dash_survey.dart';
 import 'package:flutter/material.dart';
@@ -14,25 +15,33 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final apiKey = Platform.environment['SURVEY_DASH_API_KEY'] ??
+        '1efed36e-d900-63f0-a509-6f87ccc16c72';
+    print('API Key: $apiKey');
     return DashSurvey(
-      apiKey: '1efed36e-d900-63f0-a509-6f87ccc16c72',
-      config: const DashSurveyConfig(
-        baseUrl: String.fromEnvironment(
-          'SURVEY_DASH_API_URL',
-          defaultValue: 'http://localhost:8080',
-        ),
-      ),
-      child: ThemeRoot(
-        child: ThemeConsumer(
-          builder: (context, theme) {
-            return MaterialApp(
-              debugShowCheckedModeBanner: false,
-              title: 'Survey Dash Demo',
-              theme: theme,
-              home: const HomeScreen(),
-            );
+      apiKey: apiKey,
+      // manually set the locale to en, instead of the device locale
+      overrideLocale: const Locale('en'),
+      config: DashSurveyConfig(
+        surveyCoolDownInDays: 7,
+        skipCoolDownForTargetedViews: true,
+        baseUrl: 'https://api.survey-dash.com',
+        translationOverrides: const {
+          'en': {
+            'cancel': 'Cancel',
+            'submit': 'Submit',
           },
-        ),
+        },
+      ),
+      child: ThemeConsumer(
+        builder: (context, theme) {
+          return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            title: 'Survey Dash Demo',
+            theme: theme,
+            home: const HomeScreen(),
+          );
+        },
       ),
     );
   }
@@ -58,9 +67,12 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
         body: Column(
+          spacing: 10,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text('Welcome to Survey Dash!'),
+            
+            Text(
+                'Welcome to Survey Dash! API Key: ${String.fromEnvironment('SURVEY_DASH_API_KEY')}'),
             const SizedBox(height: 20),
             const ToggleThemeButton(),
             FilledButton(

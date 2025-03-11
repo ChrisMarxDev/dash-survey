@@ -99,8 +99,11 @@ class FurnitureStoreHome extends StatelessWidget {
                 crossAxisSpacing: 16,
                 mainAxisSpacing: 16,
               ),
-              itemCount: sampleFurniture.length,
+              itemCount: sampleFurniture.length + 1,
               itemBuilder: (context, index) {
+                if (index == sampleFurniture.length) {
+                  return const SurveyCard();
+                }
                 final item = sampleFurniture[index];
                 return FurnitureCard(item: item);
               },
@@ -203,6 +206,30 @@ class FurnitureCard extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class SurveyCard extends StatelessWidget {
+  const SurveyCard({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return DashSurveyBuilder(
+      builder: (context, surveyWidget, surveyState) {
+        final surveyAvailable = surveyState != SurveyState.loading &&
+            surveyState != SurveyState.noSurveyAvailable;
+        return AnimatedSwitcher(
+          duration: const Duration(milliseconds: 200),
+          child: surveyAvailable
+              ? Card(
+                  key: const Key('survey-available'),
+                  elevation: 4,
+                  child: surveyWidget,
+                )
+              : const SizedBox.shrink(key: Key('survey-not-available')),
+        );
+      },
     );
   }
 }
