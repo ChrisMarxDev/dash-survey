@@ -65,7 +65,7 @@ class SingleSurveyState extends ChangeNotifier {
   }
 
   static Future<void> submitSurvey(BuildContext context) async {
-    final controller = DashSurvey.of(context);
+    final controller = DashSurveyControllerImplementation.of(context);
     final state = SingleSurveyState.of(context);
     await controller.submitSurvey(state);
   }

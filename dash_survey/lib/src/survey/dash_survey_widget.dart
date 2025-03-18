@@ -10,10 +10,10 @@ class DashSurvey extends StatefulWidget {
   const DashSurvey({
     required this.child,
     required this.apiKey,
-    this.enabled = true,
+    // this.enabled = true,
     this.theme,
     this.overrideLocale,
-    this.demoMode = false,
+    this.debugMode = false,
     this.config,
     super.key,
   });
@@ -32,7 +32,7 @@ class DashSurvey extends StatefulWidget {
   /// Whether survey dash is enabled or not
   /// If false, no surveys will be shown and no logic will be executed
   /// SurveyDash.of(context) will return a stub element that does nothing
-  final bool enabled;
+  // final bool enabled;
 
   /// Theme for the survey dash, if not provided the default will be used
   /// This is useful if you want to customize the look and feel of DashSurvey
@@ -51,10 +51,11 @@ class DashSurvey extends StatefulWidget {
   /// If this is enabled the survey will never be set to 'answered', so it will
   /// pop up repeatedly.
   /// This is useful for testing dash survey. And setting up the UI.
-  final bool demoMode;
+  /// Restart the app to reset finished surveys.
+  final bool debugMode;
 
   /// Get the controller [DashSurveyControllerImplementation] from context
-  static DashSurveyControllerImplementation of(BuildContext context) {
+  static DashSurveyController of(BuildContext context) {
     final model =
         context.dependOnInheritedWidgetOfExactType<_DashSurveyInherited>();
     // assert(
@@ -68,7 +69,7 @@ class DashSurvey extends StatefulWidget {
         'Could not find Dash Survey dependencies in ancestors, wrap your whole app in DashSurvey() or check our docs $documentationUrl for more info!',
       );
     }
-    final state = context.findAncestorStateOfType<DashSurveyState>();
+    final state = context.findAncestorStateOfType<_DashSurveyState>();
     if (state == null) {
       throw StateError('Could not find _DashSurveyState in ancestors');
     }
@@ -78,28 +79,42 @@ class DashSurvey extends StatefulWidget {
     return model.controller;
   }
 
-  static void showDemo({required BuildContext context}) {
-    showDemoSurvey(context: context);
-  }
-
   @override
-  State<DashSurvey> createState() => DashSurveyState();
+  State<DashSurvey> createState() => _DashSurveyState();
 }
 
-class DashSurveyState extends State<DashSurvey> {
+class _DashSurveyState extends State<DashSurvey> {
   late final DashSurveyControllerImplementation _controller;
   late final ChangeNotifier _notifier;
 
   @override
   void initState() {
     super.initState();
+    // if (!widget.enabled) {
+    //   _controller = DashSurveyControllerImplementation();
+    //   return;
+    // }
     widget.showBuildContext = context;
     _controller = DashSurveyControllerImplementation(
       apiKey: widget.apiKey,
       config: widget.config ?? const DashSurveyConfig(),
+      debugMode: widget.debugMode,
+      overrideLocale: widget.overrideLocale,
       currentContextGetter: () => widget.showBuildContext!,
     )..init();
     _notifier = ChangeNotifier();
+    if (widget.debugMode) {
+      // ignore: avoid_print
+      print('''
+╔══════════════════════════════════════════════════════════════════╗
+║                                                                  ║
+║                   DASH SURVEY DEMO MODE ENABLED                  ║
+║                                                                  ║
+║  Surveys will appear repeatedly for testing and UI development   ║
+║                                                                  ║
+╚══════════════════════════════════════════════════════════════════╝
+''');
+    }
   }
 
   @override
@@ -131,18 +146,19 @@ class _DashSurveyInherited extends InheritedNotifier<ChangeNotifier> {
 /// Target view for SurveyDash
 /// Use this widget to mark certain parts of your app as a target for surveys
 /// These can be controlled with the targetViews property in the SurveyDashboard
-class SurveyDashTargetView extends StatelessWidget {
-  const SurveyDashTargetView({
-    required this.label,
-    required this.child,
-    super.key,
-  });
+//TODO: Implement this
+// class SurveyDashTargetView extends StatelessWidget {
+//   const SurveyDashTargetView({
+//     required this.label,
+//     required this.child,
+//     super.key,
+//   });
 
-  final String label;
-  final Widget child;
+//   final String label;
+//   final Widget child;
 
-  @override
-  Widget build(BuildContext context) {
-    return child;
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return child;
+//   }
+// }

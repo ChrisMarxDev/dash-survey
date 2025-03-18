@@ -1,12 +1,24 @@
 import 'dart:developer';
-import 'dart:io';
 
 import 'package:dash_survey/dash_survey.dart';
 import 'package:flutter/material.dart';
 import 'sample_content.dart';
 import 'theme_provider.dart';
 
+class Env {
+  static const surveyDashApiKey = String.fromEnvironment('SURVEY_DASH_API_KEY');
+  static const surveyDashBaseUrl =
+      String.fromEnvironment('SURVEY_DASH_API_URL');
+}
+
 void main() {
+  final apiKey = Env.surveyDashApiKey;
+  final baseUrl = Env.surveyDashBaseUrl;
+
+  // Add debug prints
+  print('Debug: API Key = $apiKey');
+  print('Debug: Base URL = $baseUrl');
+
   runApp(const MyApp());
 }
 
@@ -15,15 +27,17 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final apiKey = Platform.environment['SURVEY_DASH_API_KEY'] ?? '';
+    final apiKey = Env.surveyDashApiKey;
+    final baseUrl = Env.surveyDashBaseUrl;
     return DashSurvey(
       apiKey: apiKey,
       // manually set the locale to en, instead of the device locale
       overrideLocale: const Locale('en'),
+      debugMode: true,
       config: DashSurveyConfig(
         surveyCoolDownInDays: 7,
         skipCoolDownForTargetedViews: true,
-        baseUrl: 'http://localhost:8080',
+        baseUrl: baseUrl,
         translationOverrides: const {
           'en': {
             'cancel': 'Cancel',
@@ -31,15 +45,17 @@ class MyApp extends StatelessWidget {
           },
         },
       ),
-      child: ThemeConsumer(
-        builder: (context, theme) {
-          return MaterialApp(
-            debugShowCheckedModeBanner: false,
-            title: 'Survey Dash Demo',
-            theme: theme,
-            home: const HomeScreen(),
-          );
-        },
+      child: ThemeRoot(
+        child: ThemeConsumer(
+          builder: (context, theme) {
+            return MaterialApp(
+              debugShowCheckedModeBanner: false,
+              title: 'Survey Dash Demo',
+              theme: theme,
+              home: const HomeScreen(),
+            );
+          },
+        ),
       ),
     );
   }
@@ -65,11 +81,14 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
         body: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
           spacing: 10,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-                'Welcome to Survey Dash! API Key: ${String.fromEnvironment('SURVEY_DASH_API_KEY')}'),
+            Center(
+              child: Text(
+                  'Welcome to Survey Dash! API Key: ${String.fromEnvironment('SURVEY_DASH_API_KEY')}'),
+            ),
             const SizedBox(height: 20),
             const ToggleThemeButton(),
             FilledButton(
@@ -103,14 +122,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 );
               },
               child: Text('Show next survey'),
-            ),
-            FilledButton(
-              onPressed: () {
-                DashSurvey.showDemo(
-                  context: context,
-                );
-              },
-              child: Text('Show demo survey'),
             ),
             FilledButton(
               onPressed: () async {

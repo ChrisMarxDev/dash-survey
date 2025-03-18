@@ -110,34 +110,33 @@ class _DashSurveyBuilderState extends State<DashSurveyBuilder> {
   void initState() {
     super.initState();
     scheduleMicrotask(() {
-      SurveyHolderState.of(context).fetch();
+      DashSurveyControllerImplementation.of(context).getNextSurvey();
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    
     try {
-    final surveyState = SurveyHolderState.of(context);
+      final surveyState = SurveyHolderState.of(context);
 
-    return NotifierBuilder(
-      notifier: surveyState,
-      builder: (BuildContext context, SurveyHolderState notifier) {
-        return widget.builder?.call(
-              context,
+      return NotifierBuilder(
+        notifier: surveyState,
+        builder: (BuildContext context, SurveyHolderState notifier) {
+          return widget.builder?.call(
+                context,
+                _SurveyBuilder(
+                  surveyState: notifier,
+                  transitionBuilder: widget.transitionBuilder,
+                  transitionDuration: widget.transitionDuration,
+                ),
+                notifier.surveyState,
+              ) ??
               _SurveyBuilder(
                 surveyState: notifier,
                 transitionBuilder: widget.transitionBuilder,
-                transitionDuration: widget.transitionDuration,
-              ),
-              notifier.surveyState,
-            ) ??
-            _SurveyBuilder(
-              surveyState: notifier,
-              transitionBuilder: widget.transitionBuilder,
-            );
-      },
-    );
+              );
+        },
+      );
     } catch (e) {
       log('Error in DashSurveyBuilder: $e');
       return const SizedBox.shrink();
@@ -199,9 +198,11 @@ class SurveyPagerWrapper extends StatelessWidget {
   final SurveyModel survey;
   final AnimatedPageSwitcherTransitionBuilder? transitionBuilder;
   final Duration? transitionDuration;
+
   @override
   Widget build(BuildContext context) {
-    final locale = DashSurvey.of(context).getLocaleCode();
+    final locale =
+        DashSurveyControllerImplementation.of(context).getLocaleCode();
     final state = SingleSurveyState(
       survey: survey,
       locale: locale,

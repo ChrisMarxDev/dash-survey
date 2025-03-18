@@ -63,15 +63,16 @@ class DashSurveyControllerImplementation implements DashSurveyController {
     required BuildContext Function() currentContextGetter,
     this.overrideLocale,
     this.config = const DashSurveyConfig(),
-    this.demoMode = false,
-  })  : _currentContextGetter = currentContextGetter,
-        api = DashSurveyApiService(
-          config.baseUrl ?? 'https://api.dash-survey.com',
-          apiKey,
-        ),
-        _store = _DashSurveyStoreService(
-          sharedPreferencesFuture: SharedPreferences.getInstance(),
-        ) {
+    this.debugMode = false,
+  }) {
+    _currentContextGetter = currentContextGetter;
+    _api = DashSurveyApiService(
+      config.baseUrl ?? 'https://api.dash-survey.com',
+      apiKey,
+    );
+    _store = _DashSurveyStoreService(
+      sharedPreferencesFuture: SharedPreferences.getInstance(),
+    );
     _surveyHolderState = SurveyHolderState(
       controller: this,
     );
@@ -79,34 +80,48 @@ class DashSurveyControllerImplementation implements DashSurveyController {
   @visibleForTesting
   // ignore: public_member_api_docs
   DashSurveyControllerImplementation.fromRequiredServices({
-    required this.api,
+    required DashSurveyApiService api,
+    // ignore: library_private_types_in_public_api
     required _DashSurveyStoreService storeService,
     required BuildContext Function() currentContextGetter,
     this.overrideLocale,
     this.config = const DashSurveyConfig(),
-    this.demoMode = false,
-  })  : _currentContextGetter = currentContextGetter,
-        _store = storeService {
+    this.debugMode = false,
+  }) {
+    _api = api;
+    _currentContextGetter = currentContextGetter;
+    _store = storeService;
     _surveyHolderState = SurveyHolderState(
       controller: this,
     );
   }
 
+  /// The locale to use for the survey.
+  /// If not set, the locale of the current context will be used.
   final Locale? overrideLocale;
 
+  /// The config for the survey.
+  /// This is used to configure the survey.
   final DashSurveyConfig config;
 
-  final DashSurveyApiService api;
+  /// The function to get the current context.
+  /// This is used to get the current context for the survey.
+  late final BuildContext Function() _currentContextGetter;
 
-  final BuildContext Function() _currentContextGetter;
+  /// Enables demo mode.
+  /// If true, the survey will be fetched even if the user is not eligible.
+  final bool debugMode;
 
-  final _DashSurveyStoreService _store;
+  /// The user id for the current user.
+  /// This is used to identify the user in the survey dash API.
+  String? userId;
+
+  // services
+  late final DashSurveyApiService _api;
+
+  late final _DashSurveyStoreService _store;
 
   late final SurveyHolderState _surveyHolderState;
-
-  final bool demoMode;
-
-  String? userId;
 
   final Completer<void> _initCompleter = Completer<void>();
   // final Completer<void> _fetchCompleter = Completer<void>();
@@ -181,26 +196,14 @@ class DashSurveyControllerImplementation implements DashSurveyController {
   /// the default or if you want to display the survey in a different context.
   /// The logic for this function is shared with the [showNextSurvey] function.
   @override
-  Future<SurveyModel?> getNextSurvey({
-    String? viewId,
-  }) async {
-    if (_surveyHolderState.surveyState == SurveyState.activeSurvey) {
+  Future<SurveyModel?> getNextSurvey({String? viewId}) async {
+    if (_surveyHolderState.surveyState == SurveyState.activeSurvey &&
+        _surveyHolderState.survey != null) {
       return _surveyHolderState.survey;
     }
-    // else if (_surveyHolderState._surveyState == SurveyState.surveyClosed ||
-    //     _surveyHolderState._surveyState == SurveyState.surveyClosed) {
-    //           await _surveyHolderState.fetch();
-
-    //     }
-    await _surveyHolderState.fetch();
-    return _surveyHolderState.survey;
-  }
-
-  Future<SurveyModel?> _internalGetNextSurvey(
-      // String? viewId,
-      ) async {
+    _surveyHolderState.surveyState = SurveyState.loading;
     final lastSurveyDate = await _lastSurveyDate();
-    print('Last survey date: $lastSurveyDate');
+    dashLogInfo('Last survey date: $lastSurveyDate');
 
     final isElligleAgain = lastSurveyDate == null ||
         config.surveyCoolDownInDays == 0 ||
@@ -210,21 +213,33 @@ class DashSurveyControllerImplementation implements DashSurveyController {
           ),
         );
 
-    if (!isElligleAgain) {
+    if (!isElligleAgain && !debugMode) {
       return null;
     }
-    final surveys = await _fetchNextSurveyObjects();
-    print('Surveys: ${surveys.firstOrNull?.toJson()}');
+    final surveys = await _rawFetchSurveys();
+    dashLogInfo('Surveys: ${surveys.firstOrNull?.toJson()}');
 
-    return surveys.lastOrNull;
+    final fetchedSurvey = surveys.lastOrNull;
+    if (fetchedSurvey == null) {
+      if (debugMode) {
+        _surveyHolderState._setSurvey(exampleSurvey);
+      } else {
+        _surveyHolderState._setNoSurveyAvailable();
+      }
+      return _surveyHolderState.survey;
+    }
+    _surveyHolderState._setSurvey(fetchedSurvey);
+    return _surveyHolderState.survey;
   }
 
-  Future<List<SurveyModel>> _fetchNextSurveyObjects() async {
+  /// Raw api call to fetch the next survey object for this user.
+  Future<List<SurveyModel>> _rawFetchSurveys() async {
     final targetDimensions = await _store.getUserTargetDimensions();
-    final surveys = await api.getElliglbeOpenSurveys(
+    final surveys = await _api.getElliglbeOpenSurveys(
       userId: userId!,
       localeCode: getLocaleCode(),
       targetDimensions: targetDimensions,
+      demoMode: debugMode,
     );
     return surveys;
   }
@@ -254,14 +269,21 @@ class DashSurveyControllerImplementation implements DashSurveyController {
         .dateTime;
   }
 
+  /// Submit a survey answer to the API.
+  /// This will save the answers to the database.
   Future<void> submitSurvey(SingleSurveyState state) async {
     dashLogInfo('Submitting survey ${state.survey.id}');
+    await _store.addCompletedSurvey(state.survey.id);
     _surveyHolderState._setSurveyToAnswered(completed: true);
-    await api.postSurveyAnswers(
+    await _api.postSurveyAnswers(
       state.survey.id,
       userId!,
       state.answers.values.toList(),
     );
+  }
+
+  static DashSurveyControllerImplementation of(BuildContext context) {
+    return DashSurvey.of(context) as DashSurveyControllerImplementation;
   }
 }
 
@@ -275,15 +297,6 @@ Future<void> showDemoSurvey({
 }) async {
   final locale = Localizations.localeOf(context);
   final localeCode = LocaleCode(locale.languageCode);
-  // if (displayType == SurveyDisplayType.dialog) {
-  //   return showSurveyDialog(
-  //     context,
-  //     locale: localeCode,
-  //     survey: exampleSurvey,
-  //     onSubmit: onComplete,
-  //     onCancel: onCancel,
-  //   );
-  // } else if (displayType == SurveyDisplayType.bottomSheet) {
   return showSurveyBottomSheet(
     context,
     survey: exampleSurvey,
@@ -291,7 +304,6 @@ Future<void> showDemoSurvey({
     onCancel: onCancel,
     locale: localeCode,
   );
-  // }
 }
 
 class SurveyHolderState extends ChangeNotifier {
@@ -304,9 +316,9 @@ class SurveyHolderState extends ChangeNotifier {
 
   // final Map<String, SurveyModel> _viewSpecificSurveys = {};
 
-  SurveyState _surveyState = SurveyState.loading;
+  SurveyState surveyState = SurveyState.loading;
 
-  SurveyState get surveyState => _surveyState;
+  // SurveyState get surveyState => _surveyState;
 
   // SurveyModel? getSurveyForView(String? viewId) {
   //   if (viewId == null) {
@@ -315,34 +327,27 @@ class SurveyHolderState extends ChangeNotifier {
   //   return _viewSpecificSurveys[viewId];
   // }
 
-  Future<void> fetch() async {
-    if (_surveyState == SurveyState.activeSurvey && _survey != null) {
-      return;
-    }
-    _surveyState = SurveyState.loading;
+  void _setNoSurveyAvailable() {
+    _survey = null;
+    surveyState = SurveyState.noSurveyAvailable;
+    notifyListeners();
+  }
 
-    final fetchedSurvey = await controller._internalGetNextSurvey();
-
-    if (fetchedSurvey == null) {
-      _survey = null;
-      _surveyState = SurveyState.noSurveyAvailable;
-      notifyListeners();
-    } else {
-      _survey = fetchedSurvey;
-      _surveyState = SurveyState.activeSurvey;
-      notifyListeners();
-    }
+  void _setSurvey(SurveyModel survey) {
+    _survey = survey;
+    surveyState = SurveyState.activeSurvey;
+    notifyListeners();
   }
 
   static SurveyHolderState of(BuildContext context) {
-    return DashSurvey.of(context)._surveyHolderState;
+    return DashSurveyControllerImplementation.of(context)._surveyHolderState;
   }
 
   void _setSurveyToAnswered({required bool completed}) {
     if (completed) {
-      _surveyState = SurveyState.surveySubmitted;
+      surveyState = SurveyState.surveySubmitted;
     } else {
-      _surveyState = SurveyState.surveyClosed;
+      surveyState = SurveyState.surveyClosed;
     }
     notifyListeners();
   }

@@ -78,9 +78,7 @@ class FurnitureStoreHome extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          DashSurvey.showDemo(
-            context: context,
-          );
+          DashSurvey.of(context).showNextSurvey();
         },
         child: const Icon(Icons.add),
       ),
@@ -91,23 +89,26 @@ class FurnitureStoreHome extends StatelessWidget {
             child: SearchBar(),
           ),
           Expanded(
-            child: GridView.builder(
-              padding: const EdgeInsets.all(16),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                childAspectRatio: 0.75,
-                crossAxisSpacing: 16,
-                mainAxisSpacing: 16,
-              ),
-              itemCount: sampleFurniture.length + 1,
-              itemBuilder: (context, index) {
-                if (index == sampleFurniture.length) {
-                  return const SurveyCard();
-                }
-                final item = sampleFurniture[index];
-                return FurnitureCard(item: item);
-              },
-            ),
+            child: LayoutBuilder(builder: (context, constraints) {
+              final isMobile = constraints.maxWidth < 600;
+              return GridView.builder(
+                padding: const EdgeInsets.all(16),
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: isMobile ? 1 : 2,
+                  childAspectRatio: 0.75,
+                  crossAxisSpacing: 16,
+                  mainAxisSpacing: 16,
+                ),
+                itemCount: sampleFurniture.length + 1,
+                itemBuilder: (context, index) {
+                  if (index == sampleFurniture.length) {
+                    return const SurveyCard();
+                  }
+                  final item = sampleFurniture[index];
+                  return FurnitureCard(item: item);
+                },
+              );
+            }),
           ),
         ],
       ),
@@ -225,7 +226,10 @@ class SurveyCard extends StatelessWidget {
               ? Card(
                   key: const Key('survey-available'),
                   elevation: 4,
-                  child: surveyWidget,
+                  child: Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: surveyWidget,
+                  ),
                 )
               : const SizedBox.shrink(key: Key('survey-not-available')),
         );

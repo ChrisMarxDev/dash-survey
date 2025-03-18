@@ -1,4 +1,4 @@
-import 'package:dash_survey/src/survey/dash_survey.dart';
+import 'package:dash_survey/src/survey/dash_survey_widget.dart';
 import 'package:flutter/widgets.dart';
 
 /// Use to bind the [BuildContext] to the current [Wiredash] widget
