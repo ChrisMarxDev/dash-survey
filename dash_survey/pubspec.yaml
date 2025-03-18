@@ -13,7 +13,7 @@ resolution: workspace
 dependencies:
   # dash_survey_core:
   # path: ../dash_survey_core
-  dash_survey_core: ^0.0.1
+  dash_survey_core: ^0.0.1+1
   flutter:
     sdk: flutter
   shared_preferences: ">=2.3.5  <3.0.0"
