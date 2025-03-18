@@ -12,6 +12,7 @@ sealed class SurveyQuestionModel with SurveyQuestionModelMappable {
     required this.questionText,
     required this.id,
     required this.surveyId,
+    this.isRequired = true,
   });
 
   /// The localized text of the question
@@ -22,6 +23,9 @@ sealed class SurveyQuestionModel with SurveyQuestionModelMappable {
 
   /// ID of the survey this question belongs to
   final String surveyId;
+
+  /// Whether the question is required
+  final bool isRequired;
 }
 
 @MappableEnum()
@@ -105,6 +109,7 @@ class FreeTextSurveyQuestion extends SurveyQuestionModel
     required super.questionText,
     required super.id,
     required super.surveyId,
+    super.isRequired,
     this.textType = TextType.any,
   });
 
@@ -135,6 +140,7 @@ class MultipleChoiceSurveyQuestion extends SurveyQuestionModel
     required super.id,
     required super.surveyId,
     required this.options,
+    super.isRequired,
     this.canSelectMultiple = false,
   });
 
@@ -185,6 +191,7 @@ class ScaleSurveyQuestion extends SurveyQuestionModel
     required super.id,
     required super.surveyId,
     required this.options,
+    super.isRequired,
     this.scaleType = ScaleType.scale,
   });
 

@@ -76,6 +76,12 @@ class LocalizedText with LocalizedTextMappable {
     return data[locale] ?? '';
   }
 
+  /// Gets the localized string for the specified locale
+  /// Returns the first non-empty string if the locale is not found
+  String getOrAny(LocaleCode locale) {
+    return data[locale] ?? data.values.first;
+  }
+
   /// Creates a copy of this LocalizedText with the specified locale set to the
   /// given value
   /// @param locale The locale to set

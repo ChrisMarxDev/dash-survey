@@ -14,8 +14,14 @@ class DashSurveyApiService {
   /// The [apiKey] is the API key of the organization.
   /// This can be found in the DashSurveyCloud dashboard.
   DashSurveyApiService(String baseUrl, String apiKey)
-      : assert(baseUrl.isNotEmpty, 'baseUrl must not be empty'),
-        assert(apiKey.isNotEmpty, 'apiKey must not be empty'),
+      : assert(
+          baseUrl.isNotEmpty,
+          'DashSurvey: baseUrl must not be empty',
+        ),
+        assert(
+          apiKey.isNotEmpty,
+          'DashSurvey: apiKey must not be empty',
+        ),
         _baseUrl = baseUrl,
         _apiKey = apiKey;
 
@@ -39,9 +45,6 @@ class DashSurveyApiService {
 
   Map<String, String> get _authHeader => {
         'X-API-Key': _apiKey,
-        // 'Content-Type': 'application/json',
-        // 'Accept': 'application/json',
-        // 'Origin': _baseUrl,
       };
 
   Future<Res> _post<Req extends Object, Res extends Object>(
@@ -134,6 +137,7 @@ class DashSurveyApiService {
     required String userId,
     required LocaleCode localeCode,
     required Map<String, dynamic> targetDimensions,
+    bool demoMode = false,
   }) async {
     try {
       final surveys = await _getList<SurveyModel>(
@@ -143,6 +147,7 @@ class DashSurveyApiService {
           'userId': userId,
           'localeCode':
               localeCode.toString(), // Ensure localeCode is converted to string
+          'demoMode': demoMode ? 'true' : 'false',
         },
       );
       return surveys;
