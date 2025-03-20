@@ -1,5 +1,11 @@
 # Changelog
 
+
+## 0.0.1+2
+
+- Added functions to disable DashSurvey
+- Changed exposed apis for internal DashSurveyController
+
 ## 0.0.1+1
 
 - Added isRequired to question model

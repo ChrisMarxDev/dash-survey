@@ -97,3 +97,76 @@ class DashSurveyTheme {
     );
   }
 }
+
+extension DashSurveyThemeContextExtension on BuildContext {
+  double get pXs => 4;
+  double get pS => 8;
+  double get pM => 16;
+  double get pL => 24;
+  double get pXl => 32;
+  double get pXxl => 40;
+  double get pXxxl => 48;
+}
+
+// class DashSurveyThemeData extends ThemeExtension<DashSurveyThemeData> {
+//   const DashSurveyThemeData({
+//     this.primaryColor,
+//     this.onPrimaryColor,
+//     this.disabledColor,
+//     this.onDisabledColor,
+//     this.containerShape,
+//     this.titleStyle,
+//     this.bodyStyle,
+//     this.buttonTextStyle,
+//     this.interactiveElementShape,
+//     this.interactiveElementShadows,
+//   });
+
+//   final Color? primaryColor;
+//   final Color? onPrimaryColor;
+//   final Color? disabledColor;
+//   final Color? onDisabledColor;
+//   final ShapeBorder? containerShape;
+//   final TextStyle? titleStyle;
+//   final TextStyle? bodyStyle;
+//   final TextStyle? buttonTextStyle;
+//   final ShapeBorder? interactiveElementShape;
+//   final List<BoxShadow>? interactiveElementShadows;
+
+//   @override
+//   DashSurveyThemeData copyWith({
+//     Color? primaryColor,
+//     Color? onPrimaryColor,
+//     Color? disabledColor,
+//     Color? onDisabledColor,
+//     ShapeBorder? containerShape,
+//     TextStyle? titleStyle,
+//     TextStyle? bodyStyle,
+//     TextStyle? buttonTextStyle,
+//     ShapeBorder? interactiveElementShape,
+//     List<BoxShadow>? interactiveElementShadows,
+//   }) {
+//     return DashSurveyThemeData(
+//       primaryColor: primaryColor ?? this.primaryColor,
+//       onPrimaryColor: onPrimaryColor ?? this.onPrimaryColor,
+//       disabledColor: disabledColor ?? this.disabledColor,
+//       onDisabledColor: onDisabledColor ?? this.onDisabledColor,
+//       containerShape: containerShape ?? this.containerShape,
+//       titleStyle: titleStyle ?? this.titleStyle,
+//       bodyStyle: bodyStyle ?? this.bodyStyle,
+//       buttonTextStyle: buttonTextStyle ?? this.buttonTextStyle,
+//       interactiveElementShape:
+//           interactiveElementShape ?? this.interactiveElementShape,
+//       interactiveElementShadows:
+//           interactiveElementShadows ?? this.interactiveElementShadows,
+//     );
+//   }
+  
+//   @override
+//   ThemeExtension<DashSurveyThemeData> lerp(
+//     covariant ThemeExtension<DashSurveyThemeData>? other,
+//     double t,
+//   ) {
+    
+//   }
+// }

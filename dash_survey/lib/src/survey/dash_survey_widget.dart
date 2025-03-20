@@ -5,12 +5,30 @@ import 'package:dash_survey/src/util/dash_survey_extension.dart';
 import 'package:flutter/material.dart';
 
 /// Wrap your app in this widget to enable SurveyDash
+///
+/// This widget is used to wrap your app in a widget that will provide the
+/// [DashSurveyController] to the app.
+///
+/// You only have to supply a valid [apiKey] to enable SurveyDash. You can
+/// get an api key from the SurveyDash dashboard at [https://app.dash-survey.com]
+///
+/// To view surveys and get a feel of SurveyDash, you can use the [debugMode]
+/// flag. This will either show a demo survey or if available, a survey from
+/// the server. Answering surveys in demo mode, will not set the survey as
+/// answered. So you will see the same survey repeatedly for testing and
+/// development purposes.
+///
+/// If you want to disable SurveyDash, you can set [enabled] to false.
+///
+/// If you want to customize the look and feel of SurveyDash, you can supply
+/// a [theme]. This is currently a Material [ThemeData] object. This is subject
+/// to change in the future.
 class DashSurvey extends StatefulWidget {
   /// Wrap your app in this widget to enable SurveyDash
   const DashSurvey({
     required this.child,
     required this.apiKey,
-    // this.enabled = true,
+    this.enabled = true,
     this.theme,
     this.overrideLocale,
     this.debugMode = false,
@@ -32,7 +50,7 @@ class DashSurvey extends StatefulWidget {
   /// Whether survey dash is enabled or not
   /// If false, no surveys will be shown and no logic will be executed
   /// SurveyDash.of(context) will return a stub element that does nothing
-  // final bool enabled;
+  final bool enabled;
 
   /// Theme for the survey dash, if not provided the default will be used
   /// This is useful if you want to customize the look and feel of DashSurvey
@@ -84,28 +102,28 @@ class DashSurvey extends StatefulWidget {
 }
 
 class _DashSurveyState extends State<DashSurvey> {
-  late final DashSurveyControllerImplementation _controller;
+  late final DashSurveyController _controller;
   late final ChangeNotifier _notifier;
 
   @override
   void initState() {
     super.initState();
-    // if (!widget.enabled) {
-    //   _controller = DashSurveyControllerImplementation();
-    //   return;
-    // }
-    widget.showBuildContext = context;
-    _controller = DashSurveyControllerImplementation(
-      apiKey: widget.apiKey,
-      config: widget.config ?? const DashSurveyConfig(),
-      debugMode: widget.debugMode,
-      overrideLocale: widget.overrideLocale,
-      currentContextGetter: () => widget.showBuildContext!,
-    )..init();
     _notifier = ChangeNotifier();
-    if (widget.debugMode) {
-      // ignore: avoid_print
-      print('''
+
+    if (!widget.enabled) {
+      _controller = DisabledDashSurveyController();
+    } else {
+      widget.showBuildContext = context;
+      _controller = DashSurveyControllerImplementation(
+        apiKey: widget.apiKey,
+        config: widget.config ?? const DashSurveyConfig(),
+        debugMode: widget.debugMode,
+        overrideLocale: widget.overrideLocale,
+        currentContextGetter: () => widget.showBuildContext!,
+      )..init();
+      if (widget.debugMode) {
+        // ignore: avoid_print
+        print('''
 ╔══════════════════════════════════════════════════════════════════╗
 ║                                                                  ║
 ║                   DASH SURVEY DEMO MODE ENABLED                  ║
@@ -114,6 +132,7 @@ class _DashSurveyState extends State<DashSurvey> {
 ║                                                                  ║
 ╚══════════════════════════════════════════════════════════════════╝
 ''');
+      }
     }
   }
 
@@ -140,7 +159,7 @@ class _DashSurveyInherited extends InheritedNotifier<ChangeNotifier> {
     required super.child,
   });
 
-  final DashSurveyControllerImplementation controller;
+  final DashSurveyController controller;
 }
 
 /// Target view for SurveyDash

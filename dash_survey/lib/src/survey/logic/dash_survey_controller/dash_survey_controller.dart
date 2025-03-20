@@ -54,6 +54,11 @@ abstract interface class DashSurveyController {
   Future<void> clearUserConfiguration();
 }
 
+/// The implementation of the [DashSurveyController] interface.
+/// This is the main controller for the dash survey.
+/// It is responsible for fetching the next survey object and displaying it.
+/// It has some more internal functions to handle the survey state and the user
+/// than the user facing [DashSurveyController] interface.
 class DashSurveyControllerImplementation implements DashSurveyController {
   /// Create a new controller with the given API key.
   /// The API key is used to authenticate the user with the survey dash API.
@@ -197,11 +202,11 @@ class DashSurveyControllerImplementation implements DashSurveyController {
   /// The logic for this function is shared with the [showNextSurvey] function.
   @override
   Future<SurveyModel?> getNextSurvey({String? viewId}) async {
-    if (_surveyHolderState.surveyState == SurveyState.activeSurvey &&
+    if (_surveyHolderState._surveyState == SurveyState.activeSurvey &&
         _surveyHolderState.survey != null) {
       return _surveyHolderState.survey;
     }
-    _surveyHolderState.surveyState = SurveyState.loading;
+    _surveyHolderState._surveyState = SurveyState.loading;
     final lastSurveyDate = await _lastSurveyDate();
     dashLogInfo('Last survey date: $lastSurveyDate');
 
@@ -312,30 +317,27 @@ class SurveyHolderState extends ChangeNotifier {
 
   SurveyModel? _survey;
 
+  /// The survey object held by the controller.
+  /// This is used to display the survey in the UI.
   SurveyModel? get survey => _survey;
 
   // final Map<String, SurveyModel> _viewSpecificSurveys = {};
 
-  SurveyState surveyState = SurveyState.loading;
+  SurveyState _surveyState = SurveyState.loading;
 
-  // SurveyState get surveyState => _surveyState;
-
-  // SurveyModel? getSurveyForView(String? viewId) {
-  //   if (viewId == null) {
-  //     return _survey;
-  //   }
-  //   return _viewSpecificSurveys[viewId];
-  // }
+  /// The state of the survey.
+  /// This is used to determine what to display in the UI.
+  SurveyState get surveyState => _surveyState;
 
   void _setNoSurveyAvailable() {
     _survey = null;
-    surveyState = SurveyState.noSurveyAvailable;
+    _surveyState = SurveyState.noSurveyAvailable;
     notifyListeners();
   }
 
   void _setSurvey(SurveyModel survey) {
     _survey = survey;
-    surveyState = SurveyState.activeSurvey;
+    _surveyState = SurveyState.activeSurvey;
     notifyListeners();
   }
 
@@ -345,10 +347,48 @@ class SurveyHolderState extends ChangeNotifier {
 
   void _setSurveyToAnswered({required bool completed}) {
     if (completed) {
-      surveyState = SurveyState.surveySubmitted;
+      _surveyState = SurveyState.surveySubmitted;
     } else {
-      surveyState = SurveyState.surveyClosed;
+      _surveyState = SurveyState.surveyClosed;
     }
     notifyListeners();
+  }
+}
+
+/// A stub implementation of the [DashSurveyController] interface.
+/// This is used when the survey is disabled.
+class DisabledDashSurveyController implements DashSurveyController {
+  void _logWarning(String functionName) {
+    final serviceDisabledWarning =
+        // ignore: lines_longer_than_80_chars
+        'WARNING: DashSurvey function $functionName was called, but the service is currently disabled';
+    if (kDebugMode) {
+      log(serviceDisabledWarning);
+    }
+  }
+
+  @override
+  Future<SurveyModel?> getNextSurvey({String? viewId}) async {
+    _logWarning('getNextSurvey');
+    return null;
+  }
+
+  @override
+  Future<void> clearUserConfiguration() async {
+    _logWarning('clearUserConfiguration');
+  }
+
+  @override
+  Future<void> setUserDimensions(Map<String, String> params) async {
+    _logWarning('setUserDimensions');
+  }
+
+  @override
+  Future<void> showNextSurvey({
+    void Function(SurveyModel survey)? onComplete,
+    void Function()? onCancel,
+    String? viewId,
+  }) async {
+    _logWarning('showNextSurvey');
   }
 }

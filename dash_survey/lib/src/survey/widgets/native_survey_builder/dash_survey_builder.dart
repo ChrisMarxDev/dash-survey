@@ -110,12 +110,17 @@ class _DashSurveyBuilderState extends State<DashSurveyBuilder> {
   void initState() {
     super.initState();
     scheduleMicrotask(() {
-      DashSurveyControllerImplementation.of(context).getNextSurvey();
+      DashSurvey.of(context).getNextSurvey();
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    final controller = DashSurvey.of(context);
+    // If the controller is disabled, return a SizedBox.shrink()
+    if (controller is DisabledDashSurveyController) {
+      return const SizedBox.shrink();
+    }
     try {
       final surveyState = SurveyHolderState.of(context);
 
