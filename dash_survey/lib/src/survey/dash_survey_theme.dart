@@ -96,6 +96,59 @@ class DashSurveyTheme {
           interactiveElementShadows ?? this.interactiveElementShadows,
     );
   }
+
+  DashSurveyTheme merge(DashSurveyTheme other) {
+    return DashSurveyTheme(
+      primaryColor: other.primaryColor ?? primaryColor,
+      onPrimaryColor: other.onPrimaryColor ?? onPrimaryColor,
+      disabledColor: other.disabledColor ?? disabledColor,
+      onDisabledColor: other.onDisabledColor ?? onDisabledColor,
+      containerShape: other.containerShape ?? containerShape,
+      interactiveElementShape:
+          other.interactiveElementShape ?? interactiveElementShape,
+      interactiveElementShadows:
+          other.interactiveElementShadows ?? interactiveElementShadows,
+      titleStyle: other.titleStyle ?? titleStyle,
+      bodyStyle: other.bodyStyle ?? bodyStyle,
+      buttonTextStyle: other.buttonTextStyle ?? buttonTextStyle,
+    );
+  }
+
+  static DashSurveyTheme of(BuildContext context) {
+    return context
+        .dependOnInheritedWidgetOfExactType<DashSurveyThemeProvider>()!
+        .theme;
+  }
+
+  // DashSurveyTheme lerp(DashSurveyTheme other, double t) {
+  //   return DashSurveyTheme(
+  //     primaryColor: Color.lerp(primaryColor, other.primaryColor, t),
+  //     onPrimaryColor: Color.lerp(onPrimaryColor, other.onPrimaryColor, t),
+  //     disabledColor: Color.lerp(disabledColor, other.disabledColor, t),
+  //     onDisabledColor: Color.lerp(onDisabledColor, other.onDisabledColor, t),
+  //     containerShape: ShapeBorder.lerp(containerShape, other.containerShape, t),
+  //     titleStyle: TextStyle.lerp(titleStyle, other.titleStyle, t),
+  //     bodyStyle: TextStyle.lerp(bodyStyle, other.bodyStyle, t),
+  //     buttonTextStyle:
+  //         TextStyle.lerp(buttonTextStyle, other.buttonTextStyle, t),
+  //     interactiveElementShape: ShapeBorder.lerp(
+  //       interactiveElementShape,
+  //       other.interactiveElementShape,
+  //       t,
+  //     ),
+  //     interactiveElementShadows: [
+  //       if (interactiveElementShadows != null &&
+  //           interactiveElementShadows!.isNotEmpty &&
+  //           other.interactiveElementShadows != null &&
+  //           other.interactiveElementShadows!.isNotEmpty)
+  //         BoxShadow.lerp(
+  //           interactiveElementShadows!.first,
+  //           other.interactiveElementShadows!.first,
+  //           t,
+  //         )!,
+  //     ],
+  //   );
+  // }
 }
 
 extension DashSurveyThemeContextExtension on BuildContext {
@@ -108,65 +161,44 @@ extension DashSurveyThemeContextExtension on BuildContext {
   double get pXxxl => 48;
 }
 
-// class DashSurveyThemeData extends ThemeExtension<DashSurveyThemeData> {
-//   const DashSurveyThemeData({
-//     this.primaryColor,
-//     this.onPrimaryColor,
-//     this.disabledColor,
-//     this.onDisabledColor,
-//     this.containerShape,
-//     this.titleStyle,
-//     this.bodyStyle,
-//     this.buttonTextStyle,
-//     this.interactiveElementShape,
-//     this.interactiveElementShadows,
-//   });
+class DashSurveyThemeProviderWrapper extends StatelessWidget {
+  const DashSurveyThemeProviderWrapper({
+    required this.child,
+    required this.theme,
+    super.key,
+    this.useMaterialTheme = true,
+  });
 
-//   final Color? primaryColor;
-//   final Color? onPrimaryColor;
-//   final Color? disabledColor;
-//   final Color? onDisabledColor;
-//   final ShapeBorder? containerShape;
-//   final TextStyle? titleStyle;
-//   final TextStyle? bodyStyle;
-//   final TextStyle? buttonTextStyle;
-//   final ShapeBorder? interactiveElementShape;
-//   final List<BoxShadow>? interactiveElementShadows;
+  final DashSurveyTheme theme;
+  final bool useMaterialTheme;
+  final Widget child;
+  @override
+  Widget build(BuildContext context) {
+    final mergedTheme = useMaterialTheme
+        ? DashSurveyTheme.fromThemeData(
+            Theme.of(
+              context,
+            ),
+          ).merge(theme)
+        : theme;
+    return DashSurveyThemeProvider(
+      theme: mergedTheme,
+      child: child,
+    );
+  }
+}
 
-//   @override
-//   DashSurveyThemeData copyWith({
-//     Color? primaryColor,
-//     Color? onPrimaryColor,
-//     Color? disabledColor,
-//     Color? onDisabledColor,
-//     ShapeBorder? containerShape,
-//     TextStyle? titleStyle,
-//     TextStyle? bodyStyle,
-//     TextStyle? buttonTextStyle,
-//     ShapeBorder? interactiveElementShape,
-//     List<BoxShadow>? interactiveElementShadows,
-//   }) {
-//     return DashSurveyThemeData(
-//       primaryColor: primaryColor ?? this.primaryColor,
-//       onPrimaryColor: onPrimaryColor ?? this.onPrimaryColor,
-//       disabledColor: disabledColor ?? this.disabledColor,
-//       onDisabledColor: onDisabledColor ?? this.onDisabledColor,
-//       containerShape: containerShape ?? this.containerShape,
-//       titleStyle: titleStyle ?? this.titleStyle,
-//       bodyStyle: bodyStyle ?? this.bodyStyle,
-//       buttonTextStyle: buttonTextStyle ?? this.buttonTextStyle,
-//       interactiveElementShape:
-//           interactiveElementShape ?? this.interactiveElementShape,
-//       interactiveElementShadows:
-//           interactiveElementShadows ?? this.interactiveElementShadows,
-//     );
-//   }
-  
-//   @override
-//   ThemeExtension<DashSurveyThemeData> lerp(
-//     covariant ThemeExtension<DashSurveyThemeData>? other,
-//     double t,
-//   ) {
-    
-//   }
-// }
+/// provides a dash survey theme to the widget tree
+class DashSurveyThemeProvider extends InheritedWidget {
+  const DashSurveyThemeProvider({
+    required super.child,
+    required this.theme,
+    super.key,
+  });
+
+  final DashSurveyTheme theme;
+
+  @override
+  bool updateShouldNotify(DashSurveyThemeProvider oldWidget) =>
+      theme != oldWidget.theme;
+}

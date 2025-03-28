@@ -9,4 +9,4 @@ Or visit the [Dash Survey Website](https://dash-survey.com) for more information
 
 This project is licensed under the Attribution Assurance License - see the [LICENSE](LICENSE) file for details.
 
-The software is provided by Christopher Marx Softwareentwicklung ("Dash Survey") and requires attribution as specified in the license terms. Visit [survey-dash.com](https://dash-survey.com) for more information.
+The software is provided by Christopher Marx Softwareentwicklung ("Dash Survey") and requires attribution as specified in the license terms. Visit [dash-survey.com](https://dash-survey.com) for more information.
