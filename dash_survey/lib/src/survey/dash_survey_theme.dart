@@ -1,25 +1,41 @@
 // ignore_for_file: public_member_api_docs
 
+import 'package:dash_survey/dash_survey.dart';
 import 'package:flutter/material.dart';
 
+const _defaultPrimaryColor = Color(0xff1c63f2);
+const _defaultBorderColor = Color(0xFFe2e8f0);
+
 /// general theming for dash survey widgets
-class DashSurveyTheme {
-  const DashSurveyTheme({
-    this.primaryColor,
+class DashSurveyThemeData {
+  const DashSurveyThemeData({
+    Color? primaryColor,
     this.onPrimaryColor,
     this.disabledColor,
     this.onDisabledColor,
-    this.containerShape,
+    this.backgroundColor,
+    this.onBackgroundColor,
+    this.cardElementBackgroundColor,
     this.titleStyle,
     this.bodyStyle,
     this.buttonTextStyle,
-    this.interactiveElementShape,
-    this.interactiveElementShadows,
-  });
+    this.cardElementShape,
+    this.cardElementShadows,
+    this.baseBorderColor = _defaultBorderColor,
+    this.useMaterialTheme = true,
+  }) : _primaryColor = primaryColor;
+
+  /// if true, the theme will use the material theme of this context
+  /// when using the material theme, it will use a merged theme of the material
+  /// theme and the given dash survey theme
+  /// any style defined in the dash survey theme will override the material theme
+  final bool useMaterialTheme;
 
   /// primary color used for most accentuated componenets
   /// examples include buttons, slider, checkboxes
-  final Color? primaryColor;
+  final Color? _primaryColor;
+
+  Color get primaryColor => _primaryColor ?? _defaultPrimaryColor;
 
   /// text color for primary components
   final Color? onPrimaryColor;
@@ -30,11 +46,17 @@ class DashSurveyTheme {
   /// text color for disabled components
   final Color? onDisabledColor;
 
-  /// border radius for most buttons
-  final ShapeBorder? interactiveElementShape;
+  /// background color of all survey elements
+  /// this is the background color of the [DashSurveyBuilder] but
+  /// also the background color of the [DashSurveyController.showNextSurvey]
+  /// modal bottom sheet
+  final Color? backgroundColor;
 
-  /// border radius for most cards and containers
-  final ShapeBorder? containerShape;
+  /// neutral color of elements on the background color
+  /// this is the text color of elements on the background color if no text
+  /// color is set in the [titleStyle] or [bodyStyle]
+  /// this is mostly a fallback color
+  final Color? onBackgroundColor;
 
   /// text style for survey and question titles
   final TextStyle? titleStyle;
@@ -45,23 +67,34 @@ class DashSurveyTheme {
   /// text style for all texts in buttons
   final TextStyle? buttonTextStyle;
 
-  /// list of box shadows for all interactive elements
-  final List<BoxShadow>? interactiveElementShadows;
+  /// list of box shadows for all interactive card elements
+  final List<BoxShadow>? cardElementShadows;
+
+  /// shape of most interactive card elements
+  /// this is used for selectable list tiles in multiple choice questions
+  final ShapeBorder? cardElementShape;
+
+  /// background color for interactive card elements
+  final Color? cardElementBackgroundColor;
+
+  /// border color for all interactive elements
+  final Color? baseBorderColor;
 
   /// create a dash survey theme from a theme data
-  static DashSurveyTheme fromThemeData(ThemeData theme) {
-    return DashSurveyTheme(
+  static DashSurveyThemeData fromThemeData(ThemeData theme) {
+    return DashSurveyThemeData(
       primaryColor: theme.colorScheme.primary,
       onPrimaryColor: theme.colorScheme.onPrimary,
       disabledColor: theme.colorScheme.onSurface,
       onDisabledColor: theme.colorScheme.onSurface,
-      containerShape: theme.cardTheme.shape,
-      interactiveElementShape:
-          theme.elevatedButtonTheme.style?.shape?.resolve({}),
-      titleStyle: theme.textTheme.titleLarge,
+      cardElementShape: theme.cardTheme.shape,
+      cardElementBackgroundColor: theme.cardTheme.color,
+      titleStyle: theme.textTheme.titleMedium,
       bodyStyle: theme.textTheme.bodyMedium,
       buttonTextStyle: theme.textTheme.labelLarge,
-      interactiveElementShadows: [
+      backgroundColor: theme.colorScheme.surface,
+      onBackgroundColor: theme.colorScheme.onSurface,
+      cardElementShadows: [
         BoxShadow(
           color: theme.shadowColor,
           blurRadius: 10,
@@ -71,7 +104,7 @@ class DashSurveyTheme {
     );
   }
 
-  DashSurveyTheme copyWith({
+  DashSurveyThemeData copyWith({
     Color? primaryColor,
     Color? secondaryColor,
     BorderRadius? containerRadius,
@@ -81,74 +114,32 @@ class DashSurveyTheme {
     ShapeBorder? interactiveElementShape,
     List<BoxShadow>? interactiveElementShadows,
   }) {
-    return DashSurveyTheme(
+    return DashSurveyThemeData(
       primaryColor: primaryColor ?? this.primaryColor,
       onPrimaryColor: onPrimaryColor ?? onPrimaryColor,
       disabledColor: disabledColor ?? disabledColor,
       onDisabledColor: onDisabledColor ?? onDisabledColor,
-      containerShape: containerShape ?? containerShape,
       titleStyle: titleStyle ?? this.titleStyle,
       bodyStyle: bodyStyle ?? this.bodyStyle,
       buttonTextStyle: buttonStyle ?? buttonTextStyle,
-      interactiveElementShape:
-          interactiveElementShape ?? this.interactiveElementShape,
-      interactiveElementShadows:
-          interactiveElementShadows ?? this.interactiveElementShadows,
+      cardElementShape: interactiveElementShape ?? cardElementShape,
+      cardElementShadows: interactiveElementShadows ?? cardElementShadows,
     );
   }
 
-  DashSurveyTheme merge(DashSurveyTheme other) {
-    return DashSurveyTheme(
-      primaryColor: other.primaryColor ?? primaryColor,
+  DashSurveyThemeData merge(DashSurveyThemeData other) {
+    return DashSurveyThemeData(
+      primaryColor: other.primaryColor,
       onPrimaryColor: other.onPrimaryColor ?? onPrimaryColor,
       disabledColor: other.disabledColor ?? disabledColor,
       onDisabledColor: other.onDisabledColor ?? onDisabledColor,
-      containerShape: other.containerShape ?? containerShape,
-      interactiveElementShape:
-          other.interactiveElementShape ?? interactiveElementShape,
-      interactiveElementShadows:
-          other.interactiveElementShadows ?? interactiveElementShadows,
+      cardElementShape: other.cardElementShape ?? cardElementShape,
+      cardElementShadows: other.cardElementShadows ?? cardElementShadows,
       titleStyle: other.titleStyle ?? titleStyle,
       bodyStyle: other.bodyStyle ?? bodyStyle,
       buttonTextStyle: other.buttonTextStyle ?? buttonTextStyle,
     );
   }
-
-  static DashSurveyTheme of(BuildContext context) {
-    return context
-        .dependOnInheritedWidgetOfExactType<DashSurveyThemeProvider>()!
-        .theme;
-  }
-
-  // DashSurveyTheme lerp(DashSurveyTheme other, double t) {
-  //   return DashSurveyTheme(
-  //     primaryColor: Color.lerp(primaryColor, other.primaryColor, t),
-  //     onPrimaryColor: Color.lerp(onPrimaryColor, other.onPrimaryColor, t),
-  //     disabledColor: Color.lerp(disabledColor, other.disabledColor, t),
-  //     onDisabledColor: Color.lerp(onDisabledColor, other.onDisabledColor, t),
-  //     containerShape: ShapeBorder.lerp(containerShape, other.containerShape, t),
-  //     titleStyle: TextStyle.lerp(titleStyle, other.titleStyle, t),
-  //     bodyStyle: TextStyle.lerp(bodyStyle, other.bodyStyle, t),
-  //     buttonTextStyle:
-  //         TextStyle.lerp(buttonTextStyle, other.buttonTextStyle, t),
-  //     interactiveElementShape: ShapeBorder.lerp(
-  //       interactiveElementShape,
-  //       other.interactiveElementShape,
-  //       t,
-  //     ),
-  //     interactiveElementShadows: [
-  //       if (interactiveElementShadows != null &&
-  //           interactiveElementShadows!.isNotEmpty &&
-  //           other.interactiveElementShadows != null &&
-  //           other.interactiveElementShadows!.isNotEmpty)
-  //         BoxShadow.lerp(
-  //           interactiveElementShadows!.first,
-  //           other.interactiveElementShadows!.first,
-  //           t,
-  //         )!,
-  //     ],
-  //   );
-  // }
 }
 
 extension DashSurveyThemeContextExtension on BuildContext {
@@ -159,46 +150,32 @@ extension DashSurveyThemeContextExtension on BuildContext {
   double get pXl => 32;
   double get pXxl => 40;
   double get pXxxl => 48;
-}
 
-class DashSurveyThemeProviderWrapper extends StatelessWidget {
-  const DashSurveyThemeProviderWrapper({
-    required this.child,
-    required this.theme,
-    super.key,
-    this.useMaterialTheme = true,
-  });
+  Color get transparentColor => Colors.transparent;
 
-  final DashSurveyTheme theme;
-  final bool useMaterialTheme;
-  final Widget child;
-  @override
-  Widget build(BuildContext context) {
-    final mergedTheme = useMaterialTheme
-        ? DashSurveyTheme.fromThemeData(
-            Theme.of(
-              context,
-            ),
-          ).merge(theme)
-        : theme;
-    return DashSurveyThemeProvider(
-      theme: mergedTheme,
-      child: child,
-    );
-  }
+  DashSurveyThemeData get theme => DashSurveyTheme.of(this);
 }
 
 /// provides a dash survey theme to the widget tree
-class DashSurveyThemeProvider extends InheritedWidget {
-  const DashSurveyThemeProvider({
+class DashSurveyTheme extends InheritedWidget {
+  const DashSurveyTheme({
     required super.child,
     required this.theme,
     super.key,
   });
 
-  final DashSurveyTheme theme;
+  final DashSurveyThemeData theme;
 
   @override
-  bool updateShouldNotify(DashSurveyThemeProvider oldWidget) =>
+  bool updateShouldNotify(DashSurveyTheme oldWidget) =>
       theme != oldWidget.theme;
+
+  static DashSurveyThemeData of(BuildContext context) {
+    final theme =
+        context.dependOnInheritedWidgetOfExactType<DashSurveyTheme>()!.theme;
+    if (theme.useMaterialTheme) {
+      return DashSurveyThemeData.fromThemeData(Theme.of(context)).merge(theme);
+    }
+    return theme;
+  }
 }

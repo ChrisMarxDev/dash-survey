@@ -1,5 +1,6 @@
+import 'package:dash_survey/src/survey/dash_survey_theme.dart';
 import 'package:dash_survey/src/survey/logic/dash_survey_controller/dash_survey_controller.dart';
-import 'package:dash_survey/src/survey/widgets/buttons.dart';
+import 'package:dash_survey/src/survey/widgets/common/buttons.dart';
 import 'package:dash_survey/src/survey/widgets/widgets.dart';
 import 'package:dash_survey/src/util/build_context_extension.dart';
 import 'package:dash_survey/src/util/dash_survey_logger.dart';
@@ -8,7 +9,6 @@ import 'package:dash_survey/src/util/notifier_builder.dart';
 import 'package:dash_survey/src/util/object_extension.dart';
 import 'package:dash_survey_core/dash_survey_core.dart';
 import 'package:flutter/material.dart';
-
 
 class SurveyIntroView extends StatelessWidget {
   const SurveyIntroView({
@@ -110,7 +110,9 @@ class SurveyButtonRow extends StatelessWidget {
   }
 }
 
+/// A page view that displays a survey question and a button row
 class SurveyQuestionPageView extends StatelessWidget {
+  /// A page view that displays a survey question and a button row
   const SurveyQuestionPageView({
     required this.question,
     required this.locale,
@@ -145,7 +147,9 @@ class SurveyQuestionPageView extends StatelessWidget {
   }
 }
 
+/// A page view that displays a survey question
 class SurveyQuestionView extends StatefulWidget {
+  /// A page view that displays a survey question
   const SurveyQuestionView({
     required this.question,
     required this.locale,
@@ -168,7 +172,7 @@ class _SurveyQuestionViewState extends State<SurveyQuestionView> {
         Text(
           question.questionText.get(widget.locale),
           textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.titleMedium,
+          style: context.theme.titleStyle,
         ),
         const SizedBox(height: 24),
         NullableNotifierBuilder(

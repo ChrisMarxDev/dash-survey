@@ -1,8 +1,14 @@
 import 'package:dash_survey/dash_survey.dart';
+import 'package:dash_survey/src/survey/dash_survey_theme.dart';
+import 'package:dash_survey/src/survey/widgets/common/dash_card.dart';
+import 'package:dash_survey/src/survey/widgets/common/dash_checkbox.dart';
+import 'package:dash_survey/src/survey/widgets/common/dash_radio_button.dart';
 import 'package:dash_survey/src/util/dash_survey_logger.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
+/// A widget that displays a multiple choice question
 class MultipleChoiceSurveyWidget extends StatefulWidget {
+  /// Creates a widget that displays a multiple choice question
   const MultipleChoiceSurveyWidget({
     required this.question,
     required this.onChangeAnswer,
@@ -49,7 +55,8 @@ class _MultipleChoiceSurveyWidgetState
       final widgetAnswer = Set<String>.from(widget.answer!.answersIds);
       if (selectedOptions.difference(widgetAnswer).isNotEmpty) {
         dashLogInfo(
-            'didUpdateWidget ${selectedOptions.difference(widgetAnswer)}');
+          'didUpdateWidget ${selectedOptions.difference(widgetAnswer)}',
+        );
         selectedOptions
           ..clear()
           ..addAll(widgetAnswer);
@@ -60,6 +67,11 @@ class _MultipleChoiceSurveyWidgetState
       options
         ..clear()
         ..addAll(newOptions);
+    }
+
+    if (oldWidget.isMultiSelect != widget.isMultiSelect) {
+      dashLogInfo('isMultiSelect changed');
+      selectedOptions.clear();
     }
   }
 
@@ -85,7 +97,6 @@ class _MultipleChoiceSurveyWidgetState
   Widget build(BuildContext context) {
     dashLogInfo('Rebuild _MultipleChoiceSurveyWidgetState');
 
-    final cardShapeBorder = Theme.of(context).cardTheme.shape;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -95,30 +106,31 @@ class _MultipleChoiceSurveyWidgetState
           final isSelected = selectedOptions.contains(optionKey);
           return Padding(
             padding: const EdgeInsets.only(bottom: 8),
-            child: Card(
-              margin: EdgeInsets.zero,
-              child: InkWell(
-                customBorder: cardShapeBorder,
-                onTap: () => _handleOptionTap(optionKey),
-                child: Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Row(
-                    children: [
-                      if (widget.isMultiSelect)
-                        Checkbox(
-                          value: isSelected,
-                          onChanged: (_) => _handleOptionTap(optionKey),
-                        )
-                      else
-                        Radio<bool>(
-                          value: true,
-                          groupValue: isSelected,
-                          onChanged: (_) => _handleOptionTap(optionKey),
-                        ),
-                      const SizedBox(width: 8),
-                      Expanded(child: Text(text)),
-                    ],
-                  ),
+            child: DashCard(
+              onTap: () => _handleOptionTap(optionKey),
+              child: Padding(
+                padding: const EdgeInsets.all(8),
+                child: Row(
+                  children: [
+                    if (widget.isMultiSelect)
+                      DashCheckbox(
+                        value: isSelected,
+                        onChanged: (_) => _handleOptionTap(optionKey),
+                      )
+                    else
+                      DashRadioButton(
+                        value: true,
+                        groupValue: isSelected,
+                        onChanged: (_) => _handleOptionTap(optionKey),
+                      ),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        text,
+                        style: context.theme.bodyStyle,
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),

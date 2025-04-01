@@ -5,7 +5,7 @@ import 'package:dash_survey/dash_survey.dart';
 import 'package:dash_survey/src/util/dash_survey_logger.dart';
 import 'package:dash_survey/src/util/inherited_widget_provider.dart';
 import 'package:dash_survey/src/util/notifier_builder.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 /// A builder that is used to style the transition between the survey pages
 ///

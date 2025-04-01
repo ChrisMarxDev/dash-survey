@@ -1,4 +1,5 @@
 import 'package:dash_survey/src/config.dart';
+import 'package:dash_survey/src/survey/dash_survey_theme.dart';
 import 'package:dash_survey/src/survey/logic/dash_survey_controller/dash_survey_config.dart';
 import 'package:dash_survey/src/survey/logic/dash_survey_controller/dash_survey_controller.dart';
 import 'package:dash_survey/src/util/dash_survey_extension.dart';
@@ -29,10 +30,10 @@ class DashSurvey extends StatefulWidget {
     required this.child,
     required this.apiKey,
     this.enabled = true,
-    this.theme,
     this.overrideLocale,
     this.debugMode = false,
     this.config,
+    this.theme,
     super.key,
   });
 
@@ -52,9 +53,9 @@ class DashSurvey extends StatefulWidget {
   /// SurveyDash.of(context) will return a stub element that does nothing
   final bool enabled;
 
-  /// Theme for the survey dash, if not provided the default will be used
+  /// Theme for dash survey widgets, if not provided the default will be used
   /// This is useful if you want to customize the look and feel of DashSurvey
-  final ThemeData? theme;
+  final DashSurveyThemeData? theme;
 
   /// Override the locale for the survey dash
   /// Normally, SurveyDash will use the locale of the app taken from the context
@@ -144,10 +145,13 @@ class _DashSurveyState extends State<DashSurvey> {
 
   @override
   Widget build(BuildContext context) {
-    return _DashSurveyInherited(
-      controller: _controller,
-      notifier: _notifier,
-      child: widget.child,
+    return DashSurveyTheme(
+      theme: widget.theme ?? const DashSurveyThemeData(),
+      child: _DashSurveyInherited(
+        controller: _controller,
+        notifier: _notifier,
+        child: widget.child,
+      ),
     );
   }
 }

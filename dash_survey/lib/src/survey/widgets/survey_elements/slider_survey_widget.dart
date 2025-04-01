@@ -1,4 +1,5 @@
 import 'package:dash_survey/dash_survey.dart';
+import 'package:dash_survey/src/survey/dash_survey_theme.dart';
 import 'package:flutter/material.dart';
 
 extension _SliderSurveyWidgetExtension on List<String> {
@@ -87,7 +88,7 @@ class _SliderSurveyWidgetState extends State<_SliderSurveyWidget> {
 
     final activeValue = _value ?? 50;
     final isSet = _value != null;
-    final activeColor = Theme.of(context).sliderTheme.activeTrackColor;
+    final activeColor = context.theme.primaryColor;
     return FractionallySizedBox(
       widthFactor: 0.8,
       child: Column(
@@ -105,7 +106,7 @@ class _SliderSurveyWidgetState extends State<_SliderSurveyWidget> {
             child: Slider(
               // inactiveColor: ColorTheme.divider,
               activeColor:
-                  isSet ? activeColor : activeColor?.withValues(alpha: .5),
+                  isSet ? activeColor : activeColor.withValues(alpha: .5),
               value: activeValue,
               min: min,
               max: max,
@@ -190,8 +191,8 @@ class _ScaleSurveyWidgetBaseState extends State<_ScaleSurveyWidgetBase> {
     final label1 = widget.question.options.get(widget.locale).firstOrNull ?? '';
     final label2 = widget.question.options.get(widget.locale).lastOrNull ?? '';
 
-    final outlineButtonShape =
-        Theme.of(context).outlinedButtonTheme.style?.shape?.resolve({});
+    final outlineButtonShape = context.theme.cardElementShape;
+    final theme = context.theme;
     return ConstrainedBox(
       constraints: const BoxConstraints(
         maxWidth: 360,
@@ -203,11 +204,11 @@ class _ScaleSurveyWidgetBaseState extends State<_ScaleSurveyWidgetBase> {
             children: [
               Text(
                 label1,
-                style: Theme.of(context).textTheme.bodySmall,
+                style: theme.bodyStyle,
               ),
               Text(
                 label2,
-                style: Theme.of(context).textTheme.bodySmall,
+                style: theme.bodyStyle,
               ),
             ],
           ),
@@ -253,20 +254,19 @@ class ScaleButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final outlinedButtonStyle = Theme.of(context).outlinedButtonTheme.style;
-    final shape = outlinedButtonStyle?.shape?.resolve({});
-    final borderSide = outlinedButtonStyle?.side?.resolve({});
-    final primaryColor =
-        borderSide?.color ?? Theme.of(context).colorScheme.primary;
+    // final outlinedButtonStyle = Theme.of(context).outlinedButtonTheme.style;
+    final theme = context.theme;
+    final shape = theme.cardElementShape ?? const RoundedRectangleBorder();
+    final primaryColor = context.theme.primaryColor;
 
     final backgroundColor =
         isSelected ? primaryColor : primaryColor.withValues(alpha: 0);
     final borderColor = primaryColor;
 
     final foregroundColor =
-        isSelected ? Theme.of(context).colorScheme.onPrimary : primaryColor;
+        isSelected ? context.theme.onPrimaryColor : primaryColor;
 
-    final mergedShape = shape?.copyWith(side: borderSide);
+    // final mergedShape = shape?.copyWith(side: borderSide);
     return AnimatedContainer(
       constraints: const BoxConstraints(
         minHeight: 44,
@@ -274,22 +274,11 @@ class ScaleButton extends StatelessWidget {
       ),
       duration: const Duration(milliseconds: 300),
       decoration: ShapeDecoration(
-        shape: mergedShape ??
-            RoundedRectangleBorder(
-              side: borderSide ??
-                  BorderSide(
-                    color: borderColor,
-                  ),
-            ),
+        shape: shape,
         color: backgroundColor,
       ),
       child: Center(
-        child: Text(
-          label,
-          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                color: foregroundColor,
-              ),
-        ),
+        child: Text(label, style: theme.buttonTextStyle),
       ),
     );
   }

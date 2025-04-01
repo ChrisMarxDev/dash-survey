@@ -1,16 +1,26 @@
 import 'package:dash_survey/dash_survey.dart';
-import 'package:dash_survey/src/survey/widgets/buttons.dart';
+import 'package:dash_survey/src/survey/dash_survey_theme.dart';
+import 'package:dash_survey/src/survey/widgets/common/buttons.dart';
 import 'package:dash_survey/src/util/dash_survey_logger.dart';
 import 'package:dash_survey/src/util/inherited_widget_provider.dart';
 import 'package:dash_survey/src/util/notifier_builder.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
 
+/// The result of the survey bottom sheet
+/// either successfully submitted or cancelled
 enum SurveyBottomSheetResult {
+  /// The survey was successfully submitted
   submit,
+
+  /// The survey was cancelled
   cancel,
 }
 
+/// Shows a survey bottom sheet
+///
+/// The bottom sheet will display a survey question and a button row
+///
 Future<void> showSurveyBottomSheet(
   BuildContext context, {
   required SurveyModel survey,
@@ -22,32 +32,29 @@ Future<void> showSurveyBottomSheet(
     survey: survey,
     locale: locale,
   );
+  final theme = DashSurveyTheme.of(context);
   final result = await WoltModalSheet.show<SurveyBottomSheetResult>(
     context: context,
     pageContentDecorator: (child) {
-      return StateProvider<SingleSurveyState>(
-        state: state,
-        child: child,
+      return DashSurveyTheme(
+        theme: theme,
+        child: StateProvider<SingleSurveyState>(
+          state: state,
+          child: child,
+        ),
       );
     },
     pageListBuilder: (context) {
       return [
         WoltModalSheetPage(
           hasTopBarLayer: false,
-          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-          surfaceTintColor: Theme.of(context).colorScheme.surfaceTint,
+          backgroundColor: theme.backgroundColor,
+          // for now we ignore surface tint in our designs
+          surfaceTintColor: context.transparentColor,
           hasSabGradient: false,
           isTopBarLayerAlwaysVisible: false,
           child: SurveyViewBottomSheet(
             survey: survey,
-            // onCancel: () {
-            //   onCancel?.call();
-            //   Navigator.of(context).pop();
-            // },
-            // onSubmit: (survey) {
-            //   onSubmit?.call(survey);
-            //   Navigator.of(context).pop();
-            // },
           ),
         ),
       ];
@@ -66,7 +73,12 @@ Future<void> showSurveyBottomSheet(
   }
 }
 
+/// A widget that displays a survey modal bottom sheet
+///
+/// The bottom sheet will display a survey question and a button row
+///
 class SurveyViewBottomSheet extends StatelessWidget {
+  /// A widget that displays a survey bottom sheet
   const SurveyViewBottomSheet({
     required this.survey,
     super.key,
@@ -111,7 +123,10 @@ class SurveyViewBottomSheet extends StatelessWidget {
   }
 }
 
+/// A page that displays a survey question and a button row
+///
 class SurveySheetPage extends StatelessWidget {
+  /// A page that displays a survey question and a button row
   const SurveySheetPage({
     required this.survey,
     required this.index,
@@ -119,17 +134,21 @@ class SurveySheetPage extends StatelessWidget {
     super.key,
   });
 
+  /// The survey model
   final SurveyModel survey;
+
+  /// The index of the question
   final int index;
+
+  /// The locale
   final LocaleCode locale;
 
+  /// Builds a modal page
   static SliverWoltModalSheetPage buildModalPage(
     BuildContext context,
     SurveyModel survey,
     int index,
     LocaleCode locale,
-    // void Function(SurveyQuestionModel question) onSubmit,
-    // void Function() onCancel,
   ) {
     return SliverWoltModalSheetPage(
       hasTopBarLayer: false,
@@ -226,7 +245,7 @@ class SurveyActionButtons extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
-        TextButton(
+        TertiaryButton(
           onPressed: onPrevious,
           child: const Text('Previous'),
         ),

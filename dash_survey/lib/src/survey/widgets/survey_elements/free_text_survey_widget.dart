@@ -1,5 +1,6 @@
 import 'package:dash_survey/dash_survey.dart';
-import 'package:flutter/material.dart';
+import 'package:dash_survey/src/survey/widgets/common/text_input.dart';
+import 'package:flutter/widgets.dart';
 
 class FreeTextSurveyWidget extends StatefulWidget {
   const FreeTextSurveyWidget({
@@ -51,14 +52,10 @@ class _FreeTextSurveyWidgetState extends State<FreeTextSurveyWidget> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        TextField(
+        TextInput(
           controller: textController,
           focusNode: focusNode,
           maxLines: 4,
-          decoration: InputDecoration(
-            hintText: widget.placeholder,
-            border: const OutlineInputBorder(),
-          ),
           onChanged: (value) {
             widget.onChangeAnswer(value);
           },

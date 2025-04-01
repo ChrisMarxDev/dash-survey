@@ -122,8 +122,7 @@ class LocalizedTextMap with LocalizedTextMapMappable {
 
   /// create an empty map with an option
   factory LocalizedTextMap.emptyWithOption() {
-    return LocalizedTextMap(LinkedHashMap<String, LocalizedText>())
-      ..addOption();
+    return LocalizedTextMap(LinkedHashMap<String, LocalizedText>()).addOption();
   }
 
   /// create an empty map
