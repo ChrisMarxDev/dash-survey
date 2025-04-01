@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.0.1+3
+
+- Begann adding custom DashSurveyTheme support
+- Doc improvements
 
 ## 0.0.1+2
 
