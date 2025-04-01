@@ -1,3 +1,4 @@
+
 # Dash Survey
 
 > ⚠️ **Warning**: This package is under heavy development and the API is subject to breaking changes. 🚧 Use with caution in production environments.
@@ -76,9 +77,9 @@ For that, just pass `demoMode: true` to the `DashSurvey` constructor. -->
 There are two ways to show a survey:
 
 1. As native element of your app. This way you can show surveys in any widget of your app.
-2. As modal on top of your app. This way you can show surveys as a modal on top of your app.
+2. As modal bottom sheet on top of your app. This way you can show surveys on top of your current app.
 
-### 1. Native Survey Element
+### 1. Native Flutter Survey Element
 
 When using the `DashSurveyBuilder` widget, it will automatically fetch and display surveys that are due to be shown.
 If no surveys are available, it will render as SizedBox.shrink().
@@ -91,9 +92,8 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text('Title'),
-        Card(),
-        // ...
+         // Content Widgets
+         // ...
         DashSurveyBuilder(),
       ],
     );
@@ -106,15 +106,20 @@ The `DashSurveyBuilder` can be fully customized, to match your app's design. Use
 ```dart
 DashSurveyBuilder(
   surveyFrameBuilder: (context, child, surveyState) {
-    return Card(
-      color: Colors.red,
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(8),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 8,
+            offset: Offset(0, 2),
+          ),
+        ],
+      ),
+      padding: EdgeInsets.all(16),
       child: child,
-      onSubmit: (survey) {
-      // Callback to handle any other side effect after successfully submitting a survey
-      },
-      onCancel: (survey) {
-      // Callback to handle any other side effect after the survey was cancelled prematurely
-      },
     );
   },
 );
@@ -144,9 +149,9 @@ DashSurveyBuilder(
 );
 ```
 
-Checkout the [Example app](https://github.com/ChrisMarxDev/dash-survey/tree/main/dash_survey/example) for more examples.
+Checkout [Example app](https://github.com/ChrisMarxDev/dash-survey/tree/main/dash_survey/example) for more examples.
 
-### 2. Survey as Modal
+### 2. Survey as Modal Bottom Sheet
 
 To display a survey as a modal on top of your app, you can use the `DashSurvey.of(context).showNextSurvey()` method.
 This will check if there are any surveys that are due to be shown and display the first one.
@@ -175,6 +180,14 @@ This function can be called often, as it will not cause any effects, when no sur
 
 <!-- ### Targeting
 Dash Survey allows you to  -->
+## THE FOLLOWING PARTS OF THE DOCUMENTATION ARE STILL UNDER CONSTRUCTION 🚧
+## Themeing 🚧
+
+## Advanced Usage 🚧
+Here are some more specific implementation, that highlight how Dash Survey can be configured to match diverse use cases
+### Fetch surveys and show specifi UI 
+
+### Use Dash Survey to manage App Store ratings
 
 ## License
 

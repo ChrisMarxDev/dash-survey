@@ -261,10 +261,10 @@ class ScaleButton extends StatelessWidget {
 
     final backgroundColor =
         isSelected ? primaryColor : primaryColor.withValues(alpha: 0);
-    final borderColor = primaryColor;
-
-    final foregroundColor =
-        isSelected ? context.theme.onPrimaryColor : primaryColor;
+    // final borderColor = primaryColor;
+//
+    // final foregroundColor =
+    // isSelected ? context.theme.onPrimaryColor : primaryColor;
 
     // final mergedShape = shape?.copyWith(side: borderSide);
     return AnimatedContainer(
