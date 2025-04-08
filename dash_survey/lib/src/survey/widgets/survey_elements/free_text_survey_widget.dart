@@ -53,6 +53,7 @@ class _FreeTextSurveyWidgetState extends State<FreeTextSurveyWidget> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         TextInput(
+          hintText: widget.placeholder,
           controller: textController,
           focusNode: focusNode,
           maxLines: 4,

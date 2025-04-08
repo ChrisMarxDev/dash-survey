@@ -1,8 +1,8 @@
 import 'package:dash_survey/dash_survey.dart';
-import 'package:dash_survey/src/survey/dash_survey_theme.dart';
 import 'package:dash_survey/src/survey/widgets/common/dash_card.dart';
 import 'package:dash_survey/src/survey/widgets/common/dash_checkbox.dart';
 import 'package:dash_survey/src/survey/widgets/common/dash_radio_button.dart';
+import 'package:dash_survey/src/survey/widgets/common/dash_text.dart';
 import 'package:dash_survey/src/util/dash_survey_logger.dart';
 import 'package:flutter/widgets.dart';
 
@@ -125,10 +125,7 @@ class _MultipleChoiceSurveyWidgetState
                       ),
                     const SizedBox(width: 8),
                     Expanded(
-                      child: Text(
-                        text,
-                        style: context.theme.bodyStyle,
-                      ),
+                      child: DashText.body(text),
                     ),
                   ],
                 ),

@@ -31,7 +31,7 @@ class DashRadioButton<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = context.theme;
+    final theme = context.dashSurveyTheme;
 
     final effectiveFillColor = fillColor ??
         WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {
@@ -39,7 +39,18 @@ class DashRadioButton<T> extends StatelessWidget {
             return activeColor ?? theme.primaryColor;
           }
           if (states.contains(WidgetState.disabled)) {
-            return theme.disabledColor?.withOpacity(0.5);
+            return theme.disabledColor;
+          }
+          return theme.primaryColor;
+        });
+
+    final effectiveOverlayColor = overlayColor ??
+        WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {
+          if (states.contains(WidgetState.pressed)) {
+            return theme.primaryColor.withValues(alpha: .12);
+          }
+          if (states.contains(WidgetState.hovered)) {
+            return theme.primaryColor.withValues(alpha: .08);
           }
           return null;
         });
@@ -52,11 +63,11 @@ class DashRadioButton<T> extends StatelessWidget {
       focusNode: focusNode,
       autofocus: autofocus,
       fillColor: effectiveFillColor,
-      overlayColor: overlayColor,
-      splashRadius: splashRadius,
+      overlayColor: effectiveOverlayColor,
+      splashRadius: splashRadius ?? 24,
       materialTapTargetSize:
           materialTapTargetSize ?? MaterialTapTargetSize.shrinkWrap,
-      visualDensity: visualDensity,
+      visualDensity: visualDensity ?? VisualDensity.compact,
     );
   }
 }

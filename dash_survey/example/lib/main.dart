@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:dash_survey/dash_survey.dart';
+import 'package:example/survey_elements.dart';
 import 'package:flutter/material.dart';
 import 'sample_content.dart';
 import 'theme_provider.dart';
@@ -29,11 +30,20 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final apiKey = Env.surveyDashApiKey;
     final baseUrl = Env.surveyDashBaseUrl;
+
+    final theme = DashSurveyThemeData(
+      primaryColor: Colors.red,
+      interactiveElementShape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+        side: BorderSide(color: Colors.blue),
+      ),
+    );
     return DashSurvey(
       apiKey: apiKey,
       // manually set the locale to en, instead of the device locale
       overrideLocale: const Locale('en'),
       debugMode: true,
+      theme: theme,
       config: DashSurveyConfig(
         surveyCoolDownInDays: 7,
         skipCoolDownForTargetedViews: true,
@@ -142,32 +152,6 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ],
         ));
-  }
-}
-
-class SurveyElementsScreen extends StatelessWidget {
-  const SurveyElementsScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(),
-      body: ListView(
-        children: [
-          Text('Survey Elements'),
-          for (final question in exampleQuestions)
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                children: [
-                  SurveyQuestionView(question: question, locale: LocaleCode.en),
-                  Divider(height: 16, thickness: 2, color: Colors.grey),
-                ],
-              ),
-            ),
-        ],
-      ),
-    );
   }
 }
 

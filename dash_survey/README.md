@@ -12,6 +12,7 @@ Checkout [Dash Survey](dash-survey.com) for more info.
 <p align="center">
   <img src="https://raw.githubusercontent.com/ChrisMarxDev/dash-survey/refs/heads/main/dash_survey/assets/doc/dash_survey_preview.png">
 </p>
+
 ## Features
 
 - 🎯 Easy-to-use surveys

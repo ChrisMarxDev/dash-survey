@@ -101,7 +101,10 @@ class SurveyButtonRow extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         if (hasPrevious) ...[
-          TextButton(onPressed: onPrevious, child: Text(previousButtonText)),
+          TertiaryButton(
+            onPressed: onPrevious,
+            child: Text(previousButtonText),
+          ),
           const SizedBox(width: 16),
         ],
         MainButton(onPressed: onNext, child: Text(nextButtonText)),
@@ -172,7 +175,7 @@ class _SurveyQuestionViewState extends State<SurveyQuestionView> {
         Text(
           question.questionText.get(widget.locale),
           textAlign: TextAlign.center,
-          style: context.theme.titleStyle,
+          style: context.dashSurveyTheme.titleTextStyle,
         ),
         const SizedBox(height: 24),
         NullableNotifierBuilder(

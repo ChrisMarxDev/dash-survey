@@ -1,5 +1,6 @@
 import 'package:dash_survey/dash_survey.dart';
 import 'package:dash_survey/src/survey/dash_survey_theme.dart';
+import 'package:dash_survey/src/survey/widgets/common/dash_text.dart';
 import 'package:flutter/material.dart';
 
 extension _SliderSurveyWidgetExtension on List<String> {
@@ -88,7 +89,7 @@ class _SliderSurveyWidgetState extends State<_SliderSurveyWidget> {
 
     final activeValue = _value ?? 50;
     final isSet = _value != null;
-    final activeColor = context.theme.primaryColor;
+    final activeColor = context.dashSurveyTheme.primaryColor;
     return FractionallySizedBox(
       widthFactor: 0.8,
       child: Column(
@@ -191,8 +192,7 @@ class _ScaleSurveyWidgetBaseState extends State<_ScaleSurveyWidgetBase> {
     final label1 = widget.question.options.get(widget.locale).firstOrNull ?? '';
     final label2 = widget.question.options.get(widget.locale).lastOrNull ?? '';
 
-    final outlineButtonShape = context.theme.cardElementShape;
-    final theme = context.theme;
+    final outlineButtonShape = context.dashSurveyTheme.interactiveElementShape;
     return ConstrainedBox(
       constraints: const BoxConstraints(
         maxWidth: 360,
@@ -202,14 +202,8 @@ class _ScaleSurveyWidgetBaseState extends State<_ScaleSurveyWidgetBase> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                label1,
-                style: theme.bodyStyle,
-              ),
-              Text(
-                label2,
-                style: theme.bodyStyle,
-              ),
+              DashText.label(label1),
+              DashText.label(label2),
             ],
           ),
           const SizedBox(height: 16),
@@ -255,18 +249,11 @@ class ScaleButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // final outlinedButtonStyle = Theme.of(context).outlinedButtonTheme.style;
-    final theme = context.theme;
-    final shape = theme.cardElementShape ?? const RoundedRectangleBorder();
-    final primaryColor = context.theme.primaryColor;
+    final theme = context.dashSurveyTheme;
+    final buttonShape = theme.buttonShape;
+    final primaryColor = context.dashSurveyTheme.primaryColor;
+    final onPrimaryColor = context.dashSurveyTheme.onPrimaryColor;
 
-    final backgroundColor =
-        isSelected ? primaryColor : primaryColor.withValues(alpha: 0);
-    // final borderColor = primaryColor;
-//
-    // final foregroundColor =
-    // isSelected ? context.theme.onPrimaryColor : primaryColor;
-
-    // final mergedShape = shape?.copyWith(side: borderSide);
     return AnimatedContainer(
       constraints: const BoxConstraints(
         minHeight: 44,
@@ -274,11 +261,19 @@ class ScaleButton extends StatelessWidget {
       ),
       duration: const Duration(milliseconds: 300),
       decoration: ShapeDecoration(
-        shape: shape,
-        color: backgroundColor,
+        color: isSelected ? primaryColor : primaryColor.withValues(alpha: 0),
+        shape: buttonShape.copyWith(
+          side: BorderSide(color: isSelected ? primaryColor : primaryColor),
+        ),
       ),
       child: Center(
-        child: Text(label, style: theme.buttonTextStyle),
+        child: Padding(
+          padding: theme.buttonPadding,
+          child: DashText.button(
+            label,
+            color: isSelected ? onPrimaryColor : primaryColor,
+          ),
+        ),
       ),
     );
   }
