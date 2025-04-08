@@ -46,7 +46,6 @@ tasks:
       - task publish_survey
 
   publish_all_live:
-    prompt: "Are you sure you want to publish all packages?"
     cmds:
       - task publish_core_live
       - task publish_survey_live

@@ -11,9 +11,10 @@ const _defaultOnDisabledColor = Color(0xFF94A3B8);
 const _defaultBackgroundColor = Colors.white;
 const _defaultOnBackgroundColor = Color(0xFF1E293B);
 const _defaultInteractiveElementBackgroundColor = Colors.white;
-const _defaultInteractiveElementShape = RoundedRectangleBorder(
-  borderRadius: BorderRadius.all(Radius.circular(16)),
-  side: BorderSide(color: _defaultBorderColor),
+final _defaultInteractiveElementDecoration = BoxDecoration(
+  color: _defaultInteractiveElementBackgroundColor,
+  borderRadius: const BorderRadius.all(Radius.circular(16)),
+  border: Border.all(color: _defaultBorderColor),
 );
 const _defaultTitleTextStyle = TextStyle(
   fontSize: 24,
@@ -70,8 +71,7 @@ class DashSurveyThemeData {
     TextStyle? bodyStyle,
     TextStyle? labelStyle,
     TextStyle? buttonTextStyle,
-    ShapeBorder? interactiveElementShape,
-    List<BoxShadow>? interactiveElementShadows,
+    BoxDecoration? interactiveElementDecoration,
     Color? baseBorderColor = _defaultBorderColor,
     OutlinedBorder? buttonShape,
     InputBorder? textInputBorder,
@@ -87,8 +87,7 @@ class DashSurveyThemeData {
         _bodyTextStyle = bodyStyle,
         _labelTextStyle = labelStyle,
         _buttonTextStyle = buttonTextStyle,
-        _interactiveElementShape = interactiveElementShape,
-        _interactiveElementShadows = interactiveElementShadows,
+        _interactiveElementDecoration = interactiveElementDecoration,
         _baseBorderColor = baseBorderColor,
         _buttonShape = buttonShape,
         _textInputBorder = textInputBorder,
@@ -111,8 +110,7 @@ class DashSurveyThemeData {
   final TextStyle? _bodyTextStyle;
   final TextStyle? _labelTextStyle;
   final TextStyle? _buttonTextStyle;
-  final ShapeBorder? _interactiveElementShape;
-  final List<BoxShadow>? _interactiveElementShadows;
+  final BoxDecoration? _interactiveElementDecoration;
   final Color? _baseBorderColor;
   final OutlinedBorder? _buttonShape;
   final InputBorder? _textInputBorder;
@@ -156,21 +154,13 @@ class DashSurveyThemeData {
   /// Text style for all texts in buttons.
   TextStyle get buttonTextStyle => _buttonTextStyle ?? _defaultButtonTextStyle;
 
-  /// List of box shadows for all interactive elements.
-  List<BoxShadow>? get interactiveElementShadows => _interactiveElementShadows;
-
-  /// Shape of most interactive elements.
+  /// Box decoration for interactive elements.
   /// This is used for selectable list tiles in multiple choice questions.
-  ShapeBorder get interactiveElementShape =>
-      _interactiveElementShape ?? _defaultInteractiveElementShape;
+  BoxDecoration get interactiveElementDecoration =>
+      _interactiveElementDecoration ?? _defaultInteractiveElementDecoration;
 
   /// Shape for buttons.
   OutlinedBorder get buttonShape => _buttonShape ?? _defaultButtonShape;
-
-  /// Background color for interactive elements.
-  Color get interactiveElementBackgroundColor =>
-      _interactiveElementBackgroundColor ??
-      _defaultInteractiveElementBackgroundColor;
 
   /// Border color for all interactive elements.
   Color get baseBorderColor => _baseBorderColor ?? _defaultBorderColor;
@@ -189,8 +179,20 @@ class DashSurveyThemeData {
       onPrimaryColor: theme.colorScheme.onPrimary,
       disabledColor: theme.colorScheme.onSurface,
       onDisabledColor: theme.colorScheme.onSurface,
-      interactiveElementShape: theme.cardTheme.shape,
-      interactiveElementBackgroundColor: theme.cardTheme.color,
+      interactiveElementDecoration: BoxDecoration(
+        color: theme.cardTheme.color,
+        borderRadius:
+            (theme.cardTheme.shape as RoundedRectangleBorder?)?.borderRadius ??
+                const BorderRadius.all(Radius.circular(16)),
+        border: Border.all(color: theme.dividerColor),
+        boxShadow: [
+          BoxShadow(
+            color: theme.shadowColor,
+            blurRadius: 10,
+            offset: const Offset(0, 10),
+          ),
+        ],
+      ),
       titleStyle: theme.textTheme.titleMedium,
       bodyStyle: theme.textTheme.bodyMedium,
       labelStyle: theme.textTheme.labelSmall,
@@ -199,13 +201,6 @@ class DashSurveyThemeData {
       onBackgroundColor: theme.colorScheme.onSurface,
       buttonShape: theme.filledButtonTheme.style?.shape?.resolve({}),
       textInputBorder: theme.inputDecorationTheme.border,
-      interactiveElementShadows: [
-        BoxShadow(
-          color: theme.shadowColor,
-          blurRadius: 10,
-          offset: const Offset(0, 10),
-        ),
-      ],
     );
   }
 
@@ -223,8 +218,7 @@ class DashSurveyThemeData {
     TextStyle? bodyStyle,
     TextStyle? labelStyle,
     TextStyle? buttonTextStyle,
-    ShapeBorder? interactiveElementShape,
-    List<BoxShadow>? interactiveElementShadows,
+    BoxDecoration? interactiveElementDecoration,
     Color? baseBorderColor,
     OutlinedBorder? buttonShape,
     InputBorder? textInputBorder,
@@ -244,10 +238,8 @@ class DashSurveyThemeData {
       bodyStyle: bodyStyle ?? _bodyTextStyle,
       labelStyle: labelStyle ?? _labelTextStyle,
       buttonTextStyle: buttonTextStyle ?? _buttonTextStyle,
-      interactiveElementShape:
-          interactiveElementShape ?? _interactiveElementShape,
-      interactiveElementShadows:
-          interactiveElementShadows ?? _interactiveElementShadows,
+      interactiveElementDecoration:
+          interactiveElementDecoration ?? _interactiveElementDecoration,
       baseBorderColor: baseBorderColor ?? _baseBorderColor,
       buttonShape: buttonShape ?? _buttonShape,
       textInputBorder: textInputBorder ?? _textInputBorder,
@@ -273,10 +265,8 @@ class DashSurveyThemeData {
       bodyStyle: other._bodyTextStyle ?? _bodyTextStyle,
       labelStyle: other._labelTextStyle ?? _labelTextStyle,
       buttonTextStyle: other._buttonTextStyle ?? _buttonTextStyle,
-      interactiveElementShape:
-          other._interactiveElementShape ?? _interactiveElementShape,
-      interactiveElementShadows:
-          other._interactiveElementShadows ?? _interactiveElementShadows,
+      interactiveElementDecoration:
+          other._interactiveElementDecoration ?? _interactiveElementDecoration,
       baseBorderColor: other._baseBorderColor ?? _baseBorderColor,
       buttonShape: other._buttonShape ?? _buttonShape,
       textInputBorder: other._textInputBorder ?? _textInputBorder,

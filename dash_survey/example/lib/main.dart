@@ -41,9 +41,12 @@ class MyApp extends StatelessWidget {
       onBackgroundColor: const Color(0xFF1E293B), // _defaultOnBackgroundColor
       interactiveElementBackgroundColor:
           Colors.white, // _defaultInteractiveElementBackgroundColor
-      interactiveElementShape: RoundedRectangleBorder(
+      interactiveElementDecoration: BoxDecoration(
+        color: Colors.white,
+        shape: BoxShape.rectangle,
         borderRadius: BorderRadius.circular(16),
-        side: const BorderSide(color: Color(0xFFe2e8f0)), // _defaultBorderColor
+        border:
+            Border.all(color: const Color(0xFFe2e8f0)), // _defaultBorderColor
       ),
       buttonShape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(8),

@@ -192,7 +192,7 @@ class _ScaleSurveyWidgetBaseState extends State<_ScaleSurveyWidgetBase> {
     final label1 = widget.question.options.get(widget.locale).firstOrNull ?? '';
     final label2 = widget.question.options.get(widget.locale).lastOrNull ?? '';
 
-    final outlineButtonShape = context.dashSurveyTheme.interactiveElementShape;
+    final buttonShape = context.dashSurveyTheme.buttonShape;
     return ConstrainedBox(
       constraints: const BoxConstraints(
         maxWidth: 360,
@@ -214,7 +214,7 @@ class _ScaleSurveyWidgetBaseState extends State<_ScaleSurveyWidgetBase> {
                 Expanded(
                   child: Center(
                     child: InkWell(
-                      customBorder: outlineButtonShape,
+                      customBorder: buttonShape,
                       onTap: () {
                         setState(() {
                           _selectedIndex = i;

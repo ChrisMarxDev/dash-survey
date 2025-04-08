@@ -32,15 +32,24 @@ class DashCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = context.dashSurveyTheme;
-    final shape = theme.interactiveElementShape;
+    final decoration = theme.interactiveElementDecoration;
+
+    ShapeBorder? customBorder;
+    if (decoration.shape is RoundedRectangleBorder) {
+      customBorder = decoration.shape as RoundedRectangleBorder;
+    } else if (decoration.shape is CircleBorder) {
+      customBorder = decoration.shape as CircleBorder;
+    } else if (decoration.shape is StadiumBorder) {
+      customBorder = decoration.shape as StadiumBorder;
+    } else if (decoration.shape is ContinuousRectangleBorder) {
+      customBorder = decoration.shape as ContinuousRectangleBorder;
+    }
+
     return Container(
       margin: EdgeInsets.zero,
-      decoration: ShapeDecoration(
-        color: theme.interactiveElementBackgroundColor,
-        shape: shape,
-      ),
+      decoration: decoration,
       child: InkWell(
-        customBorder: shape,
+        customBorder: customBorder,
         onTap: onTap,
         onHover: onHover,
         child: Padding(
