@@ -188,9 +188,50 @@ This function can be called often, as it will not cause any effects, when no sur
 <!-- ### Targeting
 Dash Survey allows you to  -->
 
-## THE FOLLOWING PARTS OF THE DOCUMENTATION ARE STILL UNDER CONSTRUCTION 🚧
+## Themeing 
+Theme your Surveys by supplying a theme in the root `DashSurvey` Widget.
 
-## Themeing 🚧
+#### Material Theme
+If your app uses material, you don't have to manually style Dash Survey. 
+The paramter `useMaterialTheme` is true by default and automatically matches the survey theme to the general app theme.
+
+
+#### Theme Mapping
+<p align="center">
+  <img src="https://raw.githubusercontent.com/ChrisMarxDev/dash-survey/refs/heads/main/dash_survey/assets/doc/theming_guide.png">
+</p>
+
+```dart
+DashSurvey(
+  theme: DashSurveyThemeData(
+      useMaterialTheme: false,
+      primaryColor: const Color(0xff1c63f2),
+      onPrimaryColor: Colors.white,
+      disabledColor: const Color(0xFFE2E8F0),
+      onDisabledColor: const Color(0xFF94A3B8),
+      backgroundColor: Colors.white,
+      onBackgroundColor: const Color(0xFF1E293B),
+      interactiveElementBackgroundColor: Colors.white,
+      interactiveElementShape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8),
+        side: const BorderSide(color: Color(0xFFe2e8f0)),
+      ),
+      buttonShape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8),
+        side: const BorderSide(color: Color(0xFFe2e8f0)),
+      ),
+      textInputBorder: const OutlineInputBorder(
+        borderRadius: BorderRadius.all(Radius.circular(16)),
+        borderSide: BorderSide(color: Color(0xFFe2e8f0)),
+      ),
+      buttonPadding: const EdgeInsets.symmetric(
+          horizontal: 16, vertical: 8),
+    )
+)
+```
+
+
+## THE FOLLOWING PARTS OF THE DOCUMENTATION ARE STILL UNDER CONSTRUCTION 🚧
 
 ## Advanced Usage 🚧
 

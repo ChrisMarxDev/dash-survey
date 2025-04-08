@@ -32,11 +32,30 @@ class MyApp extends StatelessWidget {
     final baseUrl = Env.surveyDashBaseUrl;
 
     final theme = DashSurveyThemeData(
-      primaryColor: Colors.red,
+      useMaterialTheme: false,
+      primaryColor: const Color(0xff1c63f2), // _defaultPrimaryColor
+      onPrimaryColor: Colors.white, // _defaultOnPrimaryColor
+      disabledColor: const Color(0xFFE2E8F0), // _defaultDisabledColor
+      onDisabledColor: const Color(0xFF94A3B8), // _defaultOnDisabledColor
+      backgroundColor: Colors.white, // _defaultBackgroundColor
+      onBackgroundColor: const Color(0xFF1E293B), // _defaultOnBackgroundColor
+      interactiveElementBackgroundColor:
+          Colors.white, // _defaultInteractiveElementBackgroundColor
       interactiveElementShape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
-        side: BorderSide(color: Colors.blue),
+        side: const BorderSide(color: Color(0xFFe2e8f0)), // _defaultBorderColor
       ),
+      buttonShape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8),
+        side:
+            const BorderSide(color: Colors.transparent), // _defaultBorderColor
+      ),
+      textInputBorder: const OutlineInputBorder(
+        borderRadius: BorderRadius.all(Radius.circular(16)),
+        borderSide: BorderSide(color: Color(0xFFe2e8f0)), // _defaultBorderColor
+      ),
+      buttonPadding: const EdgeInsets.symmetric(
+          horizontal: 16, vertical: 8), // _defaultButtonPadding
     );
     return DashSurvey(
       apiKey: apiKey,
