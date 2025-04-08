@@ -13,6 +13,8 @@ class SurveyModel with SurveyModelMappable {
     required this.questions,
     required this.name,
     required this.createdAt,
+    this.hasIntroPage = true,
+    this.hasOutroPage = true,
     this.description,
     this.displayOptions,
     this.finishedMessage,
@@ -38,6 +40,12 @@ class SurveyModel with SurveyModelMappable {
 
   /// The message to display when the survey is finished
   final LocalizedText? finishedMessage;
+
+  /// Whether to show the intro page
+  final bool hasIntroPage;
+
+  /// Whether to show the outro page
+  final bool hasOutroPage;
 }
 
 @MappableClass()

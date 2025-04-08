@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.0.2
+- Added theming capabilities with `DashSurveyTheme` 
+
 ## 0.0.1+3
 
 - Begann adding custom DashSurveyTheme support
