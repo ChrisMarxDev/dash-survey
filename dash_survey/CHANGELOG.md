@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.0.3
+- Add `hasIntroPage` & `hasOutroPage`
+- Add `DashSurveyButtonBuilder` and documentation 
+
 ## 0.0.2
 - Added theming capabilities with `DashSurveyTheme` 
 

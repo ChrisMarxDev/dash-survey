@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.0.3
+- Update to match `dash_survey` 
+
 ## 0.0.2
 - Small fixes
 - Add `hasIntroPage` `hasOutroPage` params to survey model
