@@ -66,7 +66,6 @@ void main() {
       const model = SurveyDisplayOptionsModel(
         showProgressBar: false,
         showQuestionNumber: false,
-        displayType: SurveyDisplayType.dialog,
         indicationType: SurveyIndicationType.popupDialog,
       );
 
@@ -75,7 +74,7 @@ void main() {
 
       expect(deserialized.showProgressBar, isFalse);
       expect(deserialized.showQuestionNumber, isFalse);
-      expect(deserialized.displayType, equals(SurveyDisplayType.dialog));
+      expect(deserialized.displayType, equals(SurveyDisplayType.bottomSheet));
       expect(
         deserialized.indicationType,
         equals(SurveyIndicationType.popupDialog),

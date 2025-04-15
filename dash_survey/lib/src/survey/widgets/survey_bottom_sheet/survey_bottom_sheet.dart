@@ -27,12 +27,16 @@ Future<void> showSurveyBottomSheet(
   required LocaleCode locale,
   void Function(SurveyModel)? onSubmit,
   void Function()? onCancel,
+
 }) async {
   final state = SingleSurveyState(
     survey: survey,
     locale: locale,
   );
   final theme = DashSurveyTheme.of(context);
+
+  final hasIntroPage = survey.hasIntroPage;
+  // final hasOutroPage = survey.hasOutroPage;
   final result = await WoltModalSheet.show<SurveyBottomSheetResult>(
     context: context,
     pageContentDecorator: (child) {
@@ -46,17 +50,25 @@ Future<void> showSurveyBottomSheet(
     },
     pageListBuilder: (context) {
       return [
-        WoltModalSheetPage(
-          hasTopBarLayer: false,
-          backgroundColor: theme.backgroundColor,
-          // for now we ignore surface tint in our designs
-          surfaceTintColor: context.transparentColor,
-          hasSabGradient: false,
-          isTopBarLayerAlwaysVisible: false,
-          child: SurveyViewBottomSheet(
-            survey: survey,
+        if (hasIntroPage)
+          WoltModalSheetPage(
+            hasTopBarLayer: false,
+            backgroundColor: theme.backgroundColor,
+            // for now we ignore surface tint in our designs
+            surfaceTintColor: context.transparentColor,
+            hasSabGradient: false,
+            isTopBarLayerAlwaysVisible: false,
+            child: SurveyViewBottomSheet(
+              survey: survey,
+            ),
           ),
-        ),
+        if (!hasIntroPage)
+          SurveySheetPage.buildModalPage(
+            context,
+            survey,
+            0,
+            locale,
+          ),
       ];
     },
     modalTypeBuilder: (context) {

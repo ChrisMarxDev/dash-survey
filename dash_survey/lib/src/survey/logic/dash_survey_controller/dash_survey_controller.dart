@@ -34,6 +34,7 @@ abstract interface class DashSurveyController {
   Future<void> showNextSurvey({
     void Function(SurveyModel survey)? onComplete,
     void Function()? onCancel,
+    SurveyDisplayType displayType = SurveyDisplayType.bottomSheet,
     String? viewId,
   });
 
@@ -183,17 +184,20 @@ class DashSurveyControllerImplementation implements DashSurveyController {
   Future<void> showNextSurvey({
     void Function(SurveyModel survey)? onComplete,
     void Function()? onCancel,
+    SurveyDisplayType displayType = SurveyDisplayType.bottomSheet,
     String? viewId,
   }) async {
     final nextSurvey = await getNextSurvey(viewId: viewId);
     if (nextSurvey == null) {
       return;
     }
-    await showSurveyBottomSheet(
-      _currentContextGetter(),
-      locale: getLocaleCode(),
-      survey: nextSurvey,
-    );
+    if (displayType == SurveyDisplayType.bottomSheet) {
+      await showSurveyBottomSheet(
+        _currentContextGetter(),
+        locale: getLocaleCode(),
+        survey: nextSurvey,
+      );
+    }
   }
 
   /// Fetch the next survey object for this user.
@@ -387,6 +391,7 @@ class DisabledDashSurveyController implements DashSurveyController {
   Future<void> showNextSurvey({
     void Function(SurveyModel survey)? onComplete,
     void Function()? onCancel,
+    SurveyDisplayType displayType = SurveyDisplayType.bottomSheet,
     String? viewId,
   }) async {
     _logWarning('showNextSurvey');

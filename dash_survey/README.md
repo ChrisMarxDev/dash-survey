@@ -183,6 +183,23 @@ void main() {
 
 This function can be called often, as it will not cause any effects, when no survey is available for the user.
 
+#### Button Helper
+We also added some helper Widgets to make the integration of Dash Survey as convenient as possible.
+You can use the `DashSurveyButtonBuilder` to create a button that shows your surveys as modal bottom sheets but is invisible if no surveys are available.
+
+```dart
+DashSurveyButtonBuilder(
+              buttonBuilder: (context, onTap) {
+                return FloatingActionButton(
+                  onPressed: onTap,
+                  backgroundColor: Colors.blue,
+                  child: const Icon(Icons.feedback),
+                );
+              },
+            );
+```
+
+
 <!-- ## Configuration & Targeting -->
 
 <!-- ### Targeting

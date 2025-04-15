@@ -155,6 +155,15 @@ class _HomeScreenState extends State<HomeScreen> {
               },
               child: Text('Show next survey'),
             ),
+            DashSurveyButtonBuilder(
+              buttonBuilder: (context, onTap) {
+                return FloatingActionButton(
+                  onPressed: onTap,
+                  backgroundColor: Colors.blue,
+                  child: const Icon(Icons.feedback),
+                );
+              },
+            ),
             FilledButton(
               onPressed: () async {
                 final survey = await DashSurvey.of(context).getNextSurvey();

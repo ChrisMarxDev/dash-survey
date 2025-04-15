@@ -194,12 +194,16 @@ class SurveyQuestionModelMapper extends ClassMapperBase<SurveyQuestionModel> {
   static String _$surveyId(SurveyQuestionModel v) => v.surveyId;
   static const Field<SurveyQuestionModel, String> _f$surveyId =
       Field('surveyId', _$surveyId);
+  static bool _$isRequired(SurveyQuestionModel v) => v.isRequired;
+  static const Field<SurveyQuestionModel, bool> _f$isRequired =
+      Field('isRequired', _$isRequired, opt: true, def: true);
 
   @override
   final MappableFields<SurveyQuestionModel> fields = const {
     #questionText: _f$questionText,
     #id: _f$id,
     #surveyId: _f$surveyId,
+    #isRequired: _f$isRequired,
   };
 
   static SurveyQuestionModel _instantiate(DecodingData data) {
@@ -228,7 +232,11 @@ mixin SurveyQuestionModelMappable {
 abstract class SurveyQuestionModelCopyWith<$R, $In extends SurveyQuestionModel,
     $Out> implements ClassCopyWith<$R, $In, $Out> {
   LocalizedTextCopyWith<$R, LocalizedText, LocalizedText> get questionText;
-  $R call({LocalizedText? questionText, String? id, String? surveyId});
+  $R call(
+      {LocalizedText? questionText,
+      String? id,
+      String? surveyId,
+      bool? isRequired});
   SurveyQuestionModelCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
       Then<$Out2, $R2> t);
 }
@@ -260,6 +268,9 @@ class FreeTextSurveyQuestionMapper
   static String _$surveyId(FreeTextSurveyQuestion v) => v.surveyId;
   static const Field<FreeTextSurveyQuestion, String> _f$surveyId =
       Field('surveyId', _$surveyId);
+  static bool _$isRequired(FreeTextSurveyQuestion v) => v.isRequired;
+  static const Field<FreeTextSurveyQuestion, bool> _f$isRequired =
+      Field('isRequired', _$isRequired, opt: true, def: true);
   static TextType _$textType(FreeTextSurveyQuestion v) => v.textType;
   static const Field<FreeTextSurveyQuestion, TextType> _f$textType =
       Field('textType', _$textType, opt: true, def: TextType.any);
@@ -269,6 +280,7 @@ class FreeTextSurveyQuestionMapper
     #questionText: _f$questionText,
     #id: _f$id,
     #surveyId: _f$surveyId,
+    #isRequired: _f$isRequired,
     #textType: _f$textType,
   };
 
@@ -277,6 +289,7 @@ class FreeTextSurveyQuestionMapper
         questionText: data.dec(_f$questionText),
         id: data.dec(_f$id),
         surveyId: data.dec(_f$surveyId),
+        isRequired: data.dec(_f$isRequired),
         textType: data.dec(_f$textType));
   }
 
@@ -344,6 +357,7 @@ abstract class FreeTextSurveyQuestionCopyWith<
       {LocalizedText? questionText,
       String? id,
       String? surveyId,
+      bool? isRequired,
       TextType? textType});
   FreeTextSurveyQuestionCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
       Then<$Out2, $R2> t);
@@ -366,11 +380,13 @@ class _FreeTextSurveyQuestionCopyWithImpl<$R, $Out>
           {LocalizedText? questionText,
           String? id,
           String? surveyId,
+          bool? isRequired,
           TextType? textType}) =>
       $apply(FieldCopyWithData({
         if (questionText != null) #questionText: questionText,
         if (id != null) #id: id,
         if (surveyId != null) #surveyId: surveyId,
+        if (isRequired != null) #isRequired: isRequired,
         if (textType != null) #textType: textType
       }));
   @override
@@ -378,6 +394,7 @@ class _FreeTextSurveyQuestionCopyWithImpl<$R, $Out>
       questionText: data.get(#questionText, or: $value.questionText),
       id: data.get(#id, or: $value.id),
       surveyId: data.get(#surveyId, or: $value.surveyId),
+      isRequired: data.get(#isRequired, or: $value.isRequired),
       textType: data.get(#textType, or: $value.textType));
 
   @override
@@ -419,6 +436,9 @@ class MultipleChoiceSurveyQuestionMapper
       v.options;
   static const Field<MultipleChoiceSurveyQuestion, LocalizedTextMap>
       _f$options = Field('options', _$options);
+  static bool _$isRequired(MultipleChoiceSurveyQuestion v) => v.isRequired;
+  static const Field<MultipleChoiceSurveyQuestion, bool> _f$isRequired =
+      Field('isRequired', _$isRequired, opt: true, def: true);
   static bool _$canSelectMultiple(MultipleChoiceSurveyQuestion v) =>
       v.canSelectMultiple;
   static const Field<MultipleChoiceSurveyQuestion, bool> _f$canSelectMultiple =
@@ -430,6 +450,7 @@ class MultipleChoiceSurveyQuestionMapper
     #id: _f$id,
     #surveyId: _f$surveyId,
     #options: _f$options,
+    #isRequired: _f$isRequired,
     #canSelectMultiple: _f$canSelectMultiple,
   };
 
@@ -439,6 +460,7 @@ class MultipleChoiceSurveyQuestionMapper
         id: data.dec(_f$id),
         surveyId: data.dec(_f$surveyId),
         options: data.dec(_f$options),
+        isRequired: data.dec(_f$isRequired),
         canSelectMultiple: data.dec(_f$canSelectMultiple));
   }
 
@@ -510,6 +532,7 @@ abstract class MultipleChoiceSurveyQuestionCopyWith<
       String? id,
       String? surveyId,
       LocalizedTextMap? options,
+      bool? isRequired,
       bool? canSelectMultiple});
   MultipleChoiceSurveyQuestionCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
       Then<$Out2, $R2> t);
@@ -538,12 +561,14 @@ class _MultipleChoiceSurveyQuestionCopyWithImpl<$R, $Out>
           String? id,
           String? surveyId,
           LocalizedTextMap? options,
+          bool? isRequired,
           bool? canSelectMultiple}) =>
       $apply(FieldCopyWithData({
         if (questionText != null) #questionText: questionText,
         if (id != null) #id: id,
         if (surveyId != null) #surveyId: surveyId,
         if (options != null) #options: options,
+        if (isRequired != null) #isRequired: isRequired,
         if (canSelectMultiple != null) #canSelectMultiple: canSelectMultiple
       }));
   @override
@@ -553,6 +578,7 @@ class _MultipleChoiceSurveyQuestionCopyWithImpl<$R, $Out>
           id: data.get(#id, or: $value.id),
           surveyId: data.get(#surveyId, or: $value.surveyId),
           options: data.get(#options, or: $value.options),
+          isRequired: data.get(#isRequired, or: $value.isRequired),
           canSelectMultiple:
               data.get(#canSelectMultiple, or: $value.canSelectMultiple));
 
@@ -591,6 +617,9 @@ class ScaleSurveyQuestionMapper extends ClassMapperBase<ScaleSurveyQuestion> {
   static LocalizedTextMap _$options(ScaleSurveyQuestion v) => v.options;
   static const Field<ScaleSurveyQuestion, LocalizedTextMap> _f$options =
       Field('options', _$options);
+  static bool _$isRequired(ScaleSurveyQuestion v) => v.isRequired;
+  static const Field<ScaleSurveyQuestion, bool> _f$isRequired =
+      Field('isRequired', _$isRequired, opt: true, def: true);
   static ScaleType _$scaleType(ScaleSurveyQuestion v) => v.scaleType;
   static const Field<ScaleSurveyQuestion, ScaleType> _f$scaleType =
       Field('scaleType', _$scaleType, opt: true, def: ScaleType.scale);
@@ -601,6 +630,7 @@ class ScaleSurveyQuestionMapper extends ClassMapperBase<ScaleSurveyQuestion> {
     #id: _f$id,
     #surveyId: _f$surveyId,
     #options: _f$options,
+    #isRequired: _f$isRequired,
     #scaleType: _f$scaleType,
   };
 
@@ -610,6 +640,7 @@ class ScaleSurveyQuestionMapper extends ClassMapperBase<ScaleSurveyQuestion> {
         id: data.dec(_f$id),
         surveyId: data.dec(_f$surveyId),
         options: data.dec(_f$options),
+        isRequired: data.dec(_f$isRequired),
         scaleType: data.dec(_f$scaleType));
   }
 
@@ -677,6 +708,7 @@ abstract class ScaleSurveyQuestionCopyWith<$R, $In extends ScaleSurveyQuestion,
       String? id,
       String? surveyId,
       LocalizedTextMap? options,
+      bool? isRequired,
       ScaleType? scaleType});
   ScaleSurveyQuestionCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
       Then<$Out2, $R2> t);
@@ -702,12 +734,14 @@ class _ScaleSurveyQuestionCopyWithImpl<$R, $Out>
           String? id,
           String? surveyId,
           LocalizedTextMap? options,
+          bool? isRequired,
           ScaleType? scaleType}) =>
       $apply(FieldCopyWithData({
         if (questionText != null) #questionText: questionText,
         if (id != null) #id: id,
         if (surveyId != null) #surveyId: surveyId,
         if (options != null) #options: options,
+        if (isRequired != null) #isRequired: isRequired,
         if (scaleType != null) #scaleType: scaleType
       }));
   @override
@@ -716,6 +750,7 @@ class _ScaleSurveyQuestionCopyWithImpl<$R, $Out>
       id: data.get(#id, or: $value.id),
       surveyId: data.get(#surveyId, or: $value.surveyId),
       options: data.get(#options, or: $value.options),
+      isRequired: data.get(#isRequired, or: $value.isRequired),
       scaleType: data.get(#scaleType, or: $value.scaleType));
 
   @override

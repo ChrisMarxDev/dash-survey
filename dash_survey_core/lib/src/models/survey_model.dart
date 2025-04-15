@@ -75,16 +75,19 @@ class SurveyDisplayOptionsModel with SurveyDisplayOptionsModelMappable {
 
 @MappableEnum()
 
-/// Defines how the survey UI should be displayed to the user
+/// The type of survey display.
+/// This is used to determine how the survey will be displayed.
+/// For now we only support bottom sheet, but future versions will support
+/// other display types.
 enum SurveyDisplayType {
   /// Display as a dialog in the center of the screen
-  dialog,
+  // dialog,
 
   /// Display as a bottom sheet sliding up from the bottom
   bottomSheet,
 
   /// Display as a full screen overlay
-  fullScreen,
+  // fullScreen,
 }
 
 @MappableEnum()

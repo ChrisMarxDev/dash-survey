@@ -25,12 +25,8 @@ class SurveyDisplayTypeMapper extends EnumMapper<SurveyDisplayType> {
   @override
   SurveyDisplayType decode(dynamic value) {
     switch (value) {
-      case 'dialog':
-        return SurveyDisplayType.dialog;
       case 'bottomSheet':
         return SurveyDisplayType.bottomSheet;
-      case 'fullScreen':
-        return SurveyDisplayType.fullScreen;
       default:
         throw MapperException.unknownEnumValue(value);
     }
@@ -39,12 +35,8 @@ class SurveyDisplayTypeMapper extends EnumMapper<SurveyDisplayType> {
   @override
   dynamic encode(SurveyDisplayType self) {
     switch (self) {
-      case SurveyDisplayType.dialog:
-        return 'dialog';
       case SurveyDisplayType.bottomSheet:
         return 'bottomSheet';
-      case SurveyDisplayType.fullScreen:
-        return 'fullScreen';
     }
   }
 }
@@ -131,6 +123,12 @@ class SurveyModelMapper extends ClassMapperBase<SurveyModel> {
   static DateTime _$createdAt(SurveyModel v) => v.createdAt;
   static const Field<SurveyModel, DateTime> _f$createdAt =
       Field('createdAt', _$createdAt);
+  static bool _$hasIntroPage(SurveyModel v) => v.hasIntroPage;
+  static const Field<SurveyModel, bool> _f$hasIntroPage =
+      Field('hasIntroPage', _$hasIntroPage, opt: true, def: true);
+  static bool _$hasOutroPage(SurveyModel v) => v.hasOutroPage;
+  static const Field<SurveyModel, bool> _f$hasOutroPage =
+      Field('hasOutroPage', _$hasOutroPage, opt: true, def: true);
   static LocalizedText? _$description(SurveyModel v) => v.description;
   static const Field<SurveyModel, LocalizedText> _f$description =
       Field('description', _$description, opt: true);
@@ -148,6 +146,8 @@ class SurveyModelMapper extends ClassMapperBase<SurveyModel> {
     #questions: _f$questions,
     #name: _f$name,
     #createdAt: _f$createdAt,
+    #hasIntroPage: _f$hasIntroPage,
+    #hasOutroPage: _f$hasOutroPage,
     #description: _f$description,
     #displayOptions: _f$displayOptions,
     #finishedMessage: _f$finishedMessage,
@@ -159,6 +159,8 @@ class SurveyModelMapper extends ClassMapperBase<SurveyModel> {
         questions: data.dec(_f$questions),
         name: data.dec(_f$name),
         createdAt: data.dec(_f$createdAt),
+        hasIntroPage: data.dec(_f$hasIntroPage),
+        hasOutroPage: data.dec(_f$hasOutroPage),
         description: data.dec(_f$description),
         displayOptions: data.dec(_f$displayOptions),
         finishedMessage: data.dec(_f$finishedMessage));
@@ -228,6 +230,8 @@ abstract class SurveyModelCopyWith<$R, $In extends SurveyModel, $Out>
       List<SurveyQuestionModel>? questions,
       LocalizedText? name,
       DateTime? createdAt,
+      bool? hasIntroPage,
+      bool? hasOutroPage,
       LocalizedText? description,
       SurveyDisplayOptionsModel? displayOptions,
       LocalizedText? finishedMessage});
@@ -268,6 +272,8 @@ class _SurveyModelCopyWithImpl<$R, $Out>
           List<SurveyQuestionModel>? questions,
           LocalizedText? name,
           DateTime? createdAt,
+          bool? hasIntroPage,
+          bool? hasOutroPage,
           Object? description = $none,
           Object? displayOptions = $none,
           Object? finishedMessage = $none}) =>
@@ -276,6 +282,8 @@ class _SurveyModelCopyWithImpl<$R, $Out>
         if (questions != null) #questions: questions,
         if (name != null) #name: name,
         if (createdAt != null) #createdAt: createdAt,
+        if (hasIntroPage != null) #hasIntroPage: hasIntroPage,
+        if (hasOutroPage != null) #hasOutroPage: hasOutroPage,
         if (description != $none) #description: description,
         if (displayOptions != $none) #displayOptions: displayOptions,
         if (finishedMessage != $none) #finishedMessage: finishedMessage
@@ -286,6 +294,8 @@ class _SurveyModelCopyWithImpl<$R, $Out>
       questions: data.get(#questions, or: $value.questions),
       name: data.get(#name, or: $value.name),
       createdAt: data.get(#createdAt, or: $value.createdAt),
+      hasIntroPage: data.get(#hasIntroPage, or: $value.hasIntroPage),
+      hasOutroPage: data.get(#hasOutroPage, or: $value.hasOutroPage),
       description: data.get(#description, or: $value.description),
       displayOptions: data.get(#displayOptions, or: $value.displayOptions),
       finishedMessage: data.get(#finishedMessage, or: $value.finishedMessage));

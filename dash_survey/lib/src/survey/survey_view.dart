@@ -2,7 +2,6 @@ import 'package:dash_survey/src/survey/dash_survey_theme.dart';
 import 'package:dash_survey/src/survey/logic/dash_survey_controller/dash_survey_controller.dart';
 import 'package:dash_survey/src/survey/widgets/common/buttons.dart';
 import 'package:dash_survey/src/survey/widgets/widgets.dart';
-import 'package:dash_survey/src/util/build_context_extension.dart';
 import 'package:dash_survey/src/util/dash_survey_logger.dart';
 import 'package:dash_survey/src/util/inherited_widget_provider.dart';
 import 'package:dash_survey/src/util/notifier_builder.dart';
@@ -50,31 +49,6 @@ class SurveyIntroView extends StatelessWidget {
           nextButtonText: startButtonText,
         ),
         const SizedBox(height: 16),
-      ],
-    );
-  }
-}
-
-class SurveyThankYouView extends StatelessWidget {
-  const SurveyThankYouView({
-    required this.survey,
-    required this.locale,
-    super.key,
-  });
-
-  final SurveyModel survey;
-  final LocaleCode locale;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Center(
-          child: Text(
-            survey.finishedMessage?.get(locale) ??
-                context.getTranslatedString('survey_finished'),
-          ),
-        ),
       ],
     );
   }

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:dash_survey/dash_survey.dart';
+import 'package:dash_survey/src/survey/widgets/survey_elements/outro_page.dart';
 import 'package:dash_survey/src/util/dash_survey_logger.dart';
 import 'package:dash_survey/src/util/inherited_widget_provider.dart';
 import 'package:dash_survey/src/util/notifier_builder.dart';
